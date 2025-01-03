@@ -1,3 +1,3 @@
-# common module
+# raster module
 
-::: geonate.common
+::: geonate.raster

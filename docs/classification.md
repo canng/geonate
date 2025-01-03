@@ -1,4 +1,4 @@
  
-# geonate module
+# classification module
 
-::: geonate.geonate
+::: geonate.classification
