@@ -82,6 +82,6 @@ nav:
     - Examples:
         - examples/intro.ipynb
     - API Reference:
-          - geonate module: classification.md
-          - common module: raster.md
-          - geonate module: tools.md
+          - classification module: classification.md
+          - raster module: raster.md
+          - tools module: tools.md
