@@ -93,7 +93,7 @@ def list_files(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', f
                     else:
                         files_list.append(file)
     else:
-        raise ValueError('search pattern are: pattern, p, extention, e')
+        raise ValueError('search pattern are: pattern, p, extension, e')
 
     return files_list
 
