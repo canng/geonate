@@ -12,6 +12,5 @@
 -   Documentation: https://canng.github.io/geonate
     
 
-## Features
+## Key Features
 
--   TODO
