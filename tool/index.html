@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://canng.github.io/geonate/tool/">
       
       
+        <link rel="prev" href="../geonate/">
+      
+      
+        <link rel="next" href="../raster/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -22,7 +26,7 @@
     
     
       
-        <title>tool module - geonate</title>
+        <title>Tool module - geonate</title>
       
     
     
@@ -114,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              tool module
+              Tool module
             
           </span>
         </div>
@@ -462,17 +466,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" checked>
         
           
           <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
@@ -486,7 +492,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_9">
             <span class="md-nav__icon md-icon"></span>
             API Reference
@@ -504,7 +510,7 @@
         
   
   <span class="md-ellipsis">
-    geonate module
+    Geonate module
   </span>
   
 
@@ -518,14 +524,120 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../common.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Tool module
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    common module
+    Tool module
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      geonate.tool
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.tool.dataframe" class="md-nav__link">
+    <span class="md-ellipsis">
+      dataframe()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.tool.extent" class="md-nav__link">
+    <span class="md-ellipsis">
+      extent()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.tool.listFiles" class="md-nav__link">
+    <span class="md-ellipsis">
+      listFiles()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.tool.meter2degree" class="md-nav__link">
+    <span class="md-ellipsis">
+      meter2degree()
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../raster/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Raster module
   </span>
   
 
@@ -1044,7 +1156,12 @@ ext, poly = tools.extent(files)</p>
 
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="n">degree</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">/</span> <span class="p">(</span><span class="mi">111320</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">latitude</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Equator location</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">/</span> <span class="p">(</span><span class="mi">111320</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">degree</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">/</span> <span class="p">(</span><span class="mi">111320</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">)))</span>
 
     <span class="k">return</span> <span class="n">degree</span>
 </code></pre></div>
