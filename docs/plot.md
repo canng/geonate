@@ -1,3 +1,0 @@
-# plot module
-
-::: geonate.plot

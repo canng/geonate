@@ -84,6 +84,5 @@ nav:
     - API Reference:
           - Geonate module: geonate.md
           - Tool module: tool.md
-          - Plot module: plot.md
           - Raster module: raster.md
          
