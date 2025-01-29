@@ -115,7 +115,7 @@ def listFiles(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', fu
                         files_list.append(file)
     
     else:
-        raise ValueError('Search pattern must be one of these types (pattern, p, extention, e)')
+        raise ValueError('Search pattern must be one of these types (pattern, p, extension, e)')
 
     return files_list
 
