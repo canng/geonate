@@ -12,7 +12,7 @@ keywords = [
 ]
 license = {text = "MIT License"}
 authors = [
-  {name = "Can Nguyen", email = "trongcan.ng@gmail.com"},
+  {name = "Can Nguyen", email = "ntcan.lres@gmail.com"},
 ]
 classifiers = [
     "Intended Audience :: Developers",
