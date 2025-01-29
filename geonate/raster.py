@@ -264,7 +264,7 @@ def layerstack(input, output: Optional[AnyStr]=None):
 # =========================================================================================== #
 def mergeVRT(input: AnyStr, output: AnyStr, compress: bool=True, silent=True):
     '''
-    Merge multiple geotif files using gdal VRT for better perfomance speed
+    Merge multiple geotif files using gdal VRT for better performance speed
 
     Parameters:
         input_files: List of input geotif files
@@ -356,7 +356,7 @@ def crop(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
         input: image or data array input that need to crop
         reference: region of interest, shapefile opened by geopandas or another image or data array to crop
         input_meta: Optional metadata when input is data array
-        reference_meta: Optional metadat when reference is data array
+        reference_meta: Optional metadata when reference is data array
         invert: bool, if True, pixels inside shapefile will be masked 
         output: Optional string, whether write out geotif file to local directory
 
@@ -475,7 +475,7 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
         input: image or data array input that need to crop
         reference: region of interest, shapefile opened by geopandas or another image or data array to crop
         input_meta: Optional metadata when input is data array
-        reference_meta: Optional metadat when reference is data array
+        reference_meta: Optional metadata when reference is data array
         invert: bool, if True, pixels inside shapefile will be masked 
         output: Optional string, whether write out geotif file to local directory
 
@@ -708,7 +708,7 @@ def project(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='ne
     elif method.lower() == 'lanczos':
         resampleAlg = warp.Resampling.lanczos
     else:
-        raise ValueError('The resampling method is not suppoted, available methods raster.Resampling.')
+        raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
 
     # Running project 
     projected = np.empty((input_image.shape[0], height, width), dtype= meta['dtype'])
@@ -797,7 +797,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
     elif method.lower() == 'lanczos':
         resampleAlg = warp.Resampling.lanczos
     else:
-        raise ValueError('The resampling method is not suppoted, available methods raster.Resampling.')
+        raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
 
     # Define the metadata for the destination raster
     metadata = meta.copy()
@@ -943,7 +943,7 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
     elif method.lower() == 'lanczos':
         resampleAlg = warp.Resampling.lanczos
     else:
-        raise ValueError('The resampling method is not suppoted, available methods raster.Resampling.')
+        raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
     
     # Reproject to match
     if len(input_image.shape) > 2:
@@ -1097,7 +1097,7 @@ def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: O
                 reclassified[(dataset >= breakpoints[i]) & (dataset < breakpoints[i+1])] = classes[i]
         else:
             raise ValueError('Number of classes must be equal to number of breakpoints minus 1')
-    # If image has continuos values
+    # If image has continuous values
     else:
         if len(breakpoints) == (len(classes)+1):
             for i in range(len(classes)):
@@ -1190,9 +1190,9 @@ def extractValues(input: AnyStr, roi: AnyStr, field: AnyStr=None, meta: Optional
     Parameters:
         input: rasterio image or data array
         roi: variable indicates name of shapefile where GCP points located, read by geopandas 
-        field: string, but the value of field must be number, the field name in shapefile GCP to extract lable values, e.g., 'class'
+        field: string, but the value of field must be number, the field name in shapefile GCP to extract label values, e.g., 'class'
         meta: optional dict, metadata in case input is data array
-        dataframe: optional bool, whether to return dataframe or seperate X, y arrays
+        dataframe: optional bool, whether to return dataframe or separate X, y arrays
         names: optional list, given expected names
         na_rm: bool, remove NA value from the output or not
         prefix: optional string, given character before each band name
@@ -1205,7 +1205,7 @@ def extractValues(input: AnyStr, roi: AnyStr, field: AnyStr=None, meta: Optional
        df = raster.extractValues(img, roi, field='class')
        df.head(5)
        
-       # return seperate array of X and y
+       # return separate array of X and y
        X, y = raster.extractValues(img, roi, field='class', dataframe=False)
 
     '''
