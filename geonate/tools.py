@@ -125,7 +125,7 @@ def listFiles(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', fu
 # =========================================================================================== #
 def extent(input: AnyStr, poly: bool= True):
     '''
-    Return spatial extent of geotif image from a list or local variable
+    Get spatial extent of geotif image from a list or local variable
 
     Parameters:
         input: string, an input as a list of geotif files or local image/shapefile
