@@ -209,7 +209,3 @@ def meter2degree(input, latitude):
 
 
 
-    
-
-
-
