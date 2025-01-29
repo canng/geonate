@@ -203,7 +203,12 @@ def meter2degree(input, latitude):
 
     '''
     import numpy as np
-    degree = input / (111320 * np.cos(np.radians(latitude)))
+
+    if latitude is None:
+        # Equator location
+        degree = input / (111320 * np.cos(np.radians(0.0)))
+    else:
+        degree = input / (111320 * np.cos(np.radians(latitude)))
     
     return degree
 
