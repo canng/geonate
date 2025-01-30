@@ -4,6 +4,16 @@ private/
 *.py[cod]
 *$py.class
 
+# ignore example data
+*tif
+*csv
+*cpg
+*dbf
+*qmd
+*shp
+*shx
+
+
 # C extensions
 *.so
 
