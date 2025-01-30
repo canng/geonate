@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://canng.github.io/geonate/raster/">
       
       
-        <link rel="prev" href="../tool/">
+        <link rel="prev" href="../common/">
       
       
       
@@ -525,11 +525,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../tool/" class="md-nav__link">
+      <a href="../common/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Tool module
+    Common module
   </span>
   
 
@@ -3073,6 +3073,21 @@ arr, metadata = raster.project(input=ds, reference='EPSG:32648', input_meta=meta
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>DatasetReader object</code></td>
+      <td><p>A rasterio raster object with all attributes</p></td>
+    </tr>
+  </tbody>
+</table>
 <p><strong>Examples:</strong></p>
     <p>path = '../test/landsat_multi/landsat_img_test.tif'
 img = raster.rast(path)</p>
@@ -3085,6 +3100,9 @@ img = raster.rast(path)</p>
 
 <span class="sd">    Parameters:</span>
 <span class="sd">        inputpath: the file path indicates location of geotif file</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DatasetReader object: A rasterio raster object with all attributes</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">       path = &#39;../test/landsat_multi/landsat_img_test.tif&#39;</span>
@@ -3695,7 +3713,7 @@ raster.writeRatser(arr, 'output.tif', meta=meta, compress='LZW')</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright &copy; 2024 - 2024 Can Nguyen
+      Copyright &copy; 2025 Can Nguyen
     </div>
   
   
