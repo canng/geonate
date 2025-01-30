@@ -12,19 +12,10 @@ from typing import AnyStr, Dict, Optional
 #                                                                                                                                                                                                           #
 ##############################################################################################
 
-'''
-TOOL FUNCTIONS
-
-1. list_files
-2. empty_dataframe
-2. getExtent
-
-
-'''
 # =========================================================================================== #
 #               Create an empty dataframe                                                                                                                                           #
 # =========================================================================================== #
-def dataframe(nrows, ncols, value='NA', name=None):
+def empty_dataframe(nrows, ncols, value='NA', name=None):
     '''
     Create an empty dataframe
 
@@ -33,9 +24,12 @@ def dataframe(nrows, ncols, value='NA', name=None):
         ncols: numeric, number of columns
         value: input value in all cells, default is NA
         name: vector, names of columns, if not given, it will return default as number of column
-        
+
+    Returns:
+        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)    
+
     Example:
-        data = tools.dataframe(nrows= 5, ncols= 2, name= ['Col1', 'Col2'])
+        data = common.empty_dataframe(nrows= 5, ncols= 2, name= ['Col1', 'Col2'])
 
     '''
     import pandas as pd
@@ -79,9 +73,12 @@ def listFiles(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', fu
         pattern: string, search pattern of files (e.g., '*.tif')
         search_type: string, search type whether by "extension" or name "pattern"
         full_name: boolean, whether returning full name with path detail or not
-        
+
+    Returns:
+        List: A list of file paths
+
     Example:
-        files = tools.list_files(path= './Sample_data/shapefile/', pattern='*shp')
+        files = common.list_files(path= './Sample_data/shapefile/', pattern='*shp')
 
     '''
     import os
@@ -130,10 +127,14 @@ def extent(input: AnyStr, poly: bool= True):
     Parameters:
         input: string, an input as a list of geotif files or local image/shapefile
         poly: bool, whether returns the extent polygon as geopandas object
-        
+
+    Returns:
+        extent: bounding box in form of BoundingBox(left, bottom, right, top)
+        polygon: geospatial shapefile polygon of the outside extent
+
     Example:
-        files = tools.list_files('./landsat_multi/merge/', 'tif')
-        ext, poly = tools.extent(files)
+        files = common.listFiles('./landsat_multi/merge/', 'tif')
+        ext, poly = common.extent(files)
 
     '''
     import rasterio
@@ -196,7 +197,10 @@ def meter2degree(input, latitude):
 
     Parameters:
         input: number, input resolution of distance
-        latitude: number, latitude presents location 
+        latitude: number, latitude presents location
+
+    Returns:
+        Degree: Corresponding number of degree
     
     Example:
        degree = raster.meter2degree(30, 10.25)   

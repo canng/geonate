@@ -4,7 +4,7 @@ site_author: canng
 site_url: https://canng.github.io/geonate
 repo_url: https://github.com/canng/geonate
 
-copyright: "Copyright &copy; 2024 - 2024 Can Nguyen"
+copyright: "Copyright &copy; 2025 Can Nguyen"
 
 theme:
     palette:
@@ -83,6 +83,6 @@ nav:
         - examples/intro.ipynb
     - API Reference:
           - Geonate module: geonate.md
-          - Tool module: tool.md
+          - Common module: common.md
           - Raster module: raster.md
          

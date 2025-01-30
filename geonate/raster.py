@@ -2,26 +2,6 @@
 from typing import AnyStr, Dict, Optional
 
 ##############################################################################################
-'''
-RASTER FUNCTIONS
-
-1. crop
-2. extractValues
-3. layerstack
-4. mask
-5. match
-6. merge
-7. mergeVRT
-8. normalizedDifference
-9. project
-10. rast
-11. reclassify
-12. values
-13. vect
-14. writeRaster
-
-'''
-
 # =========================================================================================== #
 #               Open raster geotif file
 # =========================================================================================== #
@@ -31,6 +11,9 @@ def rast(input: AnyStr, show_meta: Optional[bool]=False):
 
     Parameters:
         inputpath: the file path indicates location of geotif file
+
+    Returns:
+        DatasetReader object: A rasterio raster object with all attributes
 
     Example:
        path = '../test/landsat_multi/landsat_img_test.tif'
