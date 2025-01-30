@@ -1,3 +1,3 @@
-# tool module
+# common module
 
-::: geonate.tool
+::: geonate.common
