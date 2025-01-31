@@ -507,7 +507,7 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
 # =========================================================================================== #
 #              Preprojection raster image 
 # =========================================================================================== #
-def project(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='near', input_meta: Optional[Dict]=None, res: Optional[float]=None, output: Optional[AnyStr]=None):
+def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='near', input_meta: Optional[Dict]=None, res: Optional[float]=None, output: Optional[AnyStr]=None):
     """Reproject raster data to a new projection and resample (if required)
 
     Args:
