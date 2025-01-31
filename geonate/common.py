@@ -16,22 +16,18 @@ from typing import AnyStr, Dict, Optional
 #               Create an empty dataframe                                                                                                                                           #
 # =========================================================================================== #
 def empty_dataframe(nrows, ncols, value='NA', name=None):
-    '''
-    Create an empty dataframe
+    """Create an empty dataframe
 
-    Parameters:
-        nrows: numeric, numbers of rows
-        ncols: numeric, number of columns
-        value: input value in all cells, default is NA
-        name: vector, names of columns, if not given, it will return default as number of column
+    Args:
+        nrows (numeric): Numbers of rows
+        ncols (numeric): Number of columns
+        value (str | numeric, optional): Input value in all cells. Defaults to 'NA'.
+        name (list, optional): Names of columns, if not given, it will return default as number of column. Defaults to None.
 
     Returns:
-        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)    
+        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)
 
-    Example:
-        data = common.empty_dataframe(nrows= 5, ncols= 2, name= ['Col1', 'Col2'])
-
-    '''
+    """
     import pandas as pd
     import numpy as np
     
@@ -65,22 +61,18 @@ def empty_dataframe(nrows, ncols, value='NA', name=None):
 #               Find all files in folder with specific pattern                                                                                                                  #
 # =========================================================================================== #
 def listFiles(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', full_name: bool=True):
-    '''
-    List all files with specific pattern within a folder path
+    """List all files with specific pattern within a folder path
 
-    Parameters:
-        path: string, folder path where files stored
-        pattern: string, search pattern of files (e.g., '*.tif')
-        search_type: string, search type whether by "extension" or name "pattern"
-        full_name: boolean, whether returning full name with path detail or not
+    Args:
+        path (AnyStr): Folder path where files stored
+        pattern (AnyStr): Search pattern of files (e.g., '*.tif')
+        search_type (AnyStr, optional): Search type whether by "extension" or name "pattern". Defaults to 'pattern'.
+        full_name (bool, optional): Whether returning full name with path detail or only file name. Defaults to True.
 
     Returns:
-        List: A list of file paths
+        list: A list of file paths
 
-    Example:
-        files = common.list_files(path= './Sample_data/shapefile/', pattern='*shp')
-
-    '''
+    """
     import os
     import fnmatch
 
@@ -121,22 +113,17 @@ def listFiles(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', fu
 #               Get general extent                                                                                                                                                           #
 # =========================================================================================== #
 def extent(input: AnyStr, poly: bool= True):
-    '''
-    Get spatial extent of geotif image from a list or local variable
+    """Get spatial extent of geotif image from a list or local variable
 
-    Parameters:
-        input: string, an input as a list of geotif files or local image/shapefile
-        poly: bool, whether returns the extent polygon as geopandas object
+    Args:
+        input (list): An input as a list of geotif files or local image/shapefile
+        poly (bool, optional): Whether returns the extent polygon as geopandas object. Defaults to True.
 
     Returns:
-        extent: bounding box in form of BoundingBox(left, bottom, right, top)
-        polygon: geospatial shapefile polygon of the outside extent
-
-    Example:
-        files = common.listFiles('./landsat_multi/merge/', 'tif')
-        ext, poly = common.extent(files)
-
-    '''
+        extent: Bounding box in form of BoundingBox(left, bottom, right, top)
+        polygon: Geospatial shapefile polygon of the outside extent
+    
+    """
     import rasterio
     import geopandas as gpd
     from shapely.geometry import Polygon
@@ -187,25 +174,65 @@ def extent(input: AnyStr, poly: bool= True):
 
     return general_extent, poly
     
+
+# =========================================================================================== #
+#               Get bounds of raster
+# =========================================================================================== #
+def getBounds(input: AnyStr, meta: Optional[Dict]=None):
+    """Return boundary location (left, bottom, right, top) of raster image for cropping image
+
+    Args:
+        input (AnyStr): Image or data array input 
+        meta (Dict, optional): Metadata is needed when input is data array. Defaults to None.
+
+    Returns:
+        numeric: A list of number show locations of left, bottom, right, top of the boundary
+
+    Example:
+        img = raster.rast('./Sample_data/landsat_multi/Scene/landsat_img_00.tif')
+        meta = img.meta
+        ds = img.read()
+        left, bottom, right, top = raster.getBounds(ds, meta)
+
+    """
+    import rasterio
+    import numpy as np
+
+    # Check input 
+    if isinstance(input, rasterio.DatasetReader):
+        left, bottom, right, top = input.bounds
+    # input is array
+    elif isinstance(input, np.ndarray):
+        if meta is None:
+            raise ValueError('It requires metadata of input')
+        else:
+            transform = meta['transform']
+            width = meta['width']
+            height = meta['height']
+            left, top = transform * (0, 0)
+            right, bottom = transform * (width, height)
+
+    # Other input
+    else:
+        raise ValueError('Input data is not supported')
     
+    return left, bottom, right, top
+
+
 # =========================================================================================== #
 #              Convert meter to acr-degree based on latitude
 # =========================================================================================== #
-def meter2degree(input, latitude):
-    '''
-    Convert image resolution from meter to acr-degree depending on location of latitude
+def meter2degree(input, latitude=None):
+    """Convert image resolution from meter to acr-degree depending on location of latitude
 
-    Parameters:
-        input: number, input resolution of distance
-        latitude: number, latitude presents location
+    Args:
+        input (numeric): Input resolution of distance
+        latitude (numeric, optional): Latitude presents location. If latitude is None, the location is assumed near Equator. Defaults to None.
 
     Returns:
-        Degree: Corresponding number of degree
-    
-    Example:
-       degree = raster.meter2degree(30, 10.25)   
+        numeric: Degree corresponding to the distance length
 
-    '''
+    """
     import numpy as np
 
     if latitude is None:

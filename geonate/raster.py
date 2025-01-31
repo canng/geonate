@@ -6,20 +6,16 @@ from typing import AnyStr, Dict, Optional
 #               Open raster geotif file
 # =========================================================================================== #
 def rast(input: AnyStr, show_meta: Optional[bool]=False):
-    '''
-    Open a single geotif raster file using Rasterio
+    """Open a single geotif raster file using Rasterio
 
-    Parameters:
-        inputpath: the file path indicates location of geotif file
+    Args:
+        input (AnyStr): The file path indicates location of geotif file
+        show_meta (bool, optional): Whether to show the image metadata. Defaults to False.
 
     Returns:
-        DatasetReader object: A rasterio raster object with all attributes
+        Object: Rasterio RasterReader object
 
-    Example:
-       path = '../test/landsat_multi/landsat_img_test.tif'
-       img = raster.rast(path)
-    
-    '''
+    """
     import rasterio
     import os
 
@@ -29,70 +25,25 @@ def rast(input: AnyStr, show_meta: Optional[bool]=False):
     # show meta 
     if show_meta is True:
         meta = img.meta
-        print(f"Opening: {basename} \n{meta}")
+        print(f"Opening: {basename}\n{meta}")
     
     return img    
 
-
-# =========================================================================================== #
-#               Get bounds of raster
-# =========================================================================================== #
-def getBounds(input: AnyStr, meta: Optional[Dict]=None):
-    '''
-    Return bounds of raster image
-
-    Parameters:
-        input: image or data array input that need to crop
-        meta: Optional metadata when input is data array
-
-    Example:
-        img = raster.rast('./Sample_data/landsat_multi/landsat_stacked.tif')
-        meta = img.meta
-        ds= img.read()
-
-        left, bottom, right, top = raster.getBounds(ds, meta)
-        print(left, bottom, right, top)
-    
-    '''
-    import rasterio
-    import numpy as np
-
-    # Check input 
-    if isinstance(input, rasterio.DatasetReader):
-        left, bottom, right, top = input.bounds
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            transform = meta['transform']
-            width = meta['width']
-            height = meta['height']
-            left, top = transform * (0, 0)
-            right, bottom = transform * (width, height)
-
-    # Other input
-    else:
-        raise ValueError('Input data is not supported')
-    
-    return left, bottom, right, top
-
-    
+ 
 # =========================================================================================== #
 #               Open shapefile
 # =========================================================================================== #
 def vect(input: AnyStr, show_meta: Optional[bool]=False):
-    '''
-    Read shapefile vector file using Geopandas 
+    """Read shapefile vector file using Geopandas 
 
-    Parameters:
-        input_path: the file path indicates location of shapefile 
+    Args:
+        input (AnyStr): The file path indicates location of shapefile 
+        show_meta (bool, optional): Whether to show the image metadata. Defaults to False.
 
-    Example:
-        path ='../test/roi/roi.shp
-        poly = raster.vect(path)
+    Returns:
+        geodataframe: Geodataframe of shapefile with attributes from geopandas object
 
-    '''
+    """
     import geopandas as gpd
     import os
     
@@ -103,32 +54,26 @@ def vect(input: AnyStr, show_meta: Optional[bool]=False):
         basename = os.path.basename(input)
         crs = vect.crs
         datashape = vect.shape
-        print(f"Opening: {basename} \n Projection (crs): {crs} \n Data shape: {datashape}")
+        print(f"Opening: {basename}\n Projection (crs): {crs}\n Data shape: {datashape}")
 
     return vect
 
 # =========================================================================================== #
 #               Compress file size and write geotif
 # =========================================================================================== #
-def writeRaster(input: AnyStr, output: AnyStr, meta: Optional[Dict]=None, compress: Optional[AnyStr] = 'lzw'):
-    '''
-    Write raster Geotif from data Array using Rasterio.
+def writeRaster(input, output, meta: Optional[Dict]=None, compress: Optional[AnyStr] = 'lzw'):
+    """Write raster Geotif from data Array using Rasterio
 
-    Parameters:
-        input: Data array in form of [band, height, width]
-        output: Output file path.
-        meta: Rasterio profile settings.
-        compress: Boolean indicating whether to compress the output.
-        compress_opt: Compression algorithm (optional).
+    Args:
+        input (rasterio.DatasetReader | np.ndarray): Data array in form of [band, height, width]
+        output (AnyStr): Output file path
+        meta (Dict, optional): Rasterio profile settings needed when input is dataArray. Defaults to None.
+        compress (AnyStr, optional): Compression algorithm ['lzw', 'deflate']. Defaults to 'lzw'.
 
-    Example:
-        meta = img.meta
-        meta.update({'count': 1})
-        meta.update({'dtype': rasterio.float32})
-        raster.writeRatser(arr, 'output.tif', meta=meta, compress='LZW')
+    Returns:
+        None: The function does not return any local variable. It writes raster file to local drive.
 
-    '''
-    
+    """   
     import rasterio
     import numpy as np
 
@@ -203,19 +148,16 @@ def writeRaster(input: AnyStr, output: AnyStr, meta: Optional[Dict]=None, compre
 #               Stack layer of geotif images
 # =========================================================================================== #
 def layerstack(input, output: Optional[AnyStr]=None):
-    '''
-    Stack layers for different geotif images with the same extent and each image may have more than 1 band
+    """Stack layers for different geotif images with the same extent and each image may have more than 1 band
 
-    Parameters:
-        input: String, List of input geotif files
-        output: Optional string, whether to write the stacked image or not
+    Args:
+        input (list): List of input geotif files
+        output (AnyStr, optional): Whether to write the stacked image or not. Defaults to None.
 
-    Example:
-       input = tools.list_files('./Sample_data/landsat_multi/Single_band/', '*tif')
-       stacked, meta = raster.layerstack(input, 'output.tif')
+    Returns:
+        np.ndarray, metadata: The function returns two variables of data array and corresponding metadata
 
-    '''
-
+    """
     import rasterio
     from rasterio.plot import reshape_as_raster
     import numpy as np
@@ -246,26 +188,23 @@ def layerstack(input, output: Optional[AnyStr]=None):
 #               Merge  geotif files in a list using GDAL and VRT
 # =========================================================================================== #
 def mergeVRT(input: AnyStr, output: AnyStr, compress: bool=True, silent=True):
-    '''
-    Merge multiple geotif files using gdal VRT for better performance speed
+    """Merge multiple geotif files using gdal VRT for better performance speed
 
-    Parameters:
-        input_files: List of input geotif files
-        output_file: path of output tif file
+    Args:
+        input (list): List of input geotif files
+        output (AnyStr): Path of output tif file
+        compress (bool, optional): Whether compress the output data or not. Defaults to True.
+        silent (bool, optional): Show or do not show file processing log. Defaults to True.
 
-    Example:
-       input_list = tools.list_files('./test/', '*tif')
-       raster.mergeVRT(input_list, './test/output.tif')
-
-    '''
-
+    """
     import os
     from osgeo import gdal
     #  Create a temp vrt file
     vrt_file = 'merged.vrt'
 
     if compress is True:
-        gdal.BuildVRT(vrt_file, input, options=['COMPRESS=LZW'])
+        vrt_options = gdal.BuildVRTOptions()
+        gdal.BuildVRT(vrt_file, input, options=vrt_options)
         gdal.Translate(output, vrt_file, format='GTiff', creationOptions=['COMPRESS=LZW'])
         
     else:
@@ -283,18 +222,18 @@ def mergeVRT(input: AnyStr, output: AnyStr, compress: bool=True, silent=True):
 #               Merge  geotif files in a list using Rasterio
 # =========================================================================================== #
 def merge(input: AnyStr, output: Optional[AnyStr]=None, compress: Optional[AnyStr]='lzw'):
-    '''
-    Merge multiple geotif file using Rasterio 
+    """Merge multiple geotif file using Rasterio (pixels at overlapping areas receive average values)
 
-    Parameters:
-        input_files: List of input geotif files
-        output_file: path of output tif file
+    Args:
+        input (List): List of input geotif files
+        output (AnyStr, optional): Path of output geotif file to write out the merged image. If image is not written out, it will be assigned to local variables. Defaults to None.
+        compress (AnyStr, optional): Compress options ['deflate', 'lzw']. Defaults to 'lzw'.
 
-    Example:
-       input_list = tools.listFiles('./test/', 'tif)
-       raster.merge(input_list, './test/output.tif')
+    Returns:
+        np.ndarray: ndarray contains image values
+        dict: dict contains metadata of the image
 
-    '''
+    """
     import rasterio
     from rasterio import merge 
 
@@ -306,9 +245,9 @@ def merge(input: AnyStr, output: Optional[AnyStr]=None, compress: Optional[AnySt
     fun_sum = merge.copy_sum
     fun_count = merge.copy_count
 
+    # calculate average values
     mosaic_sum, out_trans = merge.merge(src_files, method=fun_sum)
     mosaic_count, out_trans = merge.merge(src_files, method=fun_count)
-
     mosaic_avg = mosaic_sum / mosaic_count
     
     meta = src_files[0].meta.copy()
@@ -332,26 +271,22 @@ def merge(input: AnyStr, output: Optional[AnyStr]=None, compress: Optional[AnySt
 #              Crop raster using shapefile or another image
 # =========================================================================================== #
 def crop(input, reference, input_meta: Optional[Dict]=None, reference_meta: Optional[Dict]=None, invert=False, nodata=None, output: Optional[AnyStr]=None):
-    '''
-    Crop raster opened by rasterio by shapefile vector or another image
+    """Crop raster opened by rasterio by shapefile vector or another image
 
-    Parameters:
-        input: image or data array input that need to crop
-        reference: region of interest, shapefile opened by geopandas or another image or data array to crop
-        input_meta: Optional metadata when input is data array
-        reference_meta: Optional metadata when reference is data array
-        invert: bool, if True, pixels inside shapefile will be masked 
-        output: Optional string, whether write out geotif file to local directory
+    Args:
+        input (DatasetReader): Image or data array input that need to crop
+        reference (DatasetReader | GeoDataFrame | np.ndarray): Region of interest, Shapefile opened by geopandas or Another image or Data array to crop
+        input_meta (Dict, optional): Metadata when input is data array. Defaults to None.
+        reference_meta (Dict, optional): Metadata when reference is data array. Defaults to None.
+        invert (bool, optional): If True, pixels inside shapefile will be masked. Defaults to False.
+        nodata (Any, optional): None or any number to fill nodata pixels. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
-    Example:
-        img = rasterio.open('./landsat_multi/landsat_img_test.tif', 'r')
-        roi = gpd.read_file('./roi/roi.shp')
-        clipped, meta = raster.crop(img, roi)
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image 
 
-        import earthpy.plot as ep
-        ep.plot_rgb(clipped, stretch=True, rgb=(3,2,1))
-
-    '''
+    """
     import rasterio
     from rasterio.transform import Affine
     from shapely.geometry import mapping
@@ -451,26 +386,23 @@ def crop(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
 #              Mask raster using shapefile or another image
 # =========================================================================================== #
 def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Optional[Dict]=None, invert=False, nodata=0, output: Optional[AnyStr]=None):
-    '''
-    Mask raster opened by rasterio by shapefile vector or another image
+    """Mask raster opened by rasterio by shapefile vector or another image
 
-    Parameters:
-        input: image or data array input that need to crop
-        reference: region of interest, shapefile opened by geopandas or another image or data array to crop
-        input_meta: Optional metadata when input is data array
-        reference_meta: Optional metadata when reference is data array
-        invert: bool, if True, pixels inside shapefile will be masked 
-        output: Optional string, whether write out geotif file to local directory
+    Args:
+        input (DatasetReader | np.ndarray): Image or data array input that need to crop
+        reference (DatasetReader | GeoDataFrame | np.ndarray): Region of interest, shapefile opened by geopandas or another image or data array to crop
+        input_meta (Dict, optional): Metadata when input is data array. Defaults to None.
+        reference_meta (Dict, optional): Metadata when reference is data array. Defaults to None.
+        invert (bool, optional): Iif True, pixels inside shapefile will be masked. Defaults to False.
+        nodata (int, optional): Any number to fill nodata pixels outside the ROI. Defaults to 0.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
-    Example:
-        img = rasterio.open('./landsat_multi/landsat_img_test.tif', 'r')
-        roi = gpd.read_file('./roi/roi.shp')
-        masked = raster.mask(img, roi)
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image 
 
-        import earthpy.plot as ep
-        ep.plot_rgb(masked, stretch=True, rgb=(3,2,1))
-
-    '''
+    """
+    import os
     import rasterio
     import shapely
     from shapely.geometry import mapping
@@ -490,7 +422,7 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
             if not os.path.exists('./tmp/'):
                 os.makedirs('./tmp/')
             writeRaster(input, './tmp/tmp.tif', input_meta)
-            input_image = rast('./tmp/tmp.tif')
+            input_image = raster.rast('./tmp/tmp.tif')
     # Other input
     else:
         raise ValueError('Input data is not supported')
@@ -576,24 +508,21 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
 #              Preprojection raster image 
 # =========================================================================================== #
 def project(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='near', input_meta: Optional[Dict]=None, res: Optional[float]=None, output: Optional[AnyStr]=None):
-    '''
-    Reproject raster data to a new projection and resample (if required)
+    """Reproject raster data to a new projection and resample (if required)
 
-    Parameters:
-        input: Input rasterio image or data array
-        reference: reference data of even another image or 'crs' string, e.g., 'EPSG:4326'
-        method: resampling method (if changing resolution), optional, default method is 'nearest neighbor', other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average)
-        input_meta: Dict, required when input is data array
-        res: Optional number, Resolution of the output in degree or meters depends on the output crs
-        output: Optional string, whether write out geotif file to local directory
-    
-    Example:
-        img = raster.rast('./Sample_data/landsat_multi/landsat_stacked.tif')
-        ds = img.read()
-        meta = img.meta
-        arr, metadata = raster.project(input=ds, reference='EPSG:32648', input_meta=meta, res=1000)
-       
-    '''
+    Args:
+        input (DatasetReader | np.ndarray): Input rasterio image or data array
+        reference (AnyStr, optional): Reference data of even another image or 'crs' string, e.g., 'EPSG:4326'. Defaults to None.
+        method (AnyStr, optional): Resampling method (if changing resolution), optional, default method is 'nearest neighbor', other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average). Defaults to 'near'.
+        input_meta (Dict, optional): Required when input is data array. Defaults to None.
+        res (float, optional): Resolution of the output in degree or meters depends on the output crs. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image 
+
+    """
     import rasterio
     from rasterio import warp
     import numpy as np
@@ -709,9 +638,25 @@ def project(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='ne
 #              Matching two images to have the same boundary
 # =========================================================================================== #
 def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict]=None, output: Optional[AnyStr]=None):
+    """Resample raster image based on factor (not the target resolution)
+
+    Args:
+        input (DatasetReader | np.ndarray): Input rasterio image or data array
+        factor (numeric): Resampling factor compare to origin image (e.g., 2, 4, 6)
+        resample (AnyStr): Resample method ["aggregate", "disaggregate"]
+        method (str, optional): Resampling method (if changing resolution), optional, default method is 'nearest neighbor', other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average). Defaults to 'near'.
+        meta (Dict, optional): Required metadata when input is data array. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
     import rasterio
     from rasterio import warp
     import numpy as np
+    from geonate import common
 
     ### Define input image
     # input is raster
@@ -727,7 +672,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
         else:
             dataset = input
             meta = meta
-            left, bottom, right, top = getBounds(dataset, meta)
+            left, bottom, right, top = common.getBounds(dataset, meta)
             if len(dataset.shape) > 2:
                 nbands = dataset.shape[0]
             else:
@@ -811,29 +756,25 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
 # =========================================================================================== #
     
 def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=None, reference_meta: Optional[Dict]=None):
-    '''
-    Match input image to the reference image in terms of projection, resolution, and bound extent
-    It returns image within the bigger boundary
-    
-    Parameters:
-        input: rasterio objective needs to match 
-        reference: rasterio object taken as reference to match the input image
-        method: optional string defines resampling method (if applicable) to resample if having different resolution
-        input_meta: Optional Dict, metadata of input required when input is data array
-        reference_meta: Optional Dict, metadata of reference required when reference is data array
-        
-    Example:
-        img1 = rasterio.open('./Sample_data/landsat_multi/scene/landsat_img_01.tif')
-        img2 = rasterio.open('./Sample_data/landsat_multi/scene/landsat_img_02.tif')
-    
-        img1_matched, meta = raster.match(img1, img2)
-        ep.plot_bands(img1_matched)
-    
-    '''
+    """Match input image to the reference image in terms of projection, resolution, and bound extent. It returns image within the bigger boundary.
+
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio objective or data array needs to match 
+        reference (DatasetReader | np.ndarray): Rasterio object or data array taken as reference to match the input image
+        method (AnyStr, optional): String defines resampling method (if applicable) to resample if having different resolution (Method similar to resample). Defaults to 'near'.
+        input_meta (Dict, optional): Metadata of input required when input is data array. Defaults to None.
+        reference_meta (Dict, optional): Metadata of reference required when reference is data array. Defaults to None.
+
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
     import rasterio
     from rasterio import warp
     from rasterio.transform import from_bounds
     import numpy as np
+    from raster import common
     
     ### Define input image
     # input is raster
@@ -875,8 +816,8 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
         print('Ouput resolution will take the reference resolution')     
     
     # get general extent from two images
-    ext_input = getBounds(input_image, meta)
-    ext_reference = getBounds(reference_image, meta_reference)
+    ext_input = common.getBounds(input_image, meta)
+    ext_reference = common.getBounds(reference_image, meta_reference)
     
     ext = ext_input
     ext = (
@@ -963,21 +904,20 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
 #              Calculate normalized difference index 
 # =========================================================================================== #
 def normalizedDifference(input, band1, band2, meta: Optional[Dict]=None, output: Optional[AnyStr]=None):
-    '''
-    Calculate normalized difference index
+    """Calculate normalized difference index
 
-    Parameters:
-        input: rasterio object or data array, input with multiple bands 
-        band1: numeric, order of the first band
-        band2: numeric, order of the second band
-        meta: optional dict, metadata in case input is data array
-        output: Optional string, whether write out geotif file to local directory
-    
-    Example:
-        img = rasterio.open('./Sample_data/landsat_multi/landsat_stacked.tif')
-        ndvi = raster.normalizedDifference(img, 4, 3)
-       
-    '''    
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio object or data array, input with multiple bands.
+        band1 (numeric): Order of the first band in the input.
+        band2 (numeric): Order of the second band in the input.
+        meta (Dict, optional): Metadata in case input is data array. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
     import numpy as np
     import rasterio
 
@@ -1020,21 +960,20 @@ def normalizedDifference(input, band1, band2, meta: Optional[Dict]=None, output:
 #              Reclassify image
 # =========================================================================================== #
 def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: Optional[AnyStr]=None):
-    '''
-    Reclassify image with discrete or continuous values
+    """Reclassify image with discrete or continuous values
 
-    Parameters:
-        input: raster or data array input
-        breakpoints: number list, defines a breakpoint value for reclassifcation, e.g., [ -1, 0, 1]
-        classes: number list, define classes, number of classes equal number of breakpoints minus 1
-        meta: meta: optional dict, metadata in case input is data array
-        output: Optional string, whether write out geotif file to local directory
+    Args:
+        input (DatasetReader | np.ndarray): Raster or data array input
+        breakpoints (list): Number list, defines a breakpoint value for reclassifcation, e.g., [ -1, 0, 1]
+        classes (list): Number list, define classes, number of classes equal number of breakpoints minus 1
+        meta (Dict, optional): Metadata in case input is data array. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
-    Example:
-        img = rasterio.open('./Sample_data/landsat_multi/landsat_stacked.tif')
-        rc = raster.reclassify(img, breakpoints=[float('-inf'), -0.5, 0, 0.5, float('-inf')], classes=[1, 2, 3, 4])
-       
-    '''    
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
     import rasterio
     import numpy as np
 
@@ -1099,21 +1038,19 @@ def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: O
 #              Extract raster values of all bands and create dataframe
 # =========================================================================================== #
 def values(input, meta: Optional[AnyStr]=None, na_rm: Optional[bool]=True, names: Optional[list]=None, prefix: Optional[AnyStr]=None):
-    '''
-    Extract all pixel values of image and create dataframe from them, each band is a column
+    """Extract all pixel values of image and create dataframe from them, each band is a column
 
-    Parameters:
-        input: rasterio image or data array
-        meta: meta: optional dict, metadata in case input is data array
-        names: optional list, given expected names
-        prefix: optional string, given character before each band name
-    
-    Example:
-        img = rasterio.open('./Sample_data/landsat_multi/landsat_crop.tif')
-        df = raster.values(img, prefix='Band')
-        df.head(5)
-       
-    '''    
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array.
+        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
+        na_rm (bool, optional): Remove or do not remove NA value from output dataframe. Defaults to True.
+        names (list, optional): Given expected names for each column in the dataframe, if not, default name will be assigned. Defaults to None.
+        prefix (AnyStr, optional): Given character before each band name. Defaults to None.
+
+    Returns:
+        DataFrame: Dataframe stores all pixel values across all image bands.
+
+    """
     import rasterio
     import numpy as np
     import pandas as pd
@@ -1166,32 +1103,27 @@ def values(input, meta: Optional[AnyStr]=None, na_rm: Optional[bool]=True, names
  # =========================================================================================== #
 #              Extract pixel values at GCP (points or polygon)
 # =========================================================================================== #       
-def extractValues(input: AnyStr, roi: AnyStr, field: AnyStr=None, meta: Optional[AnyStr]=None, dataframe: Optional[bool]=True, names: Optional[list]=None, na_rm: bool=True, nodata=None, prefix: Optional[AnyStr]=None, tail=True):
-    '''
-    Extract pixel values in GCP for both point and polygon 
+def extractValues(input: AnyStr, roi: AnyStr, field: Optional[AnyStr]=None, meta: Optional[AnyStr]=None, dataframe: Optional[bool]=True, names: Optional[list]=None, na_rm: bool=True, nodata=None, prefix: Optional[AnyStr]=None, tail=True):
+    """Extract pixel values in GCP for both point and polygon 
 
-    Parameters:
-        input: rasterio image or data array
-        roi: variable indicates name of shapefile where GCP points located, read by geopandas 
-        field: string, but the value of field must be number, the field name in shapefile GCP to extract label values, e.g., 'class'
-        meta: optional dict, metadata in case input is data array
-        dataframe: optional bool, whether to return dataframe or separate X, y arrays
-        names: optional list, given expected names
-        na_rm: bool, remove NA value from the output or not
-        prefix: optional string, given character before each band name
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array
+        roi (AnyStr): Shapefile where GCP points located, read by geopandas 
+        field (AnyStr, optional): Sstring, but the value of this field must be number, the field name in shapefile GCP to extract label values, e.g., 'class'. Defaults to None.
+        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
+        dataframe (bool, optional): Whether to return dataframe or separate X, y arrays. Defaults to True.
+        names (list, optional): Given expected names for each column in dataframe. Defaults to None.
+        na_rm (bool, optional): Remove NA value from the output or not. Defaults to True.
+        nodata (AnyStr, optional): Fill in value for NA data. Defaults to None.
+        prefix (AnyStr, optional): Given character before each band name. Defaults to None.
+        tail (bool, optional): To place the class value at the end or front of the dataframe. Defaults to True.
 
-    Example:
-       img = rasterio.open('./Sample_data/landsat_multi/landsat_stacked.tif')
-       roi = gpd.read_file('./Sample_data/shapefile/GCP_polys.shp')
-       
-       # return combined dataframe
-       df = raster.extractValues(img, roi, field='class')
-       df.head(5)
-       
-       # return separate array of X and y
-       X, y = raster.extractValues(img, roi, field='class', dataframe=False)
+    Returns:
+        dataframe: dataframe if dataframe = True
+        ndarray: X, y Data arrays for training model
 
-    '''
+    """
+    import os
     import rasterio
     from rasterio.plot import reshape_as_image
     import numpy as np
@@ -1235,13 +1167,13 @@ def extractValues(input: AnyStr, roi: AnyStr, field: AnyStr=None, meta: Optional
             elif dataType.lower() == 'int32':
                 nodata_value = 2147483647
             elif dataType.lower() == 'uint32':
-                nodata_value == 4294967295
+                nodata_value = 4294967295
             elif dataType.lower() == 'float16':
                 nodata_value = 65500
             elif dataType.lower() == 'float32':
-                nodata_value == 999999
+                nodata_value = 999999
             else:
-                nodata_value == 0
+                nodata_value = 0
         else:
             nodata_value = nodata   
 
@@ -1373,19 +1305,18 @@ def extractValues(input: AnyStr, roi: AnyStr, field: AnyStr=None, meta: Optional
 #              Normalize raster data
 # =========================================================================================== #      
 def normalized(input, meta: Optional[AnyStr]=None, output: Optional[AnyStr]=None):
-    '''
-    Normalize raster data to rearrange raster values from 0 to 1
+    """Normalize raster data to rearrange raster values from 0 to 1
 
-    Parameters:
-        input: rasterio image or data array
-        meta: optional dict, metadata in case input is data array
-        output: Optional string, whether write out geotif file to local directory
-    
-    Example:
-       img = rasterio.open('./Sample_data/landsat_multi/landsat_stacked.tif')
-       normalized, meta = raster.normalized(img)       
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array
+        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
-    '''
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
     import rasterio
     import numpy as np
     import pandas as pd
@@ -1432,19 +1363,16 @@ def normalized(input, meta: Optional[AnyStr]=None, output: Optional[AnyStr]=None
 #              Return min and max values of array or raster
 # =========================================================================================== #
 def mimax(input, digit=3):
-    '''
-    Calculate maximum and minimum values of raster or array
+    """Calculate maximum and minimum values of raster or array
 
-    Parameters:
-        input: rasterio image or data array
-        digit: Optional string, whether write out geotif file to local directory
-    
-    Example:
-       img = rasterio.open('./Sample_data/landsat_multi/landsat_stacked.tif')
-       minvalue, maxvalue = raster.mimax(img)
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array
+        digit (int, optional): Precise digit number. Defaults to 3.
 
-    '''
-    
+    Returns:
+        numeric: Return 2 numbers of minvalue and maxvalue
+
+    """
     import rasterio
     import numpy as np
     import pandas as pd
@@ -1474,20 +1402,19 @@ def mimax(input, digit=3):
 #              Estimate raster cell area 
 # =========================================================================================== #
 def cellSize(input, unit: AnyStr='km', meta: Optional[AnyStr]=None, output: Optional[AnyStr]=None):
-    '''
-    Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function
+    """Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function
 
-    Parameters:
-        input: rasterio image or data array
-        unit: string, default is "km", the unit to calculate area
-        meta: optional dict, metadata in case input is data array
-        output: Optional string, whether write out geotif file to local directory
-    
-    Example:
-       img = raster.rast('./Sample_data/temperature.tif')
-       cellArea, meta = raster.cellSize(img, unit='km)    
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array
+        unit (AnyStr, optional): Unit of original input. Defaults to 'km'.
+        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
-    '''
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
     import rasterio
     import numpy as np
     import pandas as pd
