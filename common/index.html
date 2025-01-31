@@ -18,7 +18,7 @@
         <link rel="prev" href="../geonate/">
       
       
-        <link rel="next" href="../raster/">
+        <link rel="next" href="../plot/">
       
       
       <link rel="icon" href="../assets/logo_geonate.ico">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Common module - geonate</title>
+        <title>common module - geonate</title>
       
     
     
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Common module
+              common module
             
           </span>
         </div>
@@ -518,7 +518,7 @@
         
   
   <span class="md-ellipsis">
-    Geonate module
+    geonate module
     
   </span>
   
@@ -549,7 +549,7 @@
           
   
   <span class="md-ellipsis">
-    Common module
+    common module
     
   </span>
   
@@ -561,7 +561,7 @@
         
   
   <span class="md-ellipsis">
-    Common module
+    common module
     
   </span>
   
@@ -593,6 +593,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.common.array2raster" class="md-nav__link">
+    <span class="md-ellipsis">
+      array2raster()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.cellSize" class="md-nav__link">
+    <span class="md-ellipsis">
+      cellSize()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.common.empty_dataframe" class="md-nav__link">
     <span class="md-ellipsis">
       empty_dataframe()
@@ -605,15 +623,6 @@
   <a href="#geonate.common.extent" class="md-nav__link">
     <span class="md-ellipsis">
       extent()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.common.getBounds" class="md-nav__link">
-    <span class="md-ellipsis">
-      getBounds()
     </span>
   </a>
   
@@ -637,6 +646,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#geonate.common.mimax" class="md-nav__link">
+    <span class="md-ellipsis">
+      mimax()
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -653,11 +671,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../plot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    plot module
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../raster/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Raster module
+    raster module
     
   </span>
   
@@ -711,6 +751,24 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.common.array2raster" class="md-nav__link">
+    <span class="md-ellipsis">
+      array2raster()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.cellSize" class="md-nav__link">
+    <span class="md-ellipsis">
+      cellSize()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.common.empty_dataframe" class="md-nav__link">
     <span class="md-ellipsis">
       empty_dataframe()
@@ -729,15 +787,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.getBounds" class="md-nav__link">
-    <span class="md-ellipsis">
-      getBounds()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#geonate.common.listFiles" class="md-nav__link">
     <span class="md-ellipsis">
       listFiles()
@@ -750,6 +799,15 @@
   <a href="#geonate.common.meter2degree" class="md-nav__link">
     <span class="md-ellipsis">
       meter2degree()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.mimax" class="md-nav__link">
+    <span class="md-ellipsis">
+      mimax()
     </span>
   </a>
   
@@ -795,6 +853,271 @@
 
 
 
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.array2raster" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">array2raster</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.array2raster" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert a numpy array and metadata to a rasterio object stored in memory.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>array</code></td>
+        <td><code>np.ndarray</code></td>
+        <td><p>The input data array.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>Dict</code></td>
+        <td><p>The metadata dictionary.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>rasterio.io.DatasetReader</code></td>
+      <td><p>The rasterio object stored in memory.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">array2raster</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a numpy array and metadata to a rasterio object stored in memory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        array (np.ndarray): The input data array.</span>
+<span class="sd">        meta (Dict): The metadata dictionary.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        rasterio.io.DatasetReader: The rasterio object stored in memory.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryFile</span>
+
+    <span class="c1"># Update metadata with the correct dtype and count</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
+        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="p">})</span>
+
+    <span class="k">with</span> <span class="n">MemoryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">memfile</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">memfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="n">dataset</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">memfile</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.cellSize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.cellSize" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>DatasetReader | np.ndarray</code></td>
+        <td><p>Rasterio image or data array</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>unit</code></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Unit of original input. Defaults to 'km'.</p></td>
+        <td><code>&#39;km&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Metadata in case input is data array. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>output</code></td>
+        <td><code>AnyStr</code></td>
+        <td><p>File path to write out geotif file to local directory. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>np.darray</code></td>
+      <td><p>Data array contains all image pixel values
+metadata: Metedata of the image</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">AnyStr</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate pixel size (area), the input has to be in the projection of &#39;EPSG:4326&#39;. If not, it can be reprojected by &quot;project&quot; function</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (DatasetReader | np.ndarray): Rasterio image or data array</span>
+<span class="sd">        unit (AnyStr, optional): Unit of original input. Defaults to &#39;km&#39;.</span>
+<span class="sd">        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.</span>
+<span class="sd">        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.darray: Data array contains all image pixel values</span>
+<span class="sd">        metadata: Metedata of the image</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">raster</span>
+
+    <span class="c1">### Check input data</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide input metadata&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+
+    <span class="c1">### Read metadata</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
+    <span class="n">pix_width</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">upper_X</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">upper_Y</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+    <span class="n">lower_X</span> <span class="o">=</span> <span class="n">upper_X</span> <span class="o">+</span> <span class="n">transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cols</span>
+    <span class="n">lower_Y</span> <span class="o">=</span> <span class="n">upper_Y</span> <span class="o">+</span> <span class="n">transform</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span>
+
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">upper_Y</span><span class="p">,</span> <span class="n">lower_Y</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">6378137.0</span>  <span class="c1"># Equatorial radius</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mf">6356752.3142</span>  <span class="c1"># Polar radius</span>
+
+    <span class="c1"># Degrees to radians</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">lats</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+
+    <span class="c1"># Intermediate vars</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">sinlats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+    <span class="n">zm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">e</span> <span class="o">*</span> <span class="n">sinlats</span>
+    <span class="n">zp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">sinlats</span>
+
+    <span class="c1"># Distance between meridians</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">pix_width</span><span class="o">/</span><span class="mi">360</span>
+
+    <span class="c1"># Compute areas for each latitude in square km</span>
+    <span class="n">areas_to_equator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">e</span><span class="o">*</span><span class="n">sinlats</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">sinlats</span> <span class="o">/</span> <span class="p">(</span><span class="n">zp</span><span class="o">*</span><span class="n">zm</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+    <span class="n">areas_between_lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">areas_to_equator</span><span class="p">)</span>
+    <span class="n">areas_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">areas_between_lats</span><span class="p">)</span> <span class="o">*</span> <span class="n">q</span>
+
+    <span class="c1"># Create empty array to store output</span>
+    <span class="n">cellArea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="c1"># Assign estimated cell area to every pixel</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">cellArea</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas_cells</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="n">cellArea</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas_cells</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1">### Update metadata</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+    <span class="c1">### Convert unit (if applicable)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;km&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;kilometer&#39;</span><span class="p">):</span>
+        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;meter&#39;</span><span class="p">):</span>
+        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span> <span class="o">*</span> <span class="mi">1_000_000</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ha&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;hectare&#39;</span><span class="p">):</span>
+        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span> <span class="o">*</span> <span class="mi">10_000</span>
+
+    <span class="c1"># Write output</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">raster</span><span class="o">.</span><span class="n">writeRaster</span><span class="p">(</span><span class="n">outArea</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outArea</span><span class="p">,</span> <span class="n">meta</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 
@@ -1044,115 +1367,6 @@ polygon: Geospatial shapefile polygon of the outside extent</p></td>
 
 
 
-<h2 id="geonate.common.getBounds" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
-
-
-<a href="#geonate.common.getBounds" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents ">
-
-      <p>Return boundary location (left, bottom, right, top) of raster image for cropping image in number list</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>input</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Image or data array input </p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>meta</code></td>
-        <td><code>Dict</code></td>
-        <td><p>Metadata is needed when input is data array. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>numeric</code></td>
-      <td><p>A list of number show locations of left, bottom, right, top of the boundary</p></td>
-    </tr>
-  </tbody>
-</table>
-<p><strong>Examples:</strong></p>
-    <p>img = raster.rast('./Sample_data/landsat_multi/Scene/landsat_img_00.tif')
-meta = img.meta
-ds = img.read()
-left, bottom, right, top = raster.getBounds(ds, meta)</p>
-
-        <details class="quote">
-          <summary>Source code in <code>geonate/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return boundary location (left, bottom, right, top) of raster image for cropping image in number list</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        input (AnyStr): Image or data array input </span>
-<span class="sd">        meta (Dict, optional): Metadata is needed when input is data array. Defaults to None.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        numeric: A list of number show locations of left, bottom, right, top of the boundary</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        img = raster.rast(&#39;./Sample_data/landsat_multi/Scene/landsat_img_00.tif&#39;)</span>
-<span class="sd">        meta = img.meta</span>
-<span class="sd">        ds = img.read()</span>
-<span class="sd">        left, bottom, right, top = raster.getBounds(ds, meta)</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-    <span class="c1"># Check input </span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-        <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
-    <span class="c1"># input is array</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of input&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
-            <span class="n">height</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
-            <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
-
-    <span class="c1"># Other input</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
 <h2 id="geonate.common.listFiles" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">listFiles</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">search_type</span><span class="o">=</span><span class="s1">&#39;pattern&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
@@ -1356,6 +1570,104 @@ left, bottom, right, top = raster.getBounds(ds, meta)</p>
 
 
 
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.mimax" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">mimax</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">digit</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.mimax" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate maximum and minimum values of raster or array</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>DatasetReader | np.ndarray</code></td>
+        <td><p>Rasterio image or data array</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>digit</code></td>
+        <td><code>int</code></td>
+        <td><p>Precise digit number. Defaults to 3.</p></td>
+        <td><code>3</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>numeric</code></td>
+      <td><p>Return 2 numbers of minvalue and maxvalue</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mimax</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">digit</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate maximum and minimum values of raster or array</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (DatasetReader | np.ndarray): Rasterio image or data array</span>
+<span class="sd">        digit (int, optional): Precise digit number. Defaults to 3.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numeric: Return 2 numbers of minvalue and maxvalue</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+    <span class="c1">### Check input data</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate min and max values</span>
+    <span class="n">minValue</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">dataset</span><span class="p">),</span> <span class="n">digit</span><span class="p">)</span>
+    <span class="n">maxValue</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">dataset</span><span class="p">),</span> <span class="n">digit</span><span class="p">)</span>
+
+    <span class="c1"># Convert min and max to string for print</span>
+    <span class="n">min_round</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">minValue</span><span class="p">,</span> <span class="n">digit</span><span class="p">))</span>
+    <span class="n">max_round</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">maxValue</span><span class="p">,</span> <span class="n">digit</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Min: </span><span class="si">{</span><span class="n">min_round</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">Max: </span><span class="si">{</span><span class="n">max_round</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">minValue</span><span class="p">,</span> <span class="n">maxValue</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
 
 
 
@@ -1386,7 +1698,7 @@ left, bottom, right, top = raster.getBounds(ds, meta)</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-01-30T21:05:08+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-01-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-01-31T14:12:54+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-01-31</span>
   </span>
 
     
