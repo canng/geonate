@@ -27,13 +27,11 @@ pip install geonate
 **Install from github source**
 ```
 pip install git+https://github.com/canng/geonate
-
 ```
 
 **Install from local source**
 ```
 pip install -e .
-
 ```
 
 
