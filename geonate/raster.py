@@ -662,7 +662,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
     import rasterio
     from rasterio import warp
     import numpy as np
-    import common
+    import tool
 
     ### Define input image
     # input is raster
@@ -678,7 +678,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
         else:
             dataset = input
             meta = meta
-            left, bottom, right, top = common.getBounds(dataset, meta)
+            left, bottom, right, top = tool.getBounds(dataset, meta)
             if len(dataset.shape) > 2:
                 nbands = dataset.shape[0]
             else:
@@ -780,7 +780,7 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
     from rasterio import warp
     from rasterio.transform import from_bounds
     import numpy as np
-    import common
+    import tool
     
     ### Define input image
     # input is raster
@@ -822,8 +822,8 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
         print('Ouput resolution will take the reference resolution')     
     
     # get general extent from two images
-    ext_input = common.getBounds(input_image, meta)
-    ext_reference = common.getBounds(reference_image, meta_reference)
+    ext_input = tool.getBounds(input_image, meta)
+    ext_reference = tool.getBounds(reference_image, meta_reference)
     
     ext = ext_input
     ext = (

@@ -1,4 +1,0 @@
- 
-# Common module
-
-::: geonate.common
