@@ -600,6 +600,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.common.getBounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      getBounds()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.common.listFiles" class="md-nav__link">
     <span class="md-ellipsis">
       listFiles()
@@ -708,6 +717,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.common.getBounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      getBounds()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.common.listFiles" class="md-nav__link">
     <span class="md-ellipsis">
       listFiles()
@@ -794,26 +812,26 @@
   <tbody>
       <tr>
         <td><code>nrows</code></td>
-        <td></td>
-        <td><p>numeric, numbers of rows</p></td>
+        <td><code>numeric</code></td>
+        <td><p>Numbers of rows</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>ncols</code></td>
-        <td></td>
-        <td><p>numeric, number of columns</p></td>
+        <td><code>numeric</code></td>
+        <td><p>Number of columns</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>value</code></td>
-        <td></td>
-        <td><p>input value in all cells, default is NA</p></td>
+        <td><code>str | numeric</code></td>
+        <td><p>Input value in all cells. Defaults to 'NA'.</p></td>
         <td><code>&#39;NA&#39;</code></td>
       </tr>
       <tr>
         <td><code>name</code></td>
-        <td></td>
-        <td><p>vector, names of columns, if not given, it will return default as number of column</p></td>
+        <td><code>list</code></td>
+        <td><p>Names of columns, if not given, it will return default as number of column. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
   </tbody>
@@ -829,32 +847,25 @@
   <tbody>
     <tr>
       <td><code>pandas dataframe</code></td>
-      <td><p>An empty filled with NA or user-defined number (e.g., 0)    </p></td>
+      <td><p>An empty filled with NA or user-defined number (e.g., 0)</p></td>
     </tr>
   </tbody>
 </table>
-<p><strong>Examples:</strong></p>
-    <p>data = common.empty_dataframe(nrows= 5, ncols= 2, name= ['Col1', 'Col2'])</p>
-
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">empty_dataframe</span><span class="p">(</span><span class="n">nrows</span><span class="p">,</span> <span class="n">ncols</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s1">&#39;NA&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Create an empty dataframe</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an empty dataframe</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        nrows: numeric, numbers of rows</span>
-<span class="sd">        ncols: numeric, number of columns</span>
-<span class="sd">        value: input value in all cells, default is NA</span>
-<span class="sd">        name: vector, names of columns, if not given, it will return default as number of column</span>
+<span class="sd">    Args:</span>
+<span class="sd">        nrows (numeric): Numbers of rows</span>
+<span class="sd">        ncols (numeric): Number of columns</span>
+<span class="sd">        value (str | numeric, optional): Input value in all cells. Defaults to &#39;NA&#39;.</span>
+<span class="sd">        name (list, optional): Names of columns, if not given, it will return default as number of column. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)    </span>
+<span class="sd">        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        data = common.empty_dataframe(nrows= 5, ncols= 2, name= [&#39;Col1&#39;, &#39;Col2&#39;])</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -917,14 +928,14 @@
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>~AnyStr</code></td>
-        <td><p>string, an input as a list of geotif files or local image/shapefile</p></td>
+        <td><code>list</code></td>
+        <td><p>An input as a list of geotif files or local image/shapefile</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>poly</code></td>
         <td><code>bool</code></td>
-        <td><p>bool, whether returns the extent polygon as geopandas object</p></td>
+        <td><p>Whether returns the extent polygon as geopandas object. Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
@@ -940,34 +951,25 @@
   <tbody>
     <tr>
       <td><code>extent</code></td>
-      <td><p>bounding box in form of BoundingBox(left, bottom, right, top)
-polygon: geospatial shapefile polygon of the outside extent</p></td>
+      <td><p>Bounding box in form of BoundingBox(left, bottom, right, top)
+polygon: Geospatial shapefile polygon of the outside extent</p></td>
     </tr>
   </tbody>
 </table>
-<p><strong>Examples:</strong></p>
-    <p>files = common.listFiles('./landsat_multi/merge/', 'tif')
-ext, poly = common.extent(files)</p>
-
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extent</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">poly</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Get spatial extent of geotif image from a list or local variable</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get spatial extent of geotif image from a list or local variable</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        input: string, an input as a list of geotif files or local image/shapefile</span>
-<span class="sd">        poly: bool, whether returns the extent polygon as geopandas object</span>
+<span class="sd">    Args:</span>
+<span class="sd">        input (list): An input as a list of geotif files or local image/shapefile</span>
+<span class="sd">        poly (bool, optional): Whether returns the extent polygon as geopandas object. Defaults to True.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        extent: bounding box in form of BoundingBox(left, bottom, right, top)</span>
-<span class="sd">        polygon: geospatial shapefile polygon of the outside extent</span>
+<span class="sd">        extent: Bounding box in form of BoundingBox(left, bottom, right, top)</span>
+<span class="sd">        polygon: Geospatial shapefile polygon of the outside extent</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        files = common.listFiles(&#39;./landsat_multi/merge/&#39;, &#39;tif&#39;)</span>
-<span class="sd">        ext, poly = common.extent(files)</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
@@ -1029,6 +1031,115 @@ ext, poly = common.extent(files)</p>
 
 
 
+<h2 id="geonate.common.getBounds" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.getBounds" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Return boundary location (left, bottom, right, top) of raster image for cropping image</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Image or data array input </p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>Dict</code></td>
+        <td><p>Metadata is needed when input is data array. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>numeric</code></td>
+      <td><p>A list of number show locations of left, bottom, right, top of the boundary</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <p>img = raster.rast('./Sample_data/landsat_multi/Scene/landsat_img_00.tif')
+meta = img.meta
+ds = img.read()
+left, bottom, right, top = raster.getBounds(ds, meta)</p>
+
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return boundary location (left, bottom, right, top) of raster image for cropping image</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (AnyStr): Image or data array input </span>
+<span class="sd">        meta (Dict, optional): Metadata is needed when input is data array. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numeric: A list of number show locations of left, bottom, right, top of the boundary</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        img = raster.rast(&#39;./Sample_data/landsat_multi/Scene/landsat_img_00.tif&#39;)</span>
+<span class="sd">        meta = img.meta</span>
+<span class="sd">        ds = img.read()</span>
+<span class="sd">        left, bottom, right, top = raster.getBounds(ds, meta)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="c1"># Check input </span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
+    <span class="c1"># input is array</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of input&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+    <span class="c1"># Other input</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="geonate.common.listFiles" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">listFiles</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">search_type</span><span class="o">=</span><span class="s1">&#39;pattern&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
@@ -1052,26 +1163,26 @@ ext, poly = common.extent(files)</p>
   <tbody>
       <tr>
         <td><code>path</code></td>
-        <td><code>~AnyStr</code></td>
-        <td><p>string, folder path where files stored</p></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Folder path where files stored</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>pattern</code></td>
-        <td><code>~AnyStr</code></td>
-        <td><p>string, search pattern of files (e.g., '*.tif')</p></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Search pattern of files (e.g., '*.tif')</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>search_type</code></td>
-        <td><code>~AnyStr</code></td>
-        <td><p>string, search type whether by "extension" or name "pattern"</p></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Search type whether by "extension" or name "pattern". Defaults to 'pattern'.</p></td>
         <td><code>&#39;pattern&#39;</code></td>
       </tr>
       <tr>
         <td><code>full_name</code></td>
         <td><code>bool</code></td>
-        <td><p>boolean, whether returning full name with path detail or not</p></td>
+        <td><p>Whether returning full name with path detail or only file name. Defaults to True.</p></td>
         <td><code>True</code></td>
       </tr>
   </tbody>
@@ -1086,33 +1197,26 @@ ext, poly = common.extent(files)</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>List</code></td>
+      <td><code>list</code></td>
       <td><p>A list of file paths</p></td>
     </tr>
   </tbody>
 </table>
-<p><strong>Examples:</strong></p>
-    <p>files = common.list_files(path= './Sample_data/shapefile/', pattern='*shp')</p>
-
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">listFiles</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">search_type</span><span class="p">:</span> <span class="n">AnyStr</span> <span class="o">=</span> <span class="s1">&#39;pattern&#39;</span><span class="p">,</span> <span class="n">full_name</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    List all files with specific pattern within a folder path</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;List all files with specific pattern within a folder path</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        path: string, folder path where files stored</span>
-<span class="sd">        pattern: string, search pattern of files (e.g., &#39;*.tif&#39;)</span>
-<span class="sd">        search_type: string, search type whether by &quot;extension&quot; or name &quot;pattern&quot;</span>
-<span class="sd">        full_name: boolean, whether returning full name with path detail or not</span>
+<span class="sd">    Args:</span>
+<span class="sd">        path (AnyStr): Folder path where files stored</span>
+<span class="sd">        pattern (AnyStr): Search pattern of files (e.g., &#39;*.tif&#39;)</span>
+<span class="sd">        search_type (AnyStr, optional): Search type whether by &quot;extension&quot; or name &quot;pattern&quot;. Defaults to &#39;pattern&#39;.</span>
+<span class="sd">        full_name (bool, optional): Whether returning full name with path detail or only file name. Defaults to True.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        List: A list of file paths</span>
+<span class="sd">        list: A list of file paths</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        files = common.list_files(path= &#39;./Sample_data/shapefile/&#39;, pattern=&#39;*shp&#39;)</span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">fnmatch</span>
 
@@ -1160,7 +1264,7 @@ ext, poly = common.extent(files)</p>
 
 
 <h2 id="geonate.common.meter2degree" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">meter2degree</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">meter2degree</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#geonate.common.meter2degree" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1182,15 +1286,15 @@ ext, poly = common.extent(files)</p>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td></td>
-        <td><p>number, input resolution of distance</p></td>
+        <td><code>numeric</code></td>
+        <td><p>Input resolution of distance</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>latitude</code></td>
-        <td></td>
-        <td><p>number, latitude presents location</p></td>
-        <td><em>required</em></td>
+        <td><code>numeric</code></td>
+        <td><p>Latitude presents location. If latitude is None, the location is assumed near Equator. Defaults to None.</p></td>
+        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -1204,31 +1308,24 @@ ext, poly = common.extent(files)</p>
   </thead>
   <tbody>
     <tr>
-      <td><code>Degree</code></td>
-      <td><p>Corresponding number of degree</p></td>
+      <td><code>numeric</code></td>
+      <td><p>Degree corresponding to the distance length</p></td>
     </tr>
   </tbody>
 </table>
-<p><strong>Examples:</strong></p>
-    <p>degree = raster.meter2degree(30, 10.25)   </p>
-
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">meter2degree</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">latitude</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">    Convert image resolution from meter to acr-degree depending on location of latitude</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">meter2degree</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert image resolution from meter to acr-degree depending on location of latitude</span>
 
-<span class="sd">    Parameters:</span>
-<span class="sd">        input: number, input resolution of distance</span>
-<span class="sd">        latitude: number, latitude presents location</span>
+<span class="sd">    Args:</span>
+<span class="sd">        input (numeric): Input resolution of distance</span>
+<span class="sd">        latitude (numeric, optional): Latitude presents location. If latitude is None, the location is assumed near Equator. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Degree: Corresponding number of degree</span>
+<span class="sd">        numeric: Degree corresponding to the distance length</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">       degree = raster.meter2degree(30, 10.25)   </span>
-
-<span class="sd">    &#39;&#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
     <span class="k">if</span> <span class="n">latitude</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
