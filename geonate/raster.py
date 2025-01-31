@@ -415,7 +415,6 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
     from shapely.geometry import mapping
     import geopandas as gpd
     import numpy as np
-    from geonate import raster
 
     ### Define input image
     # input is raster
@@ -506,7 +505,7 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
     
     # Write output
     if output is not None:
-        raster.writeRaster(masked_img, output, meta)
+        writeRaster(masked_img, output, meta)
     else:
         return masked_img, meta
     
