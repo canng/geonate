@@ -244,4 +244,179 @@ def meter2degree(input, latitude=None):
     return degree
 
 
+# =========================================================================================== #
+#              Return min and max values of array or raster
+# =========================================================================================== #
+def mimax(input, digit=3):
+    """Calculate maximum and minimum values of raster or array
 
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array
+        digit (int, optional): Precise digit number. Defaults to 3.
+
+    Returns:
+        numeric: Return 2 numbers of minvalue and maxvalue
+
+    """
+    import rasterio
+    import numpy as np
+    import pandas as pd
+
+    ### Check input data
+    if isinstance(input, rasterio.DatasetReader):
+        dataset = input.read()
+    elif isinstance(input, np.ndarray):
+        dataset = input
+    else:
+        raise ValueError('Input data is not supported')
+    
+    # Calculate min and max values
+    minValue = round(np.nanmin(dataset), digit)
+    maxValue = round(np.nanmax(dataset), digit)
+
+    # Convert min and max to string for print
+    min_round = str(round(minValue, digit))
+    max_round = str(round(maxValue, digit))
+
+    print(f"Min: {min_round} \nMax: {max_round}")
+
+    return minValue, maxValue
+
+
+# =========================================================================================== #
+#              Estimate raster cell area 
+# =========================================================================================== #
+def cellSize(input, unit: AnyStr='km', meta: Optional[AnyStr]=None, output: Optional[AnyStr]=None):
+    """Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function
+
+    Args:
+        input (DatasetReader | np.ndarray): Rasterio image or data array
+        unit (AnyStr, optional): Unit of original input. Defaults to 'km'.
+        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
+        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+
+    Returns:
+        np.darray: Data array contains all image pixel values
+        metadata: Metedata of the image
+
+    """
+    import rasterio
+    import numpy as np
+    import pandas as pd
+    import geonate import raster
+
+    ### Check input data
+    if isinstance(input, rasterio.DatasetReader):
+        if len(input.shape) == 2:
+            dataset = input.read()
+            meta = input.meta
+        else:
+            dataset = input.read(1)
+            meta = input.meta
+    elif isinstance(input, np.ndarray):
+        if meta is None:
+            raise ValueError('Please provide input metadata')
+        else:
+            if len(input) > 2:
+                dataset = input[0, :, : ]
+            else:
+                dataset = input
+            meta = meta
+    else:
+        raise ValueError('Input data is not supported')
+    
+    ### Read metadata
+    transform = meta['transform']
+    pix_width = transform[0]
+    upper_X = transform[2]
+    upper_Y = transform[5]
+    rows = meta['height']
+    cols = meta['width']
+    lower_X = upper_X + transform[0] * cols
+    lower_Y = upper_Y + transform[4] * rows
+
+    lats = np.linspace(upper_Y, lower_Y, rows + 1)
+
+    a = 6378137.0  # Equatorial radius
+    b = 6356752.3142  # Polar radius
+
+    # Degrees to radians
+    lats = lats * np.pi/180
+
+    # Intermediate vars
+    e = np.sqrt(1-(b/a)**2)
+    sinlats = np.sin(lats)
+    zm = 1 - e * sinlats
+    zp = 1 + e * sinlats
+
+    # Distance between meridians
+    q = pix_width/360
+
+    # Compute areas for each latitude in square km
+    areas_to_equator = np.pi * b**2 * ((2*np.arctanh(e*sinlats) / (2*e) + sinlats / (zp*zm))) / 10**6
+    areas_between_lats = np.diff(areas_to_equator)
+    areas_cells = np.abs(areas_between_lats) * q
+
+    # Create empty array to store output
+    cellArea = np.zeros_like(dataset, dtype=np.float32)
+    
+    # Assign estimated cell area to every pixel
+    if len(cellArea.shape) == 2:
+        for i in range(0, cellArea.shape[1]):
+            cellArea[:, i] = areas_cells.flatten()
+    else:
+        for i in range(0, cellArea.shape[2]):
+            cellArea[:, :, i] = areas_cells.flatten()
+
+    ### Update metadata
+    meta.update({'dtype': np.float32, 'count': 1})
+
+    ### Convert unit (if applicable)
+    if (unit.lower() == 'km') or (unit.lower() == 'kilometer'):
+        outArea = cellArea
+    elif (unit.lower() == 'm') or (unit.lower() == 'meter'):
+        outArea = cellArea * 1_000_000
+    elif (unit.lower() == 'ha') or (unit.lower() == 'hectare'):
+        outArea = cellArea * 10_000
+    
+    # Write output
+    if output is not None:
+        raster.writeRaster(outArea, output, meta)
+    else:
+        return outArea, meta
+
+import numpy as np
+import rasterio
+from typing import AnyStr, Dict, Optional
+from rasterio.io import MemoryFile
+
+
+# =========================================================================================== #
+#              Convert a numpy array and metadata to a rasterio object stored in local variable
+# =========================================================================================== #
+def array2raster(array: np.ndarray, meta: Dict) -> rasterio.io.DatasetReader:
+    """
+    Convert a numpy array and metadata to a rasterio object stored in memory.
+
+    Args:
+        array (np.ndarray): The input data array.
+        meta (Dict): The metadata dictionary.
+
+    Returns:
+        rasterio.io.DatasetReader: The rasterio object stored in memory.
+
+    """
+    import numpy as np
+    import rasterio
+    from rasterio.io import MemoryFile
+
+    # Update metadata with the correct dtype and count
+    meta.update({
+        'dtype': array.dtype,
+        'count': array.shape[0] if array.ndim == 3 else 1
+    })
+    
+    with MemoryFile() as memfile:
+        with memfile.open(**meta) as dataset:
+            dataset.write(array, 1 if array.ndim == 2 else None)
+        return memfile.open()
