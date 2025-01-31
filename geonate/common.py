@@ -179,7 +179,7 @@ def extent(input: AnyStr, poly: bool= True):
 #               Get bounds of raster
 # =========================================================================================== #
 def getBounds(input: AnyStr, meta: Optional[Dict]=None):
-    """Return boundary location (left, bottom, right, top) of raster image for cropping image
+    """Return boundary location (left, bottom, right, top) of raster image for cropping image in number list
 
     Args:
         input (AnyStr): Image or data array input 

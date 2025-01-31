@@ -5,21 +5,22 @@ from typing import AnyStr, Dict, Optional
 # =========================================================================================== #
 #               Open raster geotif file
 # =========================================================================================== #
-def rast(input: AnyStr, show_meta: Optional[bool]=False):
+def rast(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
     """Open a single geotif raster file using Rasterio
 
     Args:
         input (AnyStr): The file path indicates location of geotif file
         show_meta (bool, optional): Whether to show the image metadata. Defaults to False.
+        **kwargs (optional): All parameters in rasterio.open()
 
     Returns:
         Object: Rasterio RasterReader object
 
-    """
+    """    
     import rasterio
     import os
 
-    img = rasterio.open(input)
+    img = rasterio.open(input, **kwargs)
     basename = os.path.basename(input)
     
     # show meta 
@@ -33,12 +34,13 @@ def rast(input: AnyStr, show_meta: Optional[bool]=False):
 # =========================================================================================== #
 #               Open shapefile
 # =========================================================================================== #
-def vect(input: AnyStr, show_meta: Optional[bool]=False):
+def vect(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
     """Read shapefile vector file using Geopandas 
 
     Args:
         input (AnyStr): The file path indicates location of shapefile 
         show_meta (bool, optional): Whether to show the image metadata. Defaults to False.
+        **kwargs (optional): All parameters in gpd.read_file()
 
     Returns:
         geodataframe: Geodataframe of shapefile with attributes from geopandas object
@@ -47,7 +49,7 @@ def vect(input: AnyStr, show_meta: Optional[bool]=False):
     import geopandas as gpd
     import os
     
-    vect = gpd.read_file(input)
+    vect = gpd.read_file(input, **kwargs)
 
     # show meta 
     if show_meta is True:
