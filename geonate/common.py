@@ -173,50 +173,6 @@ def extent(input: AnyStr, poly: bool= True):
         poly = None
 
     return general_extent, poly
-    
-
-# =========================================================================================== #
-#               Get bounds of raster
-# =========================================================================================== #
-def getBounds(input: AnyStr, meta: Optional[Dict]=None):
-    """Return boundary location (left, bottom, right, top) of raster image for cropping image in number list
-
-    Args:
-        input (AnyStr): Image or data array input 
-        meta (Dict, optional): Metadata is needed when input is data array. Defaults to None.
-
-    Returns:
-        numeric: A list of number show locations of left, bottom, right, top of the boundary
-
-    Example:
-        img = raster.rast('./Sample_data/landsat_multi/Scene/landsat_img_00.tif')
-        meta = img.meta
-        ds = img.read()
-        left, bottom, right, top = raster.getBounds(ds, meta)
-
-    """
-    import rasterio
-    import numpy as np
-
-    # Check input 
-    if isinstance(input, rasterio.DatasetReader):
-        left, bottom, right, top = input.bounds
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            transform = meta['transform']
-            width = meta['width']
-            height = meta['height']
-            left, top = transform * (0, 0)
-            right, bottom = transform * (width, height)
-
-    # Other input
-    else:
-        raise ValueError('Input data is not supported')
-    
-    return left, bottom, right, top
 
 
 # =========================================================================================== #
