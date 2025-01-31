@@ -393,7 +393,7 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
         reference (DatasetReader | GeoDataFrame | np.ndarray): Region of interest, shapefile opened by geopandas or another image or data array to crop
         input_meta (Dict, optional): Metadata when input is data array. Defaults to None.
         reference_meta (Dict, optional): Metadata when reference is data array. Defaults to None.
-        invert (bool, optional): Iif True, pixels inside shapefile will be masked. Defaults to False.
+        invert (bool, optional): If True, pixels inside shapefile will be masked. Defaults to False.
         nodata (int, optional): Any number to fill nodata pixels outside the ROI. Defaults to 0.
         output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
