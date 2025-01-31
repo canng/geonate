@@ -341,16 +341,11 @@ def cellSize(input, unit: AnyStr='km', meta: Optional[AnyStr]=None, output: Opti
     else:
         return outArea, meta
 
-import numpy as np
-import rasterio
-from typing import AnyStr, Dict, Optional
-from rasterio.io import MemoryFile
-
 
 # =========================================================================================== #
 #              Convert a numpy array and metadata to a rasterio object stored in local variable
 # =========================================================================================== #
-def array2raster(array: np.ndarray, meta: Dict) -> rasterio.io.DatasetReader:
+def array2raster(array, meta: Dict):
     """
     Convert a numpy array and metadata to a rasterio object stored in memory.
 
