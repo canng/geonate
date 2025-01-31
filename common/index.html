@@ -629,6 +629,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.common.getBounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      getBounds()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.common.listFiles" class="md-nav__link">
     <span class="md-ellipsis">
       listFiles()
@@ -781,6 +790,15 @@
   <a href="#geonate.common.extent" class="md-nav__link">
     <span class="md-ellipsis">
       extent()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.getBounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      getBounds()
     </span>
   </a>
   
@@ -1355,6 +1373,115 @@ polygon: Geospatial shapefile polygon of the outside extent</p></td>
         <span class="n">poly</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">poly</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.getBounds" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.getBounds" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Return boundary location (left, bottom, right, top) of raster image for cropping image in number list</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Image or data array input </p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>Dict</code></td>
+        <td><p>Metadata is needed when input is data array. Defaults to None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>numeric</code></td>
+      <td><p>A list of number show locations of left, bottom, right, top of the boundary</p></td>
+    </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <p>img = raster.rast('./Sample_data/landsat_multi/Scene/landsat_img_00.tif')
+meta = img.meta
+ds = img.read()
+left, bottom, right, top = raster.getBounds(ds, meta)</p>
+
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return boundary location (left, bottom, right, top) of raster image for cropping image in number list</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (AnyStr): Image or data array input </span>
+<span class="sd">        meta (Dict, optional): Metadata is needed when input is data array. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numeric: A list of number show locations of left, bottom, right, top of the boundary</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        img = raster.rast(&#39;./Sample_data/landsat_multi/Scene/landsat_img_00.tif&#39;)</span>
+<span class="sd">        meta = img.meta</span>
+<span class="sd">        ds = img.read()</span>
+<span class="sd">        left, bottom, right, top = raster.getBounds(ds, meta)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="c1"># Check input </span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
+    <span class="c1"># input is array</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of input&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
+            <span class="n">width</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+            <span class="n">height</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+
+    <span class="c1"># Other input</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span>
 </code></pre></div>
         </details>
     </div>
