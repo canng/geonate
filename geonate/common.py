@@ -303,7 +303,7 @@ def cellSize(input, unit: AnyStr='km', meta: Optional[AnyStr]=None, output: Opti
     import rasterio
     import numpy as np
     import pandas as pd
-    import geonate import raster
+    from geonate import raster
 
     ### Check input data
     if isinstance(input, rasterio.DatasetReader):
@@ -415,7 +415,7 @@ def array2raster(array: np.ndarray, meta: Dict) -> rasterio.io.DatasetReader:
         'dtype': array.dtype,
         'count': array.shape[0] if array.ndim == 3 else 1
     })
-    
+
     with MemoryFile() as memfile:
         with memfile.open(**meta) as dataset:
             dataset.write(array, 1 if array.ndim == 2 else None)
