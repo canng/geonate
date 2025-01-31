@@ -663,7 +663,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
     import rasterio
     from rasterio import warp
     import numpy as np
-    from geonate import common
+    import common
 
     ### Define input image
     # input is raster
@@ -781,7 +781,7 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
     from rasterio import warp
     from rasterio.transform import from_bounds
     import numpy as np
-    from geonate import common
+    import common
     
     ### Define input image
     # input is raster
