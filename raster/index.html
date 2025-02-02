@@ -653,9 +653,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.layerstack" class="md-nav__link">
+  <a href="#geonate.raster.layestack" class="md-nav__link">
     <span class="md-ellipsis">
-      layerstack()
+      layestack()
     </span>
   </a>
   
@@ -848,9 +848,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.layerstack" class="md-nav__link">
+  <a href="#geonate.raster.layestack" class="md-nav__link">
     <span class="md-ellipsis">
-      layerstack()
+      layestack()
     </span>
   </a>
   
@@ -1021,14 +1021,14 @@
 
 
 <h2 id="geonate.raster.crop" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">crop</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">input_meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">crop</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 
 <a href="#geonate.raster.crop" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Crop raster opened by rasterio by shapefile vector or another image</p>
+      <p>Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1043,45 +1043,21 @@
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>DatasetReader</code></td>
-        <td><p>Image or data array input that need to crop</p></td>
+        <td></td>
+        <td><p>The input raster file.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>reference</code></td>
-        <td><code>DatasetReader | GeoDataFrame | np.ndarray</code></td>
-        <td><p>Region of interest, Shapefile opened by geopandas or Another image or Data array to crop</p></td>
+        <td></td>
+        <td><p>The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.</p></td>
         <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>input_meta</code></td>
-        <td><code>Dict</code></td>
-        <td><p>Metadata when input is data array. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>reference_meta</code></td>
-        <td><code>Dict</code></td>
-        <td><p>Metadata when reference is data array. Defaults to None.</p></td>
-        <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>invert</code></td>
         <td><code>bool</code></td>
-        <td><p>If True, pixels inside shapefile will be masked. Defaults to False.</p></td>
+        <td><p>If True, inverts the crop to mask out the area within the boundary. Defaults to False.</p></td>
         <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>nodata</code></td>
-        <td><code>Any</code></td>
-        <td><p>None or any number to fill nodata pixels. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>File path to write out geotif file to local directory. Defaults to None.</p></td>
-        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -1095,54 +1071,39 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>np.darray</code></td>
-      <td><p>Data array contains all image pixel values
-metadata: Metedata of the image </p></td>
+      <td><code>clipped_raster</code></td>
+      <td><p>The cropped raster file.</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">crop</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">input_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">reference_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crop raster opened by rasterio by shapefile vector or another image</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">crop</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (DatasetReader): Image or data array input that need to crop</span>
-<span class="sd">        reference (DatasetReader | GeoDataFrame | np.ndarray): Region of interest, Shapefile opened by geopandas or Another image or Data array to crop</span>
-<span class="sd">        input_meta (Dict, optional): Metadata when input is data array. Defaults to None.</span>
-<span class="sd">        reference_meta (Dict, optional): Metadata when reference is data array. Defaults to None.</span>
-<span class="sd">        invert (bool, optional): If True, pixels inside shapefile will be masked. Defaults to False.</span>
-<span class="sd">        nodata (Any, optional): None or any number to fill nodata pixels. Defaults to None.</span>
-<span class="sd">        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.</span>
+<span class="sd">        input: The input raster file.</span>
+<span class="sd">        reference: The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.</span>
+<span class="sd">        invert (bool): If True, inverts the crop to mask out the area within the boundary. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        np.darray: Data array contains all image pixel values</span>
-<span class="sd">        metadata: Metedata of the image </span>
+<span class="sd">        clipped_raster: The cropped raster file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">mask</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">Affine</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">mapping</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">box</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
 
-    <span class="c1">### Define input image</span>
-    <span class="c1"># input is raster</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-        <span class="n">input_image</span> <span class="o">=</span> <span class="nb">input</span>
-    <span class="c1"># input is array</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">input_meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of input&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;./tmp/&#39;</span><span class="p">):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="s1">&#39;./tmp/&#39;</span><span class="p">)</span>
-            <span class="n">writeRaster</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="s1">&#39;./tmp/tmp.tif&#39;</span><span class="p">,</span> <span class="n">input_meta</span><span class="p">)</span>
-            <span class="n">input_image</span> <span class="o">=</span> <span class="n">rast</span><span class="p">(</span><span class="s1">&#39;./tmp/tmp.tif&#39;</span><span class="p">)</span>
-    <span class="c1"># Other input</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+    <span class="c1"># Convert datatype of input to float32 to store NA value</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">})</span>
+    <span class="n">input_image</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
 
     <span class="c1">### Define boundary</span>
     <span class="c1"># Reference is shapefile</span>
@@ -1151,69 +1112,38 @@ metadata: Metedata of the image </p></td>
         <span class="c1"># define box</span>
         <span class="n">bbox</span> <span class="o">=</span> <span class="n">box</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
         <span class="n">poly_bound</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">bbox</span><span class="p">]},</span> <span class="n">crs</span><span class="o">=</span><span class="n">reference</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+
     <span class="c1"># Reference is raster</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
         <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">bounds</span>
         <span class="c1"># define box</span>
         <span class="n">bbox</span> <span class="o">=</span> <span class="n">box</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
         <span class="n">poly_bound</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">bbox</span><span class="p">]},</span> <span class="n">crs</span><span class="o">=</span><span class="n">reference</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
-    <span class="c1"># Reference is array</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">reference_meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of reference&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span> <span class="o">=</span> <span class="n">reference_meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">reference_meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span><span class="o">*</span> <span class="p">(</span><span class="n">reference_meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">reference_meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">])</span>
-            <span class="c1"># define box</span>
-            <span class="n">bbox</span> <span class="o">=</span> <span class="n">box</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
-            <span class="n">poly_bound</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">({</span><span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">bbox</span><span class="p">]},</span> <span class="n">crs</span><span class="o">=</span> <span class="n">reference_meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Others</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Reference data is not supported&#39;</span><span class="p">)</span>   
 
-    <span class="c1">### Define nodata</span>
-    <span class="k">if</span> <span class="n">nodata</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dataType</span> <span class="o">=</span> <span class="n">input_image</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;dtype&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;int8&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">=</span> <span class="mi">127</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uint8&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">=</span> <span class="mi">255</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;int16&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">=</span> <span class="mi">32767</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uint16&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">=</span> <span class="mi">65535</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;int32&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">=</span> <span class="mi">2147483647</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uint32&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">==</span> <span class="mi">4294967295</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;float16&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">=</span> <span class="mi">65500</span>
-        <span class="k">elif</span> <span class="n">dataType</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;float32&#39;</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">==</span> <span class="mi">999999</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">nodata_value</span> <span class="o">==</span> <span class="mi">0</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">nodata_value</span> <span class="o">=</span> <span class="n">nodata</span>    
-
     <span class="c1">### Invert crop</span>
     <span class="k">if</span> <span class="n">invert</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">clipped</span><span class="p">,</span> <span class="n">geotranform</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">input_image</span><span class="p">,</span> <span class="n">shapes</span><span class="o">=</span> <span class="n">poly_bound</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mapping</span><span class="p">),</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=-</span><span class="mi">999999</span><span class="p">)</span>
+        <span class="n">clipped</span><span class="p">,</span> <span class="n">geotranform</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">input_image</span><span class="p">,</span> <span class="n">shapes</span><span class="o">=</span> <span class="n">poly_bound</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mapping</span><span class="p">),</span> <span class="n">invert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">clipped</span><span class="p">,</span> <span class="n">geotranform</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">input_image</span><span class="p">,</span> <span class="n">shapes</span><span class="o">=</span> <span class="n">poly_bound</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mapping</span><span class="p">),</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=-</span><span class="mi">999999</span><span class="p">)</span>
+        <span class="n">clipped</span><span class="p">,</span> <span class="n">geotranform</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">input_image</span><span class="p">,</span> <span class="n">shapes</span><span class="o">=</span> <span class="n">poly_bound</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">mapping</span><span class="p">),</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
 
-    <span class="c1"># Define metadata</span>
-    <span class="n">meta</span>  <span class="o">=</span> <span class="n">input_image</span><span class="o">.</span><span class="n">meta</span>
+    <span class="c1"># Update metadata</span>
+    <span class="n">meta</span>  <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
     <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
         <span class="s1">&#39;height&#39;</span><span class="p">:</span> <span class="n">clipped</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
         <span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="n">clipped</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
         <span class="s1">&#39;transform&#39;</span><span class="p">:</span> <span class="n">geotranform</span><span class="p">,</span>
         <span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
-        <span class="s1">&#39;nodata&#39;</span><span class="p">:</span> <span class="n">nodata_value</span><span class="p">})</span>
+        <span class="s1">&#39;nodata&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="p">})</span>
 
-    <span class="c1"># Write output</span>
-    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">writeRaster</span><span class="p">(</span><span class="n">clipped</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">clipped</span><span class="p">,</span> <span class="n">meta</span>
+    <span class="c1"># Convert array to raster</span>
+    <span class="n">clipped_raster</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">clipped</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">clipped_raster</span>
 </code></pre></div>
         </details>
     </div>
@@ -1535,94 +1465,76 @@ ndarray: X, y Data arrays for training model</p></td>
 
 
 
-<h2 id="geonate.raster.layerstack" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">layerstack</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h2 id="geonate.raster.layestack" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">layestack</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.layerstack" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.raster.layestack" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Stack layers for different geotif images with the same extent and each image may have more than 1 band</p>
+      <p>Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.</p>
+      <p>input (list): List of file paths to the input raster files or rasterio DatasetReader objects.</p>
+      <p>rasterio.io.DatasetReader: Stacked raster image.</p>
 
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>input</code></td>
-        <td><code>list</code></td>
-        <td><p>List of input geotif files</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Whether to write the stacked image or not. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>np.ndarray, metadata</code></td>
-      <td><p>The function returns two variables of data array and corresponding metadata</p></td>
-    </tr>
-  </tbody>
-</table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">layerstack</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stack layers for different geotif images with the same extent and each image may have more than 1 band</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">layestack</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        input (list): List of input geotif files</span>
-<span class="sd">        output (AnyStr, optional): Whether to write the stacked image or not. Defaults to None.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    input (list): List of file paths to the input raster files or rasterio DatasetReader objects.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        np.ndarray, metadata: The function returns two variables of data array and corresponding metadata</span>
+<span class="sd">    rasterio.io.DatasetReader: Stacked raster image.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">reshape_as_raster</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">rast</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span><span class="p">,</span> <span class="n">check_datatype_consistency</span><span class="p">,</span> <span class="n">check_extension_consistency</span>
 
-    <span class="n">files2stack</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># Initialize some parameters and variables</span>
+    <span class="n">file2stack</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">stacked_array</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">nbands</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 
-    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">meta</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">meta</span>
-            <span class="n">files2stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">consistency</span><span class="p">,</span> <span class="n">datatype</span> <span class="o">=</span> <span class="n">check_datatype_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 
-    <span class="n">stacked_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">files2stack</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">stacked</span> <span class="o">=</span> <span class="n">reshape_as_raster</span><span class="p">(</span><span class="n">stacked_array</span><span class="p">)</span>
-    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">nbands</span><span class="p">,</span>
-                            <span class="s1">&#39;driver&#39;</span><span class="p">:</span> <span class="s1">&#39;GTiff&#39;</span><span class="p">,</span>
-                            <span class="s1">&#39;compress&#39;</span><span class="p">:</span> <span class="s1">&#39;lzw&#39;</span><span class="p">})</span>
+    <span class="c1"># If input is list of file paths</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">consistency</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="n">datatype</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;str&#39;&gt;&quot;</span><span class="p">:</span>
+        <span class="n">consistency_ext</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">check_extension_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 
-    <span class="c1"># write out result </span>
-    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">writeRaster</span><span class="p">(</span><span class="n">stacked</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+        <span class="c1"># If input is a list of tif files</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">consistency_ext</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;tif&#39;</span><span class="p">):</span>
+            <span class="c1"># Stack each band </span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bandi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">ds</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Read each raster and read data array</span>
+                <span class="n">meta</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">meta</span> 
+                <span class="n">file2stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="c1"># stack each band in a list of data</span>
+        <span class="c1"># Other data extension</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Data type is not supported&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If input is local raster files </span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">consistency</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="n">datatype</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;rasterio.io.DatasetReader&#39;&gt;&quot;</span><span class="p">:</span>
+        <span class="c1"># Stack each band </span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bandi</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+            <span class="n">ds</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Read each band</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">bandi</span><span class="o">.</span><span class="n">meta</span> 
+            <span class="n">file2stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="c1"># stack each band in a list of data</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">stacked</span><span class="p">,</span> <span class="n">meta</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Data type is not supported&#39;</span><span class="p">)</span>    
+
+    <span class="c1"># convert list to array and update nbands</span>
+    <span class="n">stacked_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">file2stack</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> 
+    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">nbands</span><span class="p">})</span>
+
+    <span class="c1"># Convert array to raster</span>
+    <span class="n">stacked_image</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">stacked_array</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">stacked_image</span>
 </code></pre></div>
         </details>
     </div>
@@ -1936,7 +1848,7 @@ metadata: Metedata of the image</p></td>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">warp</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_bounds</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">common</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_extent_local</span>
 
     <span class="c1">### Define input image</span>
     <span class="c1"># input is raster</span>
@@ -1978,8 +1890,8 @@ metadata: Metedata of the image</p></td>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ouput resolution will take the reference resolution&#39;</span><span class="p">)</span>     
 
     <span class="c1"># get general extent from two images</span>
-    <span class="n">ext_input</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">getBounds</span><span class="p">(</span><span class="n">input_image</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
-    <span class="n">ext_reference</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">getBounds</span><span class="p">(</span><span class="n">reference_image</span><span class="p">,</span> <span class="n">meta_reference</span><span class="p">)</span>
+    <span class="n">ext_input</span> <span class="o">=</span> <span class="n">get_extent_local</span><span class="p">(</span><span class="n">input_image</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ext_reference</span> <span class="o">=</span> <span class="n">get_extent_local</span><span class="p">(</span><span class="n">reference_image</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="n">ext</span> <span class="o">=</span> <span class="n">ext_input</span>
     <span class="n">ext</span> <span class="o">=</span> <span class="p">(</span>
@@ -2073,14 +1985,14 @@ metadata: Metedata of the image</p></td>
 
 
 <h2 id="geonate.raster.merge" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;lzw&#39;</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
 <a href="#geonate.raster.merge" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Merge multiple geotif file using Rasterio (pixels at overlapping areas receive average values)</p>
+      <p>Merges multiple raster files into a single raster file by computing the average values at overlapped areas.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2095,21 +2007,9 @@ metadata: Metedata of the image</p></td>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>List</code></td>
-        <td><p>List of input geotif files</p></td>
+        <td><code>AnyStr</code></td>
+        <td><p>List of input raster files.</p></td>
         <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Path of output geotif file to write out the merged image. If image is not written out, it will be assigned to local variables. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>compress</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Compress options ['deflate', 'lzw']. Defaults to 'lzw'.</p></td>
-        <td><code>&#39;lzw&#39;</code></td>
       </tr>
   </tbody>
 </table>
@@ -2123,58 +2023,48 @@ metadata: Metedata of the image</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>np.ndarray</code></td>
-      <td><p>ndarray contains image values
-dict: dict contains metadata of the image</p></td>
+      <td><code>merged_raster</code></td>
+      <td><p>The merged raster file.</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;lzw&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge multiple geotif file using Rasterio (pixels at overlapping areas receive average values)</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merges multiple raster files into a single raster file by computing the average values at overlapped areas.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (List): List of input geotif files</span>
-<span class="sd">        output (AnyStr, optional): Path of output geotif file to write out the merged image. If image is not written out, it will be assigned to local variables. Defaults to None.</span>
-<span class="sd">        compress (AnyStr, optional): Compress options [&#39;deflate&#39;, &#39;lzw&#39;]. Defaults to &#39;lzw&#39;.</span>
+<span class="sd">        input (AnyStr): List of input raster files.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        np.ndarray: ndarray contains image values</span>
-<span class="sd">        dict: dict contains metadata of the image</span>
+<span class="sd">        merged_raster: The merged raster file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">merge</span> 
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
 
-    <span class="n">src_files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-        <span class="n">src_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+    <span class="c1"># Initialize empty list to store all input files and stack input into it </span>
+    <span class="n">merged_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">tmp</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+        <span class="n">merged_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
 
-    <span class="n">fun_sum</span> <span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">copy_sum</span>
-    <span class="n">fun_count</span> <span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">copy_count</span>
+    <span class="c1"># Compute sum and count numbers of images, and average values at overlapped areas</span>
+    <span class="n">mosaic_sum</span><span class="p">,</span> <span class="n">out_trans</span> <span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">merged_files</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">copy_sum</span><span class="p">)</span>
+    <span class="n">mosaic_count</span><span class="p">,</span> <span class="n">out_trans</span> <span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">merged_files</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">copy_count</span><span class="p">)</span>
+    <span class="n">mosaic_average</span> <span class="o">=</span> <span class="n">mosaic_sum</span> <span class="o">/</span> <span class="n">mosaic_count</span>
 
-    <span class="c1"># calculate average values</span>
-    <span class="n">mosaic_sum</span><span class="p">,</span> <span class="n">out_trans</span> <span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">src_files</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">fun_sum</span><span class="p">)</span>
-    <span class="n">mosaic_count</span><span class="p">,</span> <span class="n">out_trans</span> <span class="o">=</span> <span class="n">merge</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">src_files</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">fun_count</span><span class="p">)</span>
-    <span class="n">mosaic_avg</span> <span class="o">=</span> <span class="n">mosaic_sum</span> <span class="o">/</span> <span class="n">mosaic_count</span>
-
-    <span class="n">meta</span> <span class="o">=</span> <span class="n">src_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Update metadata with new transform and image dimensions</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="n">merged_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">meta</span>
     <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;driver&quot;</span><span class="p">:</span> <span class="s2">&quot;GTiff&quot;</span><span class="p">,</span>
-                            <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="n">mosaic_avg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-                            <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">mosaic_avg</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-                            <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="n">out_trans</span><span class="p">,</span>
-                            <span class="s2">&quot;compress&quot;</span><span class="p">:</span> <span class="n">compress</span><span class="p">})</span>
+                            <span class="s2">&quot;height&quot;</span><span class="p">:</span> <span class="n">mosaic_average</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                            <span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="n">mosaic_average</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="s2">&quot;transform&quot;</span><span class="p">:</span> <span class="n">out_trans</span><span class="p">})</span>
 
-    <span class="c1"># write out result </span>
-    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dest</span><span class="p">:</span>
-            <span class="n">dest</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">mosaic_avg</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished merge raster files, the output is at </span><span class="si">{</span><span class="n">output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="c1"># keep local</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">mosaic_avg</span><span class="p">,</span> <span class="n">meta</span>      
+    <span class="c1"># Convert array to raster file</span>
+    <span class="n">merged_raster</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">mosaic_average</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">merged_raster</span>    
 </code></pre></div>
         </details>
     </div>
@@ -2785,14 +2675,14 @@ metadata: Metedata of the image</p></td>
 
 
 <h2 id="geonate.raster.reproject" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">reproject</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">,</span> <span class="n">input_meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">reproject</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
 <a href="#geonate.raster.reproject" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Reproject raster data to a new projection and resample (if required)</p>
+      <p>Reprojects and resamples a given raster image to a specified coordinate reference system (CRS) and resolution.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -2807,38 +2697,26 @@ metadata: Metedata of the image</p></td>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>DatasetReader | np.ndarray</code></td>
-        <td><p>Input rasterio image or data array</p></td>
+        <td><code>rasterio.io.DatasetReader</code></td>
+        <td><p>The input raster image to be reprojected.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>reference</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Reference data of even another image or 'crs' string, e.g., 'EPSG:4326'. Defaults to None.</p></td>
+        <td><code>Optional[AnyStr]</code></td>
+        <td><p>The reference CRS for reprojection. It can be a string (e.g., 'EPSG:4326') or a rasterio DatasetReader object. If None, the input CRS is used.</p></td>
         <td><code>None</code></td>
       </tr>
       <tr>
         <td><code>method</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Resampling method (if changing resolution), optional, default method is 'nearest neighbor', other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average). Defaults to 'near'.</p></td>
+        <td><code>Optional[AnyStr]</code></td>
+        <td><p>The resampling method to use. Default is 'near'. Supported methods include 'nearest', 'average', 'max', 'min', 'median', 'mode', 'q1', 'q3', 'rms', 'sum', 'cubic', 'cubic_spline', 'bilinear', 'gauss', 'lanczos'.</p></td>
         <td><code>&#39;near&#39;</code></td>
       </tr>
       <tr>
-        <td><code>input_meta</code></td>
-        <td><code>Dict</code></td>
-        <td><p>Required when input is data array. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
         <td><code>res</code></td>
-        <td><code>float</code></td>
-        <td><p>Resolution of the output in degree or meters depends on the output crs. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>File path to write out geotif file to local directory. Defaults to None.</p></td>
+        <td><code>Optional[float]</code></td>
+        <td><p>The output resolution. If None, the input resolution is used.</p></td>
         <td><code>None</code></td>
       </tr>
   </tbody>
@@ -2853,57 +2731,38 @@ metadata: Metedata of the image</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>np.darray</code></td>
-      <td><p>Data array contains all image pixel values
-metadata: Metedata of the image </p></td>
+      <td><code>rasterio.io.DatasetReader</code></td>
+      <td><p>The reprojected raster image</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reproject</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">,</span> <span class="n">input_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">res</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reproject raster data to a new projection and resample (if required)</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reproject</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">:</span><span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">,</span> <span class="n">res</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reprojects and resamples a given raster image to a specified coordinate reference system (CRS) and resolution.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (DatasetReader | np.ndarray): Input rasterio image or data array</span>
-<span class="sd">        reference (AnyStr, optional): Reference data of even another image or &#39;crs&#39; string, e.g., &#39;EPSG:4326&#39;. Defaults to None.</span>
-<span class="sd">        method (AnyStr, optional): Resampling method (if changing resolution), optional, default method is &#39;nearest neighbor&#39;, other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average). Defaults to &#39;near&#39;.</span>
-<span class="sd">        input_meta (Dict, optional): Required when input is data array. Defaults to None.</span>
-<span class="sd">        res (float, optional): Resolution of the output in degree or meters depends on the output crs. Defaults to None.</span>
-<span class="sd">        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.</span>
+<span class="sd">        input (rasterio.io.DatasetReader): The input raster image to be reprojected.</span>
+<span class="sd">        reference (Optional[AnyStr]): The reference CRS for reprojection. It can be a string (e.g., &#39;EPSG:4326&#39;) or a rasterio DatasetReader object. If None, the input CRS is used.</span>
+<span class="sd">        method (Optional[AnyStr]): The resampling method to use. Default is &#39;near&#39;. Supported methods include &#39;nearest&#39;, &#39;average&#39;, &#39;max&#39;, &#39;min&#39;, &#39;median&#39;, &#39;mode&#39;, &#39;q1&#39;, &#39;q3&#39;, &#39;rms&#39;, &#39;sum&#39;, &#39;cubic&#39;, &#39;cubic_spline&#39;, &#39;bilinear&#39;, &#39;gauss&#39;, &#39;lanczos&#39;.</span>
+<span class="sd">        res (Optional[float]): The output resolution. If None, the input resolution is used.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        np.darray: Data array contains all image pixel values</span>
-<span class="sd">        metadata: Metedata of the image </span>
+<span class="sd">        rasterio.io.DatasetReader: The reprojected raster image</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">warp</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
 
     <span class="c1">### Define input image</span>
-    <span class="c1"># input is raster</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-        <span class="n">input_image</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
-        <span class="c1"># define boundary of input image</span>
-        <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
-    <span class="c1"># input is array</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">input_meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of input&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">input_image</span> <span class="o">=</span> <span class="nb">input</span>
-            <span class="n">meta</span> <span class="o">=</span> <span class="n">input_meta</span>
-            <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="c1"># define boundary of input image</span>
-            <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span><span class="o">*</span> <span class="p">(</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">])</span>
-    <span class="c1"># Other input</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+    <span class="n">input_image</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+    <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
 
-    <span class="c1"># If reference is not given, it will take the CRS from input</span>
-    <span class="c1"># the function now used for resampling</span>
+    <span class="c1"># If reference is not given, it will take the CRS from input. The function now used for resampling</span>
     <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2912,26 +2771,27 @@ metadata: Metedata of the image </p></td>
             <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
         <span class="n">transform</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">warp</span><span class="o">.</span><span class="n">calculate_default_transform</span><span class="p">(</span><span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">),</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span>
 
-    <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># string of EPSG</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">reference</span>
-            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide output resolution&#39;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
-            <span class="n">transform</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">warp</span><span class="o">.</span><span class="n">calculate_default_transform</span><span class="p">(</span><span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">),</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span>
-
-        <span class="c1"># Take all paras from reference image</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-            <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">crs</span>
-            <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">res</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
-            <span class="n">transform</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">warp</span><span class="o">.</span><span class="n">calculate_default_transform</span><span class="p">(</span><span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">),</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span>
+    <span class="c1"># string of EPSG</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide output resolution&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please define correct reference, it is CRS string or an image&#39;</span><span class="p">)</span>
+            <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
+        <span class="n">transform</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">warp</span><span class="o">.</span><span class="n">calculate_default_transform</span><span class="p">(</span><span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">),</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span>
+
+    <span class="c1"># Take all paras from reference image</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">crs</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">res</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span> <span class="o">=</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
+        <span class="n">transform</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">warp</span><span class="o">.</span><span class="n">calculate_default_transform</span><span class="p">(</span><span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">],</span> <span class="n">resolution</span><span class="o">=</span><span class="p">(</span><span class="n">xsize</span><span class="p">,</span> <span class="n">ysize</span><span class="p">),</span> <span class="n">left</span><span class="o">=</span><span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">right</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="n">top</span><span class="p">)</span>
+
+    <span class="c1"># Other cases</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please define correct reference, it is CRS string or an image reference&#39;</span><span class="p">)</span>
 
     <span class="c1"># Update metadata</span>
     <span class="n">meta_update</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -2976,17 +2836,16 @@ metadata: Metedata of the image </p></td>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The resampling method is not supported, available methods raster.Resampling.&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Running project </span>
-    <span class="n">projected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">input_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;dtype&#39;</span><span class="p">])</span>
+    <span class="c1"># Running reproject </span>
+    <span class="n">projected_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">input_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;dtype&#39;</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">input_image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">input_image</span><span class="p">[</span><span class="n">band</span><span class="p">,</span> <span class="p">:</span> <span class="p">,</span> <span class="p">:</span> <span class="p">]</span>
-        <span class="n">warp</span><span class="o">.</span><span class="n">reproject</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">projected</span><span class="p">[(</span><span class="n">band</span><span class="p">),</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">src_transform</span><span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">],</span> <span class="n">dst_transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span> <span class="n">resampleAlg</span><span class="p">)</span>
+        <span class="n">warp</span><span class="o">.</span><span class="n">reproject</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">ds</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">projected_array</span><span class="p">[(</span><span class="n">band</span><span class="p">),</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">src_transform</span><span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">],</span> <span class="n">dst_transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">src_crs</span><span class="o">=</span><span class="n">meta</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">],</span> <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span> <span class="n">resampling</span><span class="o">=</span> <span class="n">resampleAlg</span><span class="p">)</span>
 
-    <span class="c1"># Write output</span>
-    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">writeRaster</span><span class="p">(</span><span class="n">projected</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta_update</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">projected</span><span class="p">,</span> <span class="n">meta_update</span>
+    <span class="c1"># Convert array back to raster</span>
+    <span class="n">reprojected</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">projected_array</span><span class="p">,</span> <span class="n">meta_update</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">reprojected</span>
 </code></pre></div>
         </details>
     </div>
@@ -3095,7 +2954,7 @@ metadata: Metedata of the image</p></td>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">warp</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">common</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_extent_local</span>
 
     <span class="c1">### Define input image</span>
     <span class="c1"># input is raster</span>
@@ -3111,7 +2970,7 @@ metadata: Metedata of the image</p></td>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span>
             <span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
-            <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">common</span><span class="o">.</span><span class="n">getBounds</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">get_extent_local</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">meta</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">nbands</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -3446,7 +3305,7 @@ metadata: Metedata of the image</p></td>
 
     <div class="doc doc-contents ">
 
-      <p>Write raster Geotif from data Array using Rasterio</p>
+      <p>Write raster Geotif from Raster or Data Array using Rasterio</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -3462,7 +3321,7 @@ metadata: Metedata of the image</p></td>
       <tr>
         <td><code>input</code></td>
         <td><code>rasterio.DatasetReader | np.ndarray</code></td>
-        <td><p>Data array in form of [band, height, width]</p></td>
+        <td><p>Raster or Data array in form of [band, height, width]</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -3496,30 +3355,27 @@ metadata: Metedata of the image</p></td>
   <tbody>
     <tr>
       <td><code>None</code></td>
-      <td><p>The function does not return any local variable. It writes raster file to local drive.</p></td>
+      <td><p>The function does not return any local variable. It writes raster file to local drive (.tif).</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">writeRaster</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lzw&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write raster Geotif from data Array using Rasterio</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write raster Geotif from Raster or Data Array using Rasterio</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (rasterio.DatasetReader | np.ndarray): Data array in form of [band, height, width]</span>
+<span class="sd">        input (rasterio.DatasetReader | np.ndarray): Raster or Data array in form of [band, height, width]</span>
 <span class="sd">        output (AnyStr): Output file path</span>
 <span class="sd">        meta (Dict, optional): Rasterio profile settings needed when input is dataArray. Defaults to None.</span>
 <span class="sd">        compress (AnyStr, optional): Compression algorithm [&#39;lzw&#39;, &#39;deflate&#39;]. Defaults to &#39;lzw&#39;.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        None: The function does not return any local variable. It writes raster file to local drive.</span>
+<span class="sd">        None: The function does not return any local variable. It writes raster file to local drive (.tif).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>   
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-    <span class="k">class</span><span class="w"> </span><span class="nc">RasterWriteError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-        <span class="k">pass</span>
 
     <span class="c1"># Input is rasterio image</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>

@@ -602,9 +602,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.cellSize" class="md-nav__link">
+  <a href="#geonate.common.center_scene" class="md-nav__link">
     <span class="md-ellipsis">
-      cellSize()
+      center_scene()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.check_crs_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_crs_consistency()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.check_datatype_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_datatype_consistency()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.check_extension_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_extension_consistency()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.degree2meter" class="md-nav__link">
+    <span class="md-ellipsis">
+      degree2meter()
     </span>
   </a>
   
@@ -620,18 +656,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.extent" class="md-nav__link">
+  <a href="#geonate.common.get_extent_external" class="md-nav__link">
     <span class="md-ellipsis">
-      extent()
+      get_extent_external()
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.getBounds" class="md-nav__link">
+  <a href="#geonate.common.get_extent_local" class="md-nav__link">
     <span class="md-ellipsis">
-      getBounds()
+      get_extent_local()
     </span>
   </a>
   
@@ -659,6 +695,15 @@
   <a href="#geonate.common.mimax" class="md-nav__link">
     <span class="md-ellipsis">
       mimax()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.reshape_raster" class="md-nav__link">
+    <span class="md-ellipsis">
+      reshape_raster()
     </span>
   </a>
   
@@ -769,9 +814,45 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.cellSize" class="md-nav__link">
+  <a href="#geonate.common.center_scene" class="md-nav__link">
     <span class="md-ellipsis">
-      cellSize()
+      center_scene()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.check_crs_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_crs_consistency()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.check_datatype_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_datatype_consistency()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.check_extension_consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      check_extension_consistency()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.degree2meter" class="md-nav__link">
+    <span class="md-ellipsis">
+      degree2meter()
     </span>
   </a>
   
@@ -787,18 +868,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.extent" class="md-nav__link">
+  <a href="#geonate.common.get_extent_external" class="md-nav__link">
     <span class="md-ellipsis">
-      extent()
+      get_extent_external()
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.common.getBounds" class="md-nav__link">
+  <a href="#geonate.common.get_extent_local" class="md-nav__link">
     <span class="md-ellipsis">
-      getBounds()
+      get_extent_local()
     </span>
   </a>
   
@@ -826,6 +907,15 @@
   <a href="#geonate.common.mimax" class="md-nav__link">
     <span class="md-ellipsis">
       mimax()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.reshape_raster" class="md-nav__link">
+    <span class="md-ellipsis">
+      reshape_raster()
     </span>
   </a>
   
@@ -942,16 +1032,21 @@
 <span class="sd">        rasterio.io.DatasetReader: The rasterio object stored in memory.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryFile</span>
+
+     <span class="c1"># Determine number of bands</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">nbands</span> <span class="o">=</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nbands</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="c1"># Update metadata with the correct dtype and count</span>
     <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
         <span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
-        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="mi">1</span>
+        <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">nbands</span>
     <span class="p">})</span>
 
+    <span class="c1"># Write image in memory file and read it back</span>
     <span class="k">with</span> <span class="n">MemoryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">memfile</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">memfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dataset</span><span class="p">:</span>
             <span class="n">dataset</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
@@ -968,15 +1063,15 @@
 
 
 
-<h2 id="geonate.common.cellSize" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h2 id="geonate.common.center_scene" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">center_scene</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.common.cellSize" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.common.center_scene" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function</p>
+      <p>Computes the center latitude and longitude of a given geospatial input.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -991,26 +1086,413 @@
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>DatasetReader | np.ndarray</code></td>
-        <td><p>Rasterio image or data array</p></td>
+        <td><code>rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame</code></td>
+        <td><p>A geospatial object with a 'bounds' attribute that defines the spatial extent.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing:
+    - center_lat (float): The center latitude of the input.
+    - center_lon (float): The center longitude of the input.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">center_scene</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the center latitude and longitude of a given geospatial input.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame): A geospatial object with a &#39;bounds&#39; attribute that defines the spatial extent.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing:</span>
+<span class="sd">            - center_lat (float): The center latitude of the input.</span>
+<span class="sd">            - center_lon (float): The center longitude of the input.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
+
+    <span class="c1"># Define boundary </span>
+    <span class="n">bounds</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_extent_local</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+    <span class="n">min_lon</span><span class="p">,</span> <span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">,</span> <span class="n">max_lat</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="c1"># Compute center latitude and longitude</span>
+    <span class="n">center_lat</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_lat</span> <span class="o">+</span> <span class="n">max_lat</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">center_lon</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_lon</span> <span class="o">+</span> <span class="n">max_lon</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.check_crs_consistency" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_crs_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.check_crs_consistency" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if all elements in the input list have the same Coordinate Reference System (CRS).</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>list</code></td>
+        <td><p>A list of file paths or local variables (rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame).</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing:
+    - bool: True if all elements have the same CRS, False otherwise.
+    - str or None: The CRS of the elements if all elements have the same CRS, otherwise None.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_crs_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if all elements in the input list have the same Coordinate Reference System (CRS).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (list): A list of file paths or local variables (rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing:</span>
+<span class="sd">            - bool: True if all elements have the same CRS, False otherwise.</span>
+<span class="sd">            - str or None: The CRS of the elements if all elements have the same CRS, otherwise None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">rast</span><span class="p">,</span> <span class="n">vect</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input must be a list of local variables or file paths&#39;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">inputType</span> <span class="o">=</span> <span class="n">check_datatype_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputType</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;str&#39;&gt;&quot;</span><span class="p">:</span>
+            <span class="n">file_extensions</span>  <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+            <span class="n">file_extension</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">file_extensions</span><span class="p">)</span>
+            <span class="n">extension_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_extension</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">extension_len</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input must have consistent data format&#39;</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_extension</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;tif&#39;</span><span class="p">:</span>
+                    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">rast</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+                    <span class="n">crs_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
+
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">crs_list</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">crs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">crs_list</span><span class="p">)</span>
+                        <span class="n">consistency</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input is Raster with consistent crs of </span><span class="si">{</span><span class="n">crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="n">crs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">consistency</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input is Raster with different crs&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="kc">None</span>
+
+                <span class="k">elif</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_extension</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;shp&#39;</span><span class="p">:</span>
+                    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">vect</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+                    <span class="n">crs_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">file</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">crs_list</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">crs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">crs_list</span><span class="p">)</span>
+                        <span class="n">consistency</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input is Shapefile with consistent crs of </span><span class="si">{</span><span class="n">crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="n">crs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">consistency</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input is Raster with different crs&quot;</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="kc">None</span>
+
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This function only supports raster (.tif) and shapefile (.shp)&#39;</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputType</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;rasterio.io.DatasetReader&#39;&gt;&quot;</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">inputType</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;geopandas.geodataframe.GeoDataFrame&#39;&gt;&quot;</span><span class="p">:</span>
+            <span class="n">crs_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">crs</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+            <span class="n">crs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">crs_list</span><span class="p">)</span>
+            <span class="n">consistency</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input is Shapefile with consistent crs of </span><span class="si">{</span><span class="n">crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="n">crs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input must have the same data format of raster (.tif) and shapefile (.shp)&quot;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.check_datatype_consistency" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_datatype_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.check_datatype_consistency" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if all elements in the input list have the same data type.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>list</code></td>
+        <td><p>A list of elements to check.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing:
+    - bool: True if all elements have the same type, False otherwise.
+    - type or None: The data type of the elements if all elements have the same type, otherwise None.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_datatype_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if all elements in the input list have the same data type.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (list): A list of elements to check.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing:</span>
+<span class="sd">            - bool: True if all elements have the same type, False otherwise.</span>
+<span class="sd">            - type or None: The data type of the elements if all elements have the same type, otherwise None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input must be a list&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">first_element</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">first_element</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">):</span>
+            <span class="n">datatype</span> <span class="o">=</span> <span class="n">first_element</span>
+            <span class="n">consistency</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input have data types of </span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">consistency</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input have different data types&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.check_extension_consistency" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">check_extension_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.check_extension_consistency" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Checks if all elements in the input list have the same file extension.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>list</code></td>
+        <td><p>A list of file paths as strings.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing:
+    - bool: True if all elements have the same file extension, False otherwise.
+    - str or None: The file extension if all elements have the same extension, otherwise None.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">check_extension_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if all elements in the input list have the same file extension.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (list): A list of file paths as strings.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing:</span>
+<span class="sd">            - bool: True if all elements have the same file extension, False otherwise.</span>
+<span class="sd">            - str or None: The file extension if all elements have the same extension, otherwise None.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+
+    <span class="c1"># Check whether a list or not</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Input must be a list of file paths&quot;</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Check whether all are string</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input must contain only string of file paths&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># </span>
+            <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+            <span class="n">no_extension</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">extensions</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">no_extension</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">consistency</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">extension</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">extensions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">consistency</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">extension</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="n">extension</span>          
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.degree2meter" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">degree2meter</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.degree2meter" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Convert distance from degrees to meters depending on latitude</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>numeric</code></td>
+        <td><p>Input resolution in degrees</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>unit</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Unit of original input. Defaults to 'km'.</p></td>
-        <td><code>&#39;km&#39;</code></td>
-      </tr>
-      <tr>
-        <td><code>meta</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Metadata in case input is data array. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>File path to write out geotif file to local directory. Defaults to None.</p></td>
+        <td><code>latitude</code></td>
+        <td><code>numeric</code></td>
+        <td><p>Latitude of the location. If latitude is None, the location is assumed near the Equator. Defaults to None.</p></td>
         <td><code>None</code></td>
       </tr>
   </tbody>
@@ -1025,112 +1507,33 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>np.darray</code></td>
-      <td><p>Data array contains all image pixel values
-metadata: Metedata of the image</p></td>
+      <td><code>numeric</code></td>
+      <td><p>Distance in meters corresponding to the input degree</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">AnyStr</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate pixel size (area), the input has to be in the projection of &#39;EPSG:4326&#39;. If not, it can be reprojected by &quot;project&quot; function</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">degree2meter</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">latitude</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert distance from degrees to meters depending on latitude</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (DatasetReader | np.ndarray): Rasterio image or data array</span>
-<span class="sd">        unit (AnyStr, optional): Unit of original input. Defaults to &#39;km&#39;.</span>
-<span class="sd">        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.</span>
-<span class="sd">        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.</span>
+<span class="sd">        input (numeric): Input resolution in degrees</span>
+<span class="sd">        latitude (numeric, optional): Latitude of the location. If latitude is None, the location is assumed near the Equator. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        np.darray: Data array contains all image pixel values</span>
-<span class="sd">        metadata: Metedata of the image</span>
+<span class="sd">        numeric: Distance in meters corresponding to the input degree</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">raster</span>
 
-    <span class="c1">### Check input data</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide input metadata&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span>
-            <span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
+    <span class="k">if</span> <span class="n">latitude</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Equator location</span>
+        <span class="n">meters</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">*</span> <span class="p">(</span><span class="mi">111320</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+        <span class="n">meters</span> <span class="o">=</span> <span class="nb">input</span> <span class="o">*</span> <span class="p">(</span><span class="mi">111320</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">)))</span>
 
-    <span class="c1">### Read metadata</span>
-    <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
-    <span class="n">pix_width</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">upper_X</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="n">upper_Y</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
-    <span class="n">cols</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
-    <span class="n">lower_X</span> <span class="o">=</span> <span class="n">upper_X</span> <span class="o">+</span> <span class="n">transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cols</span>
-    <span class="n">lower_Y</span> <span class="o">=</span> <span class="n">upper_Y</span> <span class="o">+</span> <span class="n">transform</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span>
-
-    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">upper_Y</span><span class="p">,</span> <span class="n">lower_Y</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">a</span> <span class="o">=</span> <span class="mf">6378137.0</span>  <span class="c1"># Equatorial radius</span>
-    <span class="n">b</span> <span class="o">=</span> <span class="mf">6356752.3142</span>  <span class="c1"># Polar radius</span>
-
-    <span class="c1"># Degrees to radians</span>
-    <span class="n">lats</span> <span class="o">=</span> <span class="n">lats</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
-
-    <span class="c1"># Intermediate vars</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">sinlats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
-    <span class="n">zm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">e</span> <span class="o">*</span> <span class="n">sinlats</span>
-    <span class="n">zp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">sinlats</span>
-
-    <span class="c1"># Distance between meridians</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">pix_width</span><span class="o">/</span><span class="mi">360</span>
-
-    <span class="c1"># Compute areas for each latitude in square km</span>
-    <span class="n">areas_to_equator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">e</span><span class="o">*</span><span class="n">sinlats</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">sinlats</span> <span class="o">/</span> <span class="p">(</span><span class="n">zp</span><span class="o">*</span><span class="n">zm</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
-    <span class="n">areas_between_lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">areas_to_equator</span><span class="p">)</span>
-    <span class="n">areas_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">areas_between_lats</span><span class="p">)</span> <span class="o">*</span> <span class="n">q</span>
-
-    <span class="c1"># Create empty array to store output</span>
-    <span class="n">cellArea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
-
-    <span class="c1"># Assign estimated cell area to every pixel</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="n">cellArea</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas_cells</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
-            <span class="n">cellArea</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas_cells</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-
-    <span class="c1">### Update metadata</span>
-    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-
-    <span class="c1">### Convert unit (if applicable)</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;km&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;kilometer&#39;</span><span class="p">):</span>
-        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;meter&#39;</span><span class="p">):</span>
-        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span> <span class="o">*</span> <span class="mi">1_000_000</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ha&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;hectare&#39;</span><span class="p">):</span>
-        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span> <span class="o">*</span> <span class="mi">10_000</span>
-
-    <span class="c1"># Write output</span>
-    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">raster</span><span class="o">.</span><span class="n">writeRaster</span><span class="p">(</span><span class="n">outArea</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">outArea</span><span class="p">,</span> <span class="n">meta</span>
+    <span class="k">return</span> <span class="n">meters</span>
 </code></pre></div>
         </details>
     </div>
@@ -1259,15 +1662,15 @@ metadata: Metedata of the image</p></td>
 
 
 
-<h2 id="geonate.common.extent" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">extent</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">poly</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+<h2 id="geonate.common.get_extent_external" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_extent_external</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.common.extent" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.common.get_extent_external" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Get spatial extent of geotif image from a list or local variable</p>
+      <p>Computes the spatial extent of geospatial files and returns the bounding box and a GeoDataFrame of the bounding polygon.</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1282,15 +1685,9 @@ metadata: Metedata of the image</p></td>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>list</code></td>
-        <td><p>An input as a list of geotif files or local image/shapefile</p></td>
+        <td><code>str or list</code></td>
+        <td><p>A single file path or a list of file paths. Supported file types are GeoTIFF raster (tif) and shapefile (shp).</p></td>
         <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>poly</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether returns the extent polygon as geopandas object. Defaults to True.</p></td>
-        <td><code>True</code></td>
       </tr>
   </tbody>
 </table>
@@ -1304,75 +1701,177 @@ metadata: Metedata of the image</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>extent</code></td>
-      <td><p>Bounding box in form of BoundingBox(left, bottom, right, top)
-polygon: Geospatial shapefile polygon of the outside extent</p></td>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing:
+    - general_extent (tuple): The bounding box of the input files in the format (minx, miny, maxx, maxy).
+    - bound_poly (geopandas.GeoDataFrame): A GeoDataFrame containing the bounding polygon.</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extent</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">poly</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get spatial extent of geotif image from a list or local variable</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_extent_external</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the spatial extent of geospatial files and returns the bounding box and a GeoDataFrame of the bounding polygon.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (list): An input as a list of geotif files or local image/shapefile</span>
-<span class="sd">        poly (bool, optional): Whether returns the extent polygon as geopandas object. Defaults to True.</span>
+<span class="sd">        input (str or list): A single file path or a list of file paths. Supported file types are GeoTIFF raster (tif) and shapefile (shp).</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        extent: Bounding box in form of BoundingBox(left, bottom, right, top)</span>
-<span class="sd">        polygon: Geospatial shapefile polygon of the outside extent</span>
+<span class="sd">        tuple: A tuple containing:</span>
+<span class="sd">            - general_extent (tuple): The bounding box of the input files in the format (minx, miny, maxx, maxy).</span>
+<span class="sd">            - bound_poly (geopandas.GeoDataFrame): A GeoDataFrame containing the bounding polygon.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">rast</span><span class="p">,</span> <span class="n">vect</span>
 
-    <span class="n">general_extent</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1">#### Single path</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="p">((</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">))):</span>
+        <span class="c1"># Check whether single list or string</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span>
 
-    <span class="c1"># get extent for raster files store in folder</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">src</span><span class="p">:</span>
-                <span class="n">ext</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">bounds</span>
-                <span class="n">crs</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="n">crs</span>
+        <span class="c1"># Extract file extension</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-                <span class="k">if</span> <span class="n">general_extent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">general_extent</span> <span class="o">=</span> <span class="n">ext</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">general_extent</span> <span class="o">=</span>  <span class="p">(</span>
-                        <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                        <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
-                        <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
-                        <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-                        <span class="p">)</span>
+        <span class="c1"># Raster files</span>
+        <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;tif&#39;</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+            <span class="n">general_extent</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">bounds</span>
+            <span class="n">crs</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">crs</span>
+            <span class="c1"># Create bound polygon</span>
+            <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="p">])</span>
+            <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+            <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span>
 
-    <span class="c1"># get extent for local read shapefile    </span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">):</span>
-        <span class="n">ext</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
-        <span class="n">crs</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">crs</span>
-        <span class="n">general_extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">ext</span><span class="p">[</span><span class="s1">&#39;minx&#39;</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="s1">&#39;miny&#39;</span><span class="p">],</span>
-                                        <span class="n">ext</span><span class="p">[</span><span class="s1">&#39;maxx&#39;</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="s1">&#39;maxy&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
 
-    <span class="c1"># get extent for local read geotif </span>
+        <span class="c1"># Vector Shapefile </span>
+        <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;shp&#39;</span><span class="p">:</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">vect</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">bounds</span>
+            <span class="n">crs</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">crs</span>
+            <span class="n">no_poly</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Determine general bound in case single polygon or multiple polygons</span>
+            <span class="k">if</span> <span class="n">no_poly</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">general_extent</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="k">elif</span> <span class="n">no_poly</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">general_extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+            <span class="c1"># Create bound polygon</span>
+            <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="p">])</span>
+            <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+            <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
+        <span class="c1"># Other data types</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It only supports geotif raster (tif) and shapefile (shp)&#39;</span><span class="p">)</span>
+
+    <span class="c1">#### List of multiple paths    </span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">general_extent</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
-        <span class="n">crs</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">crs</span>
+        <span class="n">consistency</span><span class="p">,</span> <span class="n">extension</span> <span class="o">=</span> <span class="n">check_extension_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 
-    <span class="c1"># return rectangle of extennt</span>
-    <span class="k">if</span> <span class="n">poly</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
-            <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
-            <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
-            <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
-            <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
-            <span class="p">])</span>
-        <span class="n">poly</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
-        <span class="n">poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span>
-    <span class="k">else</span><span class="p">:</span> 
-        <span class="n">poly</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Check extension consistency</span>
+        <span class="k">if</span> <span class="n">consistency</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="c1"># Raster files</span>
+            <span class="k">if</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;tif&#39;</span><span class="p">:</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">rast</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+                <span class="n">general_extent</span> <span class="o">=</span> <span class="kc">None</span> 
 
-    <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">poly</span>
+                <span class="c1"># read each file</span>
+                <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="n">ext</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">bounds</span>
+                    <span class="n">crs</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">crs</span>                
+
+                    <span class="c1"># determine general extent</span>
+                    <span class="k">if</span> <span class="n">general_extent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">general_extent</span> <span class="o">=</span> <span class="n">ext</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">general_extent</span> <span class="o">=</span>  <span class="p">(</span>
+                            <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                            <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                            <span class="p">)</span>
+
+                    <span class="c1"># Create bound polygon</span>
+                    <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                        <span class="p">])</span>
+                    <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+                    <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span> 
+
+                    <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
+            <span class="c1"># Shapefile data</span>
+            <span class="k">elif</span> <span class="n">extension</span> <span class="o">==</span> <span class="s1">&#39;shp&#39;</span><span class="p">:</span>
+                <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">vect</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+                <span class="n">general_extent</span> <span class="o">=</span> <span class="kc">None</span>                        
+
+                <span class="c1"># read each file</span>
+                <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                    <span class="n">ext</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">bounds</span>
+                    <span class="n">crs</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">crs</span>
+                    <span class="n">no_poly</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                    <span class="c1"># Determine general bound in case single polygon or multiple polygons</span>
+                    <span class="k">if</span> <span class="n">no_poly</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">ext</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+                    <span class="k">elif</span> <span class="n">no_poly</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">ext</span> <span class="o">=</span> <span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+                    <span class="c1"># determine general extent</span>
+                    <span class="k">if</span> <span class="n">general_extent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">general_extent</span> <span class="o">=</span> <span class="n">ext</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">general_extent</span> <span class="o">=</span>  <span class="p">(</span>
+                            <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                            <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                            <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                            <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                            <span class="p">)</span>
+
+                    <span class="c1"># Create bound polygon</span>
+                    <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                        <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                        <span class="p">])</span>
+                    <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+                    <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span> 
+
+                    <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
+            <span class="c1"># Other data types</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input only supports geotif (tif) and shapefile (shp)&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Other cases</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input have different data extensions&#39;</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -1385,15 +1884,15 @@ polygon: Geospatial shapefile polygon of the outside extent</p></td>
 
 
 
-<h2 id="geonate.common.getBounds" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<h2 id="geonate.common.get_extent_local" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_extent_local</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.common.getBounds" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.common.get_extent_local" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
-      <p>Return boundary location (left, bottom, right, top) of raster image for cropping image in number list</p>
+      <p>Computes the spatial extent of a single or multiple geospatial files (GeoTIFF raster or shapefile).</p>
 
 <p><strong>Parameters:</strong></p>
 <table>
@@ -1408,15 +1907,9 @@ polygon: Geospatial shapefile polygon of the outside extent</p></td>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Image or data array input </p></td>
+        <td><code>list or object</code></td>
+        <td><p>A single rasterio.io.DatasetReader object, a single geopandas.geodataframe.GeoDataFrame object, or a list of such objects.</p></td>
         <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>meta</code></td>
-        <td><code>Dict</code></td>
-        <td><p>Metadata is needed when input is data array. Defaults to None.</p></td>
-        <td><code>None</code></td>
       </tr>
   </tbody>
 </table>
@@ -1430,58 +1923,154 @@ polygon: Geospatial shapefile polygon of the outside extent</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>numeric</code></td>
-      <td><p>A list of number show locations of left, bottom, right, top of the boundary</p></td>
+      <td><code>tuple</code></td>
+      <td><p>A tuple containing:
+    - general_extent (tuple): The bounding box of the input(s) in the format (min_x, min_y, max_x, max_y).
+    - bound_poly (geopandas.GeoDataFrame): A GeoDataFrame containing a single polygon representing the bounding box.</p></td>
     </tr>
   </tbody>
 </table>
-<p><strong>Examples:</strong></p>
-    <p>img = raster.rast('./Sample_data/landsat_multi/Scene/landsat_img_00.tif')
-meta = img.meta
-ds = img.read()
-left, bottom, right, top = raster.getBounds(ds, meta)</p>
-
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">getBounds</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return boundary location (left, bottom, right, top) of raster image for cropping image in number list</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">get_extent_local</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the spatial extent of a single or multiple geospatial files (GeoTIFF raster or shapefile).</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (AnyStr): Image or data array input </span>
-<span class="sd">        meta (Dict, optional): Metadata is needed when input is data array. Defaults to None.</span>
+<span class="sd">        input (list or object): A single rasterio.io.DatasetReader object, a single geopandas.geodataframe.GeoDataFrame object, or a list of such objects.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numeric: A list of number show locations of left, bottom, right, top of the boundary</span>
-
-<span class="sd">    Example:</span>
-<span class="sd">        img = raster.rast(&#39;./Sample_data/landsat_multi/Scene/landsat_img_00.tif&#39;)</span>
-<span class="sd">        meta = img.meta</span>
-<span class="sd">        ds = img.read()</span>
-<span class="sd">        left, bottom, right, top = raster.getBounds(ds, meta)</span>
+<span class="sd">        tuple: A tuple containing:</span>
+<span class="sd">            - general_extent (tuple): The bounding box of the input(s) in the format (min_x, min_y, max_x, max_y).</span>
+<span class="sd">            - bound_poly (geopandas.GeoDataFrame): A GeoDataFrame containing a single polygon representing the bounding box.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span>
 
-    <span class="c1"># Check input </span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-        <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
-    <span class="c1"># input is array</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It requires metadata of input&#39;</span><span class="p">)</span>
+    <span class="c1">#### Single file</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">)):</span>
+            <span class="n">general_extent</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
+            <span class="n">crs</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">crs</span>
+
+            <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="p">])</span>
+            <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+            <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">geodataframe</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">)):</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">bounds</span>
+            <span class="n">crs</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">crs</span>
+            <span class="n">no_poly</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Determine general bound in case single polygon or multiple polygons</span>
+            <span class="k">if</span> <span class="n">no_poly</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">general_extent</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+            <span class="k">elif</span> <span class="n">no_poly</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">general_extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+            <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="p">])</span>
+            <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+            <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span>
+
+            <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
-            <span class="n">width</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
-            <span class="n">height</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
-            <span class="n">left</span><span class="p">,</span> <span class="n">top</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-            <span class="n">right</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="n">transform</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It only supports geotif raster and shapefile&#39;</span><span class="p">)</span>
 
-    <span class="c1"># Other input</span>
+    <span class="c1">#### Multiple files</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">consistency</span><span class="p">,</span> <span class="n">datatype</span> <span class="o">=</span> <span class="n">check_datatype_consistency</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+
+        <span class="c1"># Input are Raster files</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">consistency</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;rasterio.io.DatasetReader&#39;&gt;&quot;</span><span class="p">):</span>
+            <span class="n">general_extent</span> <span class="o">=</span> <span class="kc">None</span>        
+            <span class="c1"># read each file</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">bounds</span>
+                <span class="n">crs</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">crs</span>                
+
+                <span class="c1"># determine general extent</span>
+                <span class="k">if</span> <span class="n">general_extent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">general_extent</span> <span class="o">=</span> <span class="n">ext</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">general_extent</span> <span class="o">=</span>  <span class="p">(</span>
+                        <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                        <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                        <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># Create bound polygon</span>
+                <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="p">])</span>
+                <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+                <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span> 
+
+                <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
+        <span class="c1"># Input are Shapefile files</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">consistency</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">datatype</span> <span class="o">==</span> <span class="s2">&quot;&lt;class &#39;geopandas.geodataframe.GeoDataFrame&#39;&gt;&quot;</span><span class="p">):</span>
+            <span class="n">general_extent</span> <span class="o">=</span> <span class="kc">None</span>                        
+            <span class="c1"># read each file</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">bounds</span>
+                <span class="n">crs</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">crs</span>
+                <span class="n">no_poly</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="c1"># Determine general bound in case single polygon or multiple polygons</span>
+                <span class="k">if</span> <span class="n">no_poly</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">ext</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:])</span>
+                <span class="k">elif</span> <span class="n">no_poly</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">ext</span> <span class="o">=</span> <span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span><span class="n">ext</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+                <span class="c1"># determine general extent</span>
+                <span class="k">if</span> <span class="n">general_extent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">general_extent</span> <span class="o">=</span> <span class="n">ext</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">general_extent</span> <span class="o">=</span>  <span class="p">(</span>
+                        <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                        <span class="nb">min</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                        <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="nb">max</span><span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">ext</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># Create bound polygon</span>
+                <span class="n">poly_geom</span> <span class="o">=</span> <span class="n">Polygon</span><span class="p">([</span>
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> 
+                    <span class="p">(</span><span class="n">general_extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">general_extent</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                    <span class="p">])</span>
+                <span class="n">bound_poly</span> <span class="o">=</span> <span class="n">geopandas</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">poly_geom</span><span class="p">])</span>
+                <span class="n">bound_poly</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="n">crs</span><span class="p">}</span> 
+
+                <span class="k">return</span> <span class="n">general_extent</span><span class="p">,</span> <span class="n">bound_poly</span>
+
+        <span class="c1"># Other data types</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input have different data types&#39;</span><span class="p">)</span> 
+
+    <span class="c1">#### Other cases</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">top</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;It only supports geotif raster and shapefile&#39;</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -1766,7 +2355,6 @@ left, bottom, right, top = raster.getBounds(ds, meta)</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
     <span class="c1">### Check input data</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
@@ -1784,9 +2372,101 @@ left, bottom, right, top = raster.getBounds(ds, meta)</p>
     <span class="n">min_round</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">minValue</span><span class="p">,</span> <span class="n">digit</span><span class="p">))</span>
     <span class="n">max_round</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">maxValue</span><span class="p">,</span> <span class="n">digit</span><span class="p">))</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Min: </span><span class="si">{</span><span class="n">min_round</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">Max: </span><span class="si">{</span><span class="n">max_round</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Min: </span><span class="si">{</span><span class="n">min_round</span><span class="si">}</span><span class="s2">  | Max: </span><span class="si">{</span><span class="n">max_round</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">minValue</span><span class="p">,</span> <span class="n">maxValue</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.reshape_raster" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">reshape_raster</span><span class="p">(</span><span class="n">inputArray</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.reshape_raster" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Reshapes a 3-dimensional numpy array between 'image' and 'raster' formats.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>inputArray</code></td>
+        <td><code>numpy.ndarray</code></td>
+        <td><p>The input 3-dimensional array to be reshaped.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>mode</code></td>
+        <td><code>str</code></td>
+        <td><p>The mode to reshape the array to. 'image' or 'img' reshapes to (height, width, bands), 'raster' or 'r' reshapes to (bands, height, width). Default is 'image'.</p></td>
+        <td><code>&#39;image&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>numpy.ndarray</code></td>
+      <td><p>The reshaped array.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w">  </span><span class="nf">reshape_raster</span><span class="p">(</span><span class="n">inputArray</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span><span class="nb">str</span><span class="o">=</span><span class="s2">&quot;image&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reshapes a 3-dimensional numpy array between &#39;image&#39; and &#39;raster&#39; formats.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        inputArray (numpy.ndarray): The input 3-dimensional array to be reshaped.</span>
+<span class="sd">        mode (str): The mode to reshape the array to. &#39;image&#39; or &#39;img&#39; reshapes to (height, width, bands), &#39;raster&#39; or &#39;r&#39; reshapes to (bands, height, width). Default is &#39;image&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        numpy.ndarray: The reshaped array.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+    <span class="c1"># Check whether input are 3-dim data array</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputArray</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c1"># Convert to image</span>
+        <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span> <span class="ow">or</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;img&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">inputArray</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+        <span class="c1"># Convert to raster</span>
+        <span class="k">elif</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;raster&#39;</span> <span class="ow">or</span> <span class="n">mode</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">inputArray</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">output</span> 
+
+    <span class="c1">#Other cases</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data array must have 3 dimensions&#39;</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
