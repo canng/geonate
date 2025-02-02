@@ -20,7 +20,7 @@ def rast(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
         **kwargs (optional): All parameters in rasterio.open()
 
     Returns:
-        Object: Rasterio RasterReader object
+        Raster object (raster): Rasterio RasterReader object
 
     """    
     import rasterio
@@ -49,7 +49,7 @@ def vect(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
         **kwargs (optional): All parameters in gpd.read_file()
 
     Returns:
-        geodataframe: Geodataframe of shapefile with attributes from geopandas object
+        Shapefile (geodataframe): Geodataframe of shapefile with attributes from geopandas object
 
     """
     import geopandas as gpd
@@ -73,7 +73,7 @@ def writeRaster(input, output, meta: Optional[Dict]=None, compress: Optional[Any
     """Write raster Geotif from Raster or Data Array using Rasterio
 
     Args:
-        input (rasterio.DatasetReader | np.ndarray): Raster or Data array in form of [band, height, width]
+        input (raster | array): Raster or Data array in form of [band, height, width]
         output (AnyStr): Output file path
         meta (Dict, optional): Rasterio profile settings needed when input is dataArray. Defaults to None.
         compress (AnyStr, optional): Compression algorithm ['lzw', 'deflate']. Defaults to 'lzw'.
@@ -157,10 +157,10 @@ def layestack(input):
     Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.
 
     Parameters:
-    input (list): List of file paths to the input raster files or rasterio DatasetReader objects.
+        input (list): List of file paths to the input raster files or rasterio DatasetReader objects.
 
     Returns:
-    rasterio.io.DatasetReader: Stacked raster image.
+        Stacked raster (raster): Stacked raster image.
 
     """
     import numpy as np
@@ -221,6 +221,9 @@ def mergeVRT(input: AnyStr, output: AnyStr, compress: bool=True, silent=True):
         output (AnyStr): Path of output tif file
         compress (bool, optional): Whether compress the output data or not. Defaults to True.
         silent (bool, optional): Show or do not show file processing log. Defaults to True.
+    
+    Return:
+        None: The function does not return any local variable. It writes raster file to local drive.
 
     """
     import os
@@ -247,15 +250,15 @@ def mergeVRT(input: AnyStr, output: AnyStr, compress: bool=True, silent=True):
 # =========================================================================================== #
 #               Merge  geotif files in a list using Rasterio
 # =========================================================================================== #
-def merge(input: AnyStr):
+def merge(input: list):
     """
     Merges multiple raster files into a single raster file by computing the average values at overlapped areas.
 
     Args:
-        input (AnyStr): List of input raster files.
+        input (list): List of input raster files.
 
     Returns:
-        merged_raster: The merged raster file.
+        A merged raster (raster): The merged raster file.
 
     """
     from rasterio import merge 
@@ -292,12 +295,12 @@ def crop(input, reference, invert=False):
     Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.
 
     Args:
-        input: The input raster file.
-        reference: The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.
+        input (raster): The input raster file.
+        reference (shapefile | raster): The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.
         invert (bool): If True, inverts the crop to mask out the area within the boundary. Defaults to False.
 
     Returns:
-        clipped_raster: The cropped raster file.
+        A clipped raster (raster): The cropped raster file.
         
     """
     import geopandas as gpd

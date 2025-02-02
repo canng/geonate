@@ -25,7 +25,7 @@ def empty_dataframe(nrows, ncols, value='NA', name=None):
         name (list, optional): Names of columns, if not given, it will return default as number of column. Defaults to None.
 
     Returns:
-        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)
+        Dataframe (pandas datafram): An empty filled with NA or user-defined number (e.g., 0)
 
     """
     import pandas as pd
@@ -70,7 +70,7 @@ def listFiles(path: AnyStr, pattern: AnyStr, search_type: AnyStr = 'pattern', fu
         full_name (bool, optional): Whether returning full name with path detail or only file name. Defaults to True.
 
     Returns:
-        list: A list of file paths
+        A string list (list): A list of file paths
 
     """
     import os
@@ -580,7 +580,7 @@ def meter2degree(input, latitude=None):
         latitude (numeric, optional): Latitude presents location. If latitude is None, the location is assumed near Equator. Defaults to None.
 
     Returns:
-        numeric: Degree corresponding to the distance length
+        Degree (float): Degree corresponding to the distance length
 
     """
     import numpy as np
@@ -605,7 +605,7 @@ def degree2meter(input, latitude=None):
         latitude (numeric, optional): Latitude of the location. If latitude is None, the location is assumed near the Equator. Defaults to None.
 
     Returns:
-        numeric: Distance in meters corresponding to the input degree
+        Distance length (numeric | float): Distance in meters corresponding to the input degree
 
     """
     import numpy as np
@@ -626,7 +626,7 @@ def center_scene(input):
     Computes the center latitude and longitude of a given geospatial input.
 
     Args:
-        input (rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame): A geospatial object with a 'bounds' attribute that defines the spatial extent.
+        input (raster | shapefile): A geospatial object with a 'bounds' attribute that defines the spatial extent.
 
     Returns:
         tuple: A tuple containing:
@@ -655,11 +655,11 @@ def mimax(input, digit=3):
     """Calculate maximum and minimum values of raster or array
 
     Args:
-        input (DatasetReader | np.ndarray): Rasterio image or data array
+        input (raster | array): Raster image or data array
         digit (int, optional): Precise digit number. Defaults to 3.
 
     Returns:
-        numeric: Return 2 numbers of minvalue and maxvalue
+        Min and Max values (numeric): Return 2 numbers of minvalue and maxvalue
 
     """
     import rasterio
@@ -694,11 +694,11 @@ def array2raster(array, meta: Dict):
     Convert a numpy array and metadata to a rasterio object stored in memory.
 
     Args:
-        array (np.ndarray): The input data array.
+        array (array): The input data array.
         meta (Dict): The metadata dictionary.
 
     Returns:
-        rasterio.io.DatasetReader: The rasterio object stored in memory.
+        Local raster file (raster): The rasterio object stored in memory.
 
     """
     from rasterio.io import MemoryFile
@@ -729,11 +729,11 @@ def  reshape_raster(inputArray, mode:str="image"):
     Reshapes a 3-dimensional numpy array between 'image' and 'raster' formats.
 
     Parameters:
-        inputArray (numpy.ndarray): The input 3-dimensional array to be reshaped.
+        inputArray (array): The input 3-dimensional array to be reshaped.
         mode (str): The mode to reshape the array to. 'image' or 'img' reshapes to (height, width, bands), 'raster' or 'r' reshapes to (bands, height, width). Default is 'image'.
 
     Returns:
-        numpy.ndarray: The reshaped array.
+        Reshape array (array): The reshaped array.
 
     """
     import numpy as np
