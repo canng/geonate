@@ -7,6 +7,7 @@ The raster module
 from typing import AnyStr, Dict, Optional
 
 ##############################################################################################
+
 # =========================================================================================== #
 #               Open raster geotif file
 # =========================================================================================== #
@@ -69,24 +70,21 @@ def vect(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
 #               Compress file size and write geotif
 # =========================================================================================== #
 def writeRaster(input, output, meta: Optional[Dict]=None, compress: Optional[AnyStr] = 'lzw'):
-    """Write raster Geotif from data Array using Rasterio
+    """Write raster Geotif from Raster or Data Array using Rasterio
 
     Args:
-        input (rasterio.DatasetReader | np.ndarray): Data array in form of [band, height, width]
+        input (rasterio.DatasetReader | np.ndarray): Raster or Data array in form of [band, height, width]
         output (AnyStr): Output file path
         meta (Dict, optional): Rasterio profile settings needed when input is dataArray. Defaults to None.
         compress (AnyStr, optional): Compression algorithm ['lzw', 'deflate']. Defaults to 'lzw'.
 
     Returns:
-        None: The function does not return any local variable. It writes raster file to local drive.
+        None: The function does not return any local variable. It writes raster file to local drive (.tif).
 
     """   
     import rasterio
     import numpy as np
-
-    class RasterWriteError(Exception):
-        pass
-    
+  
     # Input is rasterio image
     if isinstance(input, rasterio.DatasetReader):
         meta_out = input.meta
@@ -154,42 +152,63 @@ def writeRaster(input, output, meta: Optional[Dict]=None, compress: Optional[Any
 # =========================================================================================== #
 #               Stack layer of geotif images
 # =========================================================================================== #
-def layerstack(input, output: Optional[AnyStr]=None):
-    """Stack layers for different geotif images with the same extent and each image may have more than 1 band
+def layestack(input):
+    """
+    Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.
 
-    Args:
-        input (list): List of input geotif files
-        output (AnyStr, optional): Whether to write the stacked image or not. Defaults to None.
+    Parameters:
+    input (list): List of file paths to the input raster files or rasterio DatasetReader objects.
 
     Returns:
-        np.ndarray, metadata: The function returns two variables of data array and corresponding metadata
+    rasterio.io.DatasetReader: Stacked raster image.
 
     """
-    import rasterio
-    from rasterio.plot import reshape_as_raster
     import numpy as np
+    from .raster import rast
+    from .common import array2raster, check_datatype_consistency, check_extension_consistency
 
-    files2stack = []
+    # Initialize some parameters and variables
+    file2stack = []
     stacked_array = []
     nbands = len(input)
 
-    for file in input:
-        with rasterio.open(file) as src:
-            data = src.read(1)
-            meta = src.meta
-            files2stack.append(data)
+    consistency, datatype = check_datatype_consistency(input)
+
+    # If input is list of file paths
+    if (consistency is True) and datatype == "<class 'str'>":
+        consistency_ext, extension = check_extension_consistency(input)
+        
+        # If input is a list of tif files
+        if (consistency_ext is True) and (extension == 'tif'):
+            # Stack each band 
+            for i, bandi in enumerate(input):
+                tmp = rast(input[i])
+                ds = tmp.read(1) # Read each raster and read data array
+                meta = tmp.meta 
+                file2stack.append(ds) # stack each band in a list of data
+        # Other data extension
+        else:
+            raise ValueError('Data type is not supported')
     
-    stacked_array = np.stack(files2stack, axis=-1)
-    stacked = reshape_as_raster(stacked_array)
-    meta.update({'count': nbands,
-                            'driver': 'GTiff',
-                            'compress': 'lzw'})
-    
-    # write out result 
-    if output is not None:
-        writeRaster(stacked, output, meta)
+    # If input is local raster files 
+    elif (consistency is True) and datatype == "<class 'rasterio.io.DatasetReader'>":
+        # Stack each band 
+        for i, bandi in enumerate(input):
+            ds = input[i].read(1) # Read each band
+            meta = bandi.meta 
+            file2stack.append(ds) # stack each band in a list of data
     else:
-        return stacked, meta
+        raise ValueError('Data type is not supported')    
+
+    # convert list to array and update nbands
+    stacked_array = np.stack(file2stack, axis=0) 
+    meta.update({'count': nbands})
+
+    # Convert array to raster
+    stacked_image = array2raster(stacked_array, meta)
+
+    return stacked_image
+
 
 # =========================================================================================== #
 #               Merge  geotif files in a list using GDAL and VRT
@@ -228,95 +247,72 @@ def mergeVRT(input: AnyStr, output: AnyStr, compress: bool=True, silent=True):
 # =========================================================================================== #
 #               Merge  geotif files in a list using Rasterio
 # =========================================================================================== #
-def merge(input: AnyStr, output: Optional[AnyStr]=None, compress: Optional[AnyStr]='lzw'):
-    """Merge multiple geotif file using Rasterio (pixels at overlapping areas receive average values)
+def merge(input: AnyStr):
+    """
+    Merges multiple raster files into a single raster file by computing the average values at overlapped areas.
 
     Args:
-        input (List): List of input geotif files
-        output (AnyStr, optional): Path of output geotif file to write out the merged image. If image is not written out, it will be assigned to local variables. Defaults to None.
-        compress (AnyStr, optional): Compress options ['deflate', 'lzw']. Defaults to 'lzw'.
+        input (AnyStr): List of input raster files.
 
     Returns:
-        np.ndarray: ndarray contains image values
-        dict: dict contains metadata of the image
+        merged_raster: The merged raster file.
 
     """
-    import rasterio
     from rasterio import merge 
+    from .common import array2raster
 
-    src_files = []
-    for file in input:
-        ds = rasterio.open(file)
-        src_files.append(ds)
+    # Initialize empty list to store all input files and stack input into it 
+    merged_files = []
+    for tmp in input:
+        merged_files.append(tmp)
 
-    fun_sum = merge.copy_sum
-    fun_count = merge.copy_count
+    # Compute sum and count numbers of images, and average values at overlapped areas
+    mosaic_sum, out_trans = merge.merge(merged_files, method= merge.copy_sum)
+    mosaic_count, out_trans = merge.merge(merged_files, method= merge.copy_count)
+    mosaic_average = mosaic_sum / mosaic_count
 
-    # calculate average values
-    mosaic_sum, out_trans = merge.merge(src_files, method=fun_sum)
-    mosaic_count, out_trans = merge.merge(src_files, method=fun_count)
-    mosaic_avg = mosaic_sum / mosaic_count
-    
-    meta = src_files[0].meta.copy()
+    # Update metadata with new transform and image dimensions
+    meta = merged_files[0].meta
     meta.update({"driver": "GTiff",
-                            "height": mosaic_avg.shape[1],
-                            "width": mosaic_avg.shape[2],
-                            "transform": out_trans,
-                            "compress": compress})
-    
-    # write out result 
-    if output is not None:
-        with rasterio.open(output, "w", **meta) as dest:
-            dest.write(mosaic_avg)
-        print(f"Finished merge raster files, the output is at {output}")
-    # keep local
-    else:
-        return mosaic_avg, meta      
+                            "height": mosaic_average.shape[1],
+                            "width": mosaic_average.shape[2],
+                            "transform": out_trans})
+
+    # Convert array to raster file
+    merged_raster = array2raster(mosaic_average, meta)
+
+    return merged_raster    
 
 
 # =========================================================================================== #
 #              Crop raster using shapefile or another image
 # =========================================================================================== #
-def crop(input, reference, input_meta: Optional[Dict]=None, reference_meta: Optional[Dict]=None, invert=False, nodata=None, output: Optional[AnyStr]=None):
-    """Crop raster opened by rasterio by shapefile vector or another image
+def crop(input, reference, invert=False):
+    """
+    Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.
 
     Args:
-        input (DatasetReader): Image or data array input that need to crop
-        reference (DatasetReader | GeoDataFrame | np.ndarray): Region of interest, Shapefile opened by geopandas or Another image or Data array to crop
-        input_meta (Dict, optional): Metadata when input is data array. Defaults to None.
-        reference_meta (Dict, optional): Metadata when reference is data array. Defaults to None.
-        invert (bool, optional): If True, pixels inside shapefile will be masked. Defaults to False.
-        nodata (Any, optional): None or any number to fill nodata pixels. Defaults to None.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+        input: The input raster file.
+        reference: The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.
+        invert (bool): If True, inverts the crop to mask out the area within the boundary. Defaults to False.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image 
-
+        clipped_raster: The cropped raster file.
+        
     """
-    import rasterio
+    import geopandas as gpd
+    import numpy as np
+    from rasterio import mask
     from rasterio.transform import Affine
     from shapely.geometry import mapping
     from shapely.geometry import box
-    import geopandas as gpd
-    import numpy as np
-
-    ### Define input image
-    # input is raster
-    if isinstance(input, rasterio.DatasetReader):
-        input_image = input
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if input_meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            if not os.path.exists('./tmp/'):
-                os.makedirs('./tmp/')
-            writeRaster(input, './tmp/tmp.tif', input_meta)
-            input_image = rast('./tmp/tmp.tif')
-    # Other input
-    else:
-        raise ValueError('Input data is not supported')
+    from .common import array2raster
+    
+    # Convert datatype of input to float32 to store NA value
+    arr = input.read().astype(np.float32)
+    meta = input.meta
+    meta.update({'dtype': np.float32})
+    input_image = array2raster(arr, meta)
 
     ### Define boundary
     # Reference is shapefile
@@ -325,70 +321,61 @@ def crop(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
         # define box
         bbox = box(minx, miny, maxx, maxy)
         poly_bound = gpd.GeoDataFrame({'geometry': [bbox]}, crs=reference.crs)
+
     # Reference is raster
     elif isinstance(reference, rasterio.DatasetReader):
         minx, miny, maxx, maxy = reference.bounds
         # define box
         bbox = box(minx, miny, maxx, maxy)
         poly_bound = gpd.GeoDataFrame({'geometry': [bbox]}, crs=reference.crs)
-    # Reference is array
-    elif isinstance(reference, np.ndarray):
-        if reference_meta is None:
-            raise ValueError('It requires metadata of reference')
-        else:
-            minx, miny = reference_meta['transform'] * (0, 0)
-            maxx, maxy = reference_meta['transform']* (reference_meta['width'], reference_meta['height'])
-            # define box
-            bbox = box(minx, miny, maxx, maxy)
-            poly_bound = gpd.GeoDataFrame({'geometry': [bbox]}, crs= reference_meta['crs'])
+
+    # Others
     else:
         raise ValueError('Reference data is not supported')   
-    
-    ### Define nodata
-    if nodata is None:
-        dataType = input_image.meta['dtype']
-        if dataType.lower() == 'int8':
-            nodata_value = 127
-        elif dataType.lower() == 'uint8':
-            nodata_value = 255
-        elif dataType.lower() == 'int16':
-            nodata_value = 32767
-        elif dataType.lower() == 'uint16':
-            nodata_value = 65535
-        elif dataType.lower() == 'int32':
-            nodata_value = 2147483647
-        elif dataType.lower() == 'uint32':
-            nodata_value == 4294967295
-        elif dataType.lower() == 'float16':
-            nodata_value = 65500
-        elif dataType.lower() == 'float32':
-            nodata_value == 999999
-        else:
-            nodata_value == 0
-    else:
-        nodata_value = nodata    
-    
+
     ### Invert crop
     if invert is True:
-        clipped, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=True, nodata=-999999)
+        clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= np.nan)
     else:
-        clipped, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, nodata=-999999)
+        clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= np.nan)
 
-    # Define metadata
-    meta  = input_image.meta
+    # Update metadata
+    meta  = input.meta
     meta.update({
         'height': clipped.shape[1],
         'width': clipped.shape[2],
         'transform': geotranform,
         'dtype': np.float32,
-        'nodata': nodata_value})
+        'nodata': np.nan
+        })
     
-    # Write output
-    if output is not None:
-        writeRaster(clipped, output, meta)
-    else:
-        return clipped, meta
+    # Convert array to raster
+    clipped_raster = array2raster(clipped, meta)
 
+    return clipped_raster
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Here
 # =========================================================================================== #
 #              Mask raster using shapefile or another image
 # =========================================================================================== #
@@ -513,49 +500,31 @@ def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Opti
 # =========================================================================================== #
 #              Preprojection raster image 
 # =========================================================================================== #
-def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='near', input_meta: Optional[Dict]=None, res: Optional[float]=None, output: Optional[AnyStr]=None):
-    """Reproject raster data to a new projection and resample (if required)
+def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='near', res: Optional[float]=None):
+    """
+    Reprojects and resamples a given raster image to a specified coordinate reference system (CRS) and resolution.
 
     Args:
-        input (DatasetReader | np.ndarray): Input rasterio image or data array
-        reference (AnyStr, optional): Reference data of even another image or 'crs' string, e.g., 'EPSG:4326'. Defaults to None.
-        method (AnyStr, optional): Resampling method (if changing resolution), optional, default method is 'nearest neighbor', other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average). Defaults to 'near'.
-        input_meta (Dict, optional): Required when input is data array. Defaults to None.
-        res (float, optional): Resolution of the output in degree or meters depends on the output crs. Defaults to None.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+        input (rasterio.io.DatasetReader): The input raster image to be reprojected.
+        reference (Optional[AnyStr]): The reference CRS for reprojection. It can be a string (e.g., 'EPSG:4326') or a rasterio DatasetReader object. If None, the input CRS is used.
+        method (Optional[AnyStr]): The resampling method to use. Default is 'near'. Supported methods include 'nearest', 'average', 'max', 'min', 'median', 'mode', 'q1', 'q3', 'rms', 'sum', 'cubic', 'cubic_spline', 'bilinear', 'gauss', 'lanczos'.
+        res (Optional[float]): The output resolution. If None, the input resolution is used.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image 
-
+        rasterio.io.DatasetReader: The reprojected raster image
+        
     """
     import rasterio
     from rasterio import warp
     import numpy as np
+    from .common import array2raster
 
     ### Define input image
-    # input is raster
-    if isinstance(input, rasterio.DatasetReader):
-        input_image = input.read()
-        meta = input.meta
-        # define boundary of input image
-        left, bottom, right, top = input.bounds
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if input_meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            input_image = input
-            meta = input_meta
-            left, bottom = meta['transform'] * (0, 0)
-            # define boundary of input image
-            right, top = meta['transform']* (meta['width'], meta['height'])
-    # Other input
-    else:
-        raise ValueError('Input data is not supported')
-
-    # If reference is not given, it will take the CRS from input
-    # the function now used for resampling
+    input_image = input.read()
+    meta = input.meta
+    left, bottom, right, top = input.bounds
+    
+    # If reference is not given, it will take the CRS from input. The function now used for resampling
     if reference is None:
         dst_crs = meta['crs']
         if res is None:
@@ -564,26 +533,27 @@ def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='
             xsize, ysize = res, res
         transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
 
-    else:
-        # string of EPSG
-        if isinstance(reference, str):
-            dst_crs = reference
-            if res is None:
-                raise ValueError('Please provide output resolution')
-            else:
-                xsize, ysize = res, res
-            transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
-
-        # Take all paras from reference image
-        elif isinstance(reference, rasterio.DatasetReader):
-            dst_crs = reference.crs
-            if res is None:
-                xsize, ysize = reference.res
-            else:
-                xsize, ysize = res, res
-            transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
+    # string of EPSG
+    elif isinstance(reference, str):
+        dst_crs = reference
+        if res is None:
+            raise ValueError('Please provide output resolution')
         else:
-            raise ValueError('Please define correct reference, it is CRS string or an image')
+            xsize, ysize = res, res
+        transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
+
+    # Take all paras from reference image
+    elif isinstance(reference, rasterio.DatasetReader):
+        dst_crs = reference.crs
+        if res is None:
+            xsize, ysize = reference.res
+        else:
+            xsize, ysize = res, res
+        transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
+    
+    # Other cases
+    else:
+        raise ValueError('Please define correct reference, it is CRS string or an image reference')
               
     # Update metadata
     meta_update = meta.copy()
@@ -628,17 +598,16 @@ def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='
     else:
         raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
 
-    # Running project 
-    projected = np.empty((input_image.shape[0], height, width), dtype= meta['dtype'])
+    # Running reproject 
+    projected_array = np.empty((input_image.shape[0], height, width), dtype= meta['dtype'])
     for band in range(0, input_image.shape[0]):
         ds = input_image[band, : , : ]
-        warp.reproject(source=ds, destination=projected[(band), :, :], src_transform= meta['transform'], dst_transform=transform, src_crs=meta['crs'], dst_crs=dst_crs, resampling= resampleAlg)
+        warp.reproject(source=ds, destination=projected_array[(band), :, :], src_transform= meta['transform'], dst_transform=transform, src_crs=meta['crs'], dst_crs=dst_crs, resampling= resampleAlg)
     
-    # Write output
-    if output is not None:
-        writeRaster(projected, output, meta_update)
-    else:
-        return projected, meta_update
+    # Convert array back to raster
+    reprojected = array2raster(projected_array, meta_update)
+    
+    return reprojected
 
 
 # =========================================================================================== #
@@ -663,7 +632,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
     import rasterio
     from rasterio import warp
     import numpy as np
-    import common
+    from .common import get_extent_local
 
     ### Define input image
     # input is raster
@@ -679,7 +648,7 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
         else:
             dataset = input
             meta = meta
-            left, bottom, right, top = common.getBounds(dataset, meta)
+            left, bottom, right, top = get_extent_local(dataset, meta)[0]
             if len(dataset.shape) > 2:
                 nbands = dataset.shape[0]
             else:
@@ -781,7 +750,7 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
     from rasterio import warp
     from rasterio.transform import from_bounds
     import numpy as np
-    import common
+    from .common import get_extent_local
     
     ### Define input image
     # input is raster
@@ -823,8 +792,8 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
         print('Ouput resolution will take the reference resolution')     
     
     # get general extent from two images
-    ext_input = common.getBounds(input_image, meta)
-    ext_reference = common.getBounds(reference_image, meta_reference)
+    ext_input = get_extent_local(input_image)[0]
+    ext_reference = get_extent_local(reference_image)[0]
     
     ext = ext_input
     ext = (
