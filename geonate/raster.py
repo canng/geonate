@@ -303,6 +303,7 @@ def crop(input, reference, invert=False):
         A clipped raster (raster): The cropped raster file.
         
     """
+    import rasterio
     import geopandas as gpd
     import numpy as np
     from rasterio import mask
