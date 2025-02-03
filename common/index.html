@@ -1013,7 +1013,7 @@
   <tbody>
       <tr>
         <td><code>array</code></td>
-        <td><code>np.ndarray</code></td>
+        <td><code>array</code></td>
         <td><p>The input data array.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -1035,7 +1035,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>rasterio.io.DatasetReader</code></td>
+      <td><code>Local raster file (raster)</code></td>
       <td><p>The rasterio object stored in memory.</p></td>
     </tr>
   </tbody>
@@ -1047,11 +1047,11 @@
 <span class="sd">    Convert a numpy array and metadata to a rasterio object stored in memory.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        array (np.ndarray): The input data array.</span>
+<span class="sd">        array (array): The input data array.</span>
 <span class="sd">        meta (Dict): The metadata dictionary.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        rasterio.io.DatasetReader: The rasterio object stored in memory.</span>
+<span class="sd">        Local raster file (raster): The rasterio object stored in memory.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryFile</span>
@@ -1108,7 +1108,7 @@
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame</code></td>
+        <td><code>raster | shapefile</code></td>
         <td><p>A geospatial object with a 'bounds' attribute that defines the spatial extent.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -1138,7 +1138,7 @@
 <span class="sd">    Computes the center latitude and longitude of a given geospatial input.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (rasterio.io.DatasetReader or geopandas.geodataframe.GeoDataFrame): A geospatial object with a &#39;bounds&#39; attribute that defines the spatial extent.</span>
+<span class="sd">        input (raster | shapefile): A geospatial object with a &#39;bounds&#39; attribute that defines the spatial extent.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        tuple: A tuple containing:</span>
@@ -1529,7 +1529,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>numeric</code></td>
+      <td><code>Distance length (numeric | float)</code></td>
       <td><p>Distance in meters corresponding to the input degree</p></td>
     </tr>
   </tbody>
@@ -1544,7 +1544,7 @@
 <span class="sd">        latitude (numeric, optional): Latitude of the location. If latitude is None, the location is assumed near the Equator. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numeric: Distance in meters corresponding to the input degree</span>
+<span class="sd">        Distance length (numeric | float): Distance in meters corresponding to the input degree</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -1625,7 +1625,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>pandas dataframe</code></td>
+      <td><code>Dataframe (pandas datafram)</code></td>
       <td><p>An empty filled with NA or user-defined number (e.g., 0)</p></td>
     </tr>
   </tbody>
@@ -1642,7 +1642,7 @@
 <span class="sd">        name (list, optional): Names of columns, if not given, it will return default as number of column. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        pandas dataframe: An empty filled with NA or user-defined number (e.g., 0)</span>
+<span class="sd">        Dataframe (pandas datafram): An empty filled with NA or user-defined number (e.g., 0)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -2162,7 +2162,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>list</code></td>
+      <td><code>A string list (list)</code></td>
       <td><p>A list of file paths</p></td>
     </tr>
   </tbody>
@@ -2179,7 +2179,7 @@
 <span class="sd">        full_name (bool, optional): Whether returning full name with path detail or only file name. Defaults to True.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        list: A list of file paths</span>
+<span class="sd">        A string list (list): A list of file paths</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -2273,7 +2273,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>numeric</code></td>
+      <td><code>Degree (float)</code></td>
       <td><p>Degree corresponding to the distance length</p></td>
     </tr>
   </tbody>
@@ -2288,7 +2288,7 @@
 <span class="sd">        latitude (numeric, optional): Latitude presents location. If latitude is None, the location is assumed near Equator. Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numeric: Degree corresponding to the distance length</span>
+<span class="sd">        Degree (float): Degree corresponding to the distance length</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -2335,8 +2335,8 @@
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>DatasetReader | np.ndarray</code></td>
-        <td><p>Rasterio image or data array</p></td>
+        <td><code>raster | array</code></td>
+        <td><p>Raster image or data array</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
@@ -2357,7 +2357,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>numeric</code></td>
+      <td><code>Min and Max values (numeric)</code></td>
       <td><p>Return 2 numbers of minvalue and maxvalue</p></td>
     </tr>
   </tbody>
@@ -2368,11 +2368,11 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate maximum and minimum values of raster or array</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (DatasetReader | np.ndarray): Rasterio image or data array</span>
+<span class="sd">        input (raster | array): Raster image or data array</span>
 <span class="sd">        digit (int, optional): Precise digit number. Defaults to 3.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numeric: Return 2 numbers of minvalue and maxvalue</span>
+<span class="sd">        Min and Max values (numeric): Return 2 numbers of minvalue and maxvalue</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
@@ -2432,7 +2432,7 @@
   <tbody>
       <tr>
         <td><code>inputArray</code></td>
-        <td><code>numpy.ndarray</code></td>
+        <td><code>array</code></td>
         <td><p>The input 3-dimensional array to be reshaped.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -2454,7 +2454,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>numpy.ndarray</code></td>
+      <td><code>Reshape array (array)</code></td>
       <td><p>The reshaped array.</p></td>
     </tr>
   </tbody>
@@ -2466,11 +2466,11 @@
 <span class="sd">    Reshapes a 3-dimensional numpy array between &#39;image&#39; and &#39;raster&#39; formats.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">        inputArray (numpy.ndarray): The input 3-dimensional array to be reshaped.</span>
+<span class="sd">        inputArray (array): The input 3-dimensional array to be reshaped.</span>
 <span class="sd">        mode (str): The mode to reshape the array to. &#39;image&#39; or &#39;img&#39; reshapes to (height, width, bands), &#39;raster&#39; or &#39;r&#39; reshapes to (bands, height, width). Default is &#39;image&#39;.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        numpy.ndarray: The reshaped array.</span>
+<span class="sd">        Reshape array (array): The reshaped array.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>

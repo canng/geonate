@@ -1067,13 +1067,13 @@
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td></td>
+        <td><code>raster</code></td>
         <td><p>The input raster file.</p></td>
         <td><em>required</em></td>
       </tr>
       <tr>
         <td><code>reference</code></td>
-        <td></td>
+        <td><code>shapefile | raster</code></td>
         <td><p>The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -1095,7 +1095,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><code>clipped_raster</code></td>
+      <td><code>A clipped raster (raster)</code></td>
       <td><p>The cropped raster file.</p></td>
     </tr>
   </tbody>
@@ -1107,14 +1107,15 @@
 <span class="sd">    Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input: The input raster file.</span>
-<span class="sd">        reference: The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.</span>
+<span class="sd">        input (raster): The input raster file.</span>
+<span class="sd">        reference (shapefile | raster): The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.</span>
 <span class="sd">        invert (bool): If True, inverts the crop to mask out the area within the boundary. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        clipped_raster: The cropped raster file.</span>
+<span class="sd">        A clipped raster (raster): The cropped raster file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">mask</span>
@@ -1498,9 +1499,41 @@ ndarray: X, y Data arrays for training model</p></td>
     <div class="doc doc-contents ">
 
       <p>Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.</p>
-      <p>input (list): List of file paths to the input raster files or rasterio DatasetReader objects.</p>
-      <p>rasterio.io.DatasetReader: Stacked raster image.</p>
 
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>list</code></td>
+        <td><p>List of file paths to the input raster files or rasterio DatasetReader objects.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Stacked raster (raster)</code></td>
+      <td><p>Stacked raster image.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">layestack</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
@@ -1508,10 +1541,10 @@ ndarray: X, y Data arrays for training model</p></td>
 <span class="sd">    Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.</span>
 
 <span class="sd">    Parameters:</span>
-<span class="sd">    input (list): List of file paths to the input raster files or rasterio DatasetReader objects.</span>
+<span class="sd">        input (list): List of file paths to the input raster files or rasterio DatasetReader objects.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">    rasterio.io.DatasetReader: Stacked raster image.</span>
+<span class="sd">        Stacked raster (raster): Stacked raster image.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -2031,7 +2064,7 @@ metadata: Metedata of the image</p></td>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>AnyStr</code></td>
+        <td><code>list</code></td>
         <td><p>List of input raster files.</p></td>
         <td><em>required</em></td>
       </tr>
@@ -2047,22 +2080,22 @@ metadata: Metedata of the image</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>merged_raster</code></td>
+      <td><code>A merged raster (raster)</code></td>
       <td><p>The merged raster file.</p></td>
     </tr>
   </tbody>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merges multiple raster files into a single raster file by computing the average values at overlapped areas.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (AnyStr): List of input raster files.</span>
+<span class="sd">        input (list): List of input raster files.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        merged_raster: The merged raster file.</span>
+<span class="sd">        A merged raster (raster): The merged raster file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">merge</span> 
@@ -2148,6 +2181,21 @@ metadata: Metedata of the image</p></td>
       </tr>
   </tbody>
 </table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>None</code></td>
+      <td><p>The function does not return any local variable. It writes raster file to local drive.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>geonate/raster.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mergeVRT</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -2158,6 +2206,9 @@ metadata: Metedata of the image</p></td>
 <span class="sd">        output (AnyStr): Path of output tif file</span>
 <span class="sd">        compress (bool, optional): Whether compress the output data or not. Defaults to True.</span>
 <span class="sd">        silent (bool, optional): Show or do not show file processing log. Defaults to True.</span>
+
+<span class="sd">    Return:</span>
+<span class="sd">        None: The function does not return any local variable. It writes raster file to local drive.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -2499,7 +2550,7 @@ metadata: Metedata of the image</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>Object</code></td>
+      <td><code>Raster object (raster)</code></td>
       <td><p>Rasterio RasterReader object</p></td>
     </tr>
   </tbody>
@@ -2515,7 +2566,7 @@ metadata: Metedata of the image</p></td>
 <span class="sd">        **kwargs (optional): All parameters in rasterio.open()</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Object: Rasterio RasterReader object</span>
+<span class="sd">        Raster object (raster): Rasterio RasterReader object</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>    
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
@@ -3277,7 +3328,7 @@ metadata: Metedata of the image</p></td>
   </thead>
   <tbody>
     <tr>
-      <td><code>geodataframe</code></td>
+      <td><code>Shapefile (geodataframe)</code></td>
       <td><p>Geodataframe of shapefile with attributes from geopandas object</p></td>
     </tr>
   </tbody>
@@ -3293,7 +3344,7 @@ metadata: Metedata of the image</p></td>
 <span class="sd">        **kwargs (optional): All parameters in gpd.read_file()</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        geodataframe: Geodataframe of shapefile with attributes from geopandas object</span>
+<span class="sd">        Shapefile (geodataframe): Geodataframe of shapefile with attributes from geopandas object</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
@@ -3344,7 +3395,7 @@ metadata: Metedata of the image</p></td>
   <tbody>
       <tr>
         <td><code>input</code></td>
-        <td><code>rasterio.DatasetReader | np.ndarray</code></td>
+        <td><code>raster | array</code></td>
         <td><p>Raster or Data array in form of [band, height, width]</p></td>
         <td><em>required</em></td>
       </tr>
@@ -3389,7 +3440,7 @@ metadata: Metedata of the image</p></td>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Write raster Geotif from Raster or Data Array using Rasterio</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        input (rasterio.DatasetReader | np.ndarray): Raster or Data array in form of [band, height, width]</span>
+<span class="sd">        input (raster | array): Raster or Data array in form of [band, height, width]</span>
 <span class="sd">        output (AnyStr): Output file path</span>
 <span class="sd">        meta (Dict, optional): Rasterio profile settings needed when input is dataArray. Defaults to None.</span>
 <span class="sd">        compress (AnyStr, optional): Compression algorithm [&#39;lzw&#39;, &#39;deflate&#39;]. Defaults to &#39;lzw&#39;.</span>
