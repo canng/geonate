@@ -719,8 +719,10 @@ def array2raster(array, meta: Dict):
     with MemoryFile() as memfile:
         with memfile.open(**meta) as dataset:
             dataset.write(array, 1 if array.ndim == 2 else None)
+        
         return memfile.open()
     
+
 # =========================================================================================== #
 #              Reshapes a 3-dimensional numpy array between 'image' and 'raster' formats.
 # =========================================================================================== #
