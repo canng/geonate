@@ -709,6 +709,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#geonate.common.unique_value" class="md-nav__link">
+    <span class="md-ellipsis">
+      unique_value()
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -938,6 +947,15 @@
   <a href="#geonate.common.reshape_raster" class="md-nav__link">
     <span class="md-ellipsis">
       reshape_raster()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.common.unique_value" class="md-nav__link">
+    <span class="md-ellipsis">
+      unique_value()
     </span>
   </a>
   
@@ -1371,11 +1389,11 @@
         <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">first_element</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">):</span>
             <span class="n">datatype</span> <span class="o">=</span> <span class="n">first_element</span>
             <span class="n">consistency</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input have data types of </span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checking datatype consistency</span><span class="se">\n</span><span class="s2">Input have data types of </span><span class="si">{</span><span class="n">datatype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">datatype</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">consistency</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Input have different data types&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Checking datatype consistency</span><span class="se">\n</span><span class="s2">Input have different data types&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">consistency</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">datatype</span><span class="p">)</span>
 </code></pre></div>
@@ -1894,7 +1912,7 @@
 
         <span class="c1"># Other cases</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input have different data extensions&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Checking file extension consistency</span><span class="se">\n</span><span class="s1">Input have different data extensions&#39;</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -2490,6 +2508,119 @@
     <span class="c1">#Other cases</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data array must have 3 dimensions&#39;</span><span class="p">)</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.common.unique_value" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">unique_value</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="s1">&#39;frequency&#39;</span><span class="p">)</span></code>
+
+
+<a href="#geonate.common.unique_value" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate unique pixel values from a raster image or numpy array, optionally with their frequencies, and sort them.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>raster| array</code></td>
+        <td><p>Input raster image or numpy array.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>frequency</code></td>
+        <td><code>bool</code></td>
+        <td><p>If True, return the frequency of each unique value. Defaults to True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>sort</code></td>
+        <td><code>str</code></td>
+        <td><p>Sorting method for the unique values. Options are 'frequency' or 'value'. Defaults to 'frequency'.</p></td>
+        <td><code>&#39;frequency&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>array or dataframe</code></td>
+      <td><p>Array with unique value if frequency is False, otherwise it returns DataFrame with unique values and frequencies.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/common.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">unique_value</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sort</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;frequency&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate unique pixel values from a raster image or numpy array, optionally with their frequencies, and sort them.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (raster| array): Input raster image or numpy array.</span>
+<span class="sd">        frequency (bool, optional): If True, return the frequency of each unique value. Defaults to True.</span>
+<span class="sd">        sort (str, optional): Sorting method for the unique values. Options are &#39;frequency&#39; or &#39;value&#39;. Defaults to &#39;frequency&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        array or dataframe: Array with unique value if frequency is False, otherwise it returns DataFrame with unique values and frequencies.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">values</span>
+
+    <span class="c1"># Check input data</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Extract all values from raster or array</span>
+    <span class="n">pixel_values</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">na_rm</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Generate frequency and return</span>
+    <span class="k">if</span> <span class="n">frequency</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="n">unique_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">unique_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">pixel_values</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">unique_values</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Value&#39;</span><span class="p">,</span> <span class="s1">&#39;Frequency&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">sort</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;frequency&quot;</span> <span class="ow">or</span> <span class="n">sort</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;f&quot;</span><span class="p">:</span>
+            <span class="n">unique_values</span> <span class="o">=</span> <span class="n">unique_values</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">sort</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;values&quot;</span> <span class="ow">or</span> <span class="n">sort</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span> <span class="ow">or</span> <span class="n">sort</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;v&quot;</span><span class="p">:</span>
+            <span class="n">unique_values</span> <span class="o">=</span> <span class="n">unique_values</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Value&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sort method is not supported [&quot;frequency&quot;, &quot;value]&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">unique_values</span>
 </code></pre></div>
         </details>
     </div>
