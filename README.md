@@ -7,7 +7,7 @@
 [![image](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![image](https://img.shields.io/readthedocs/geetools?logo=readthedocs&logoColor=white)](https://canng.github.io/geonate/)
 
-<img src="/docs/assets/logo_geonate.png" alt="logo" align="right" width="150"/> 
+<img src="/docs/assets/logo_geonate.png" alt="logo" align="right" width="200"/> 
 
 <!-- #region -->
 
