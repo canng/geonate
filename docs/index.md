@@ -9,7 +9,7 @@
 [![image](https://img.shields.io/readthedocs/geetools?logo=readthedocs&logoColor=white)](https://canng.github.io/geonate/)
 
 
-<img src="./assets/logo_geonate.png" alt="logo" align="right" width="150"/> 
+<img src="./assets/logo_geonate.png" alt="logo" align="right" width="200"/> 
 
 <hr>
 

@@ -290,14 +290,15 @@ def merge(input: list):
 # =========================================================================================== #
 #              Crop raster using shapefile or another image
 # =========================================================================================== #
-def crop(input, reference, invert=False):
+def crop(input, reference, invert=False, nodata=True):
     """
     Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.
 
     Args:
         input (raster): The input raster file.
         reference (shapefile | raster): The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the crop boundary.
-        invert (bool): If True, inverts the crop to mask out the area within the boundary. Defaults to False.
+        invert (bool, optional): If True, inverts the crop to mask out the area within the boundary. Defaults to False.
+        nodata (bool, optional): If True, handles nodata values by converting the input to float32 and setting nodata to NaN. Defaults to True.
 
     Returns:
         A clipped raster (raster): The cropped raster file.
@@ -312,11 +313,15 @@ def crop(input, reference, invert=False):
     from shapely.geometry import box
     from .common import array2raster
     
-    # Convert datatype of input to float32 to store NA value
-    arr = input.read().astype(np.float32)
-    meta = input.meta
-    meta.update({'dtype': np.float32})
-    input_image = array2raster(arr, meta)
+    # Condition to process nodata
+    if nodata is True:
+        # Convert datatype of input to float32 to store NA value
+        arr = input.read().astype(np.float32)
+        meta = input.meta
+        meta.update({'dtype': np.float32})
+        input_image = array2raster(arr, meta)
+    else: 
+        input_image = input
 
     ### Define boundary
     # Reference is shapefile
@@ -338,214 +343,189 @@ def crop(input, reference, invert=False):
         raise ValueError('Reference data is not supported')   
 
     ### Invert crop
-    if invert is True:
-        clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= np.nan)
+    #### Condition for nodata
+    if nodata is True:
+        if invert is True:
+            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= np.nan)
+        else:
+            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= np.nan)
+        
+        # Update metadata
+        meta  = input.meta
+        meta.update({
+            'height': clipped.shape[1],
+            'width': clipped.shape[2],
+            'transform': geotranform,
+            'dtype': np.float32,
+            'nodata': np.nan
+            })
+    #
     else:
-        clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= np.nan)
-
-    # Update metadata
-    meta  = input.meta
-    meta.update({
-        'height': clipped.shape[1],
-        'width': clipped.shape[2],
-        'transform': geotranform,
-        'dtype': np.float32,
-        'nodata': np.nan
-        })
-    
+        if invert is True:
+            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= 0)
+        else:
+            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= 0)
+        
+        # Update metadata
+        meta  = input.meta
+        meta.update({
+            'height': clipped.shape[1],
+            'width': clipped.shape[2],
+            'transform': geotranform,
+            'nodata': 0
+            })
+   
     # Convert array to raster
     clipped_raster = array2raster(clipped, meta)
 
     return clipped_raster
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Here
 # =========================================================================================== #
 #              Mask raster using shapefile or another image
 # =========================================================================================== #
-def mask(input, reference, input_meta: Optional[Dict]=None, reference_meta: Optional[Dict]=None, invert=False, nodata=0, output: Optional[AnyStr]=None):
-    """Mask raster opened by rasterio by shapefile vector or another image
+def mask(input, reference, invert=False, nodata=True):
+    """ 
+    Masks a raster file based on a reference shapefile or raster file. Optionally inverts the mask.
 
     Args:
-        input (DatasetReader | np.ndarray): Image or data array input that need to crop
-        reference (DatasetReader | GeoDataFrame | np.ndarray): Region of interest, shapefile opened by geopandas or another image or data array to crop
-        input_meta (Dict, optional): Metadata when input is data array. Defaults to None.
-        reference_meta (Dict, optional): Metadata when reference is data array. Defaults to None.
-        invert (bool, optional): If True, pixels inside shapefile will be masked. Defaults to False.
-        nodata (int, optional): Any number to fill nodata pixels outside the ROI. Defaults to 0.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+        input (raster): The input raster file.
+        reference (shapefile | raster): The reference shapefile (GeoDataFrame) or raster file (DatasetReader) to define the mask boundary.
+        invert (bool, optional): If True, inverts the mask to mask out the area within the boundary. Defaults to False.
+        nodata (bool, optional): If True, handles nodata values by converting the input to float32 and setting nodata to NaN. Defaults to True.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image 
-
+        A clipped and masked raster (raster): The cropped and masked raster file.
+        
     """
-    import os
+    import numpy as np
     import rasterio
     import shapely
     from shapely.geometry import mapping
     import geopandas as gpd
-    import numpy as np
+    from .common import array2raster
 
-    ### Define input image
-    # input is raster
-    if isinstance(input, rasterio.DatasetReader):
-        input_image = input
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if input_meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            if not os.path.exists('./tmp/'):
-                os.makedirs('./tmp/')
-            writeRaster(input, './tmp/tmp.tif', input_meta)
-            input_image = raster.rast('./tmp/tmp.tif')
-    # Other input
-    else:
-        raise ValueError('Input data is not supported')
-    
-    ### Define boundary
+    ##########################################
+    #### Define boundary 
     if (isinstance(reference, gpd.GeoDataFrame)):
         poly = reference
         transform_poly = reference.transform
         crs_poly = reference.crs
-    else:
-        if isinstance(reference, rasterio.DatasetReader):
-            ds_reference = reference.read(1)
-            transform_poly = reference.meta['transform']
-            crs_poly = reference.meta['crs']
-        elif isinstance(reference, np.ndarray):
-            ds_reference = reference[1, : , : ]
-            transform_poly = reference_meta['transform']
-            crs_poly = reference_meta['crs']
-        else:
-            raise ValueError('Data is not supported')
+
+    # Raster format
+    elif isinstance(reference, rasterio.DatasetReader):
+        ds_reference = reference.read(1)                                        # Extract only first band, transform, and crs
+        transform_poly = reference.meta['transform']
+        crs_poly = reference.meta['crs']
+
+        # Create mask from all value different from Nodata
+        masked = np.where(np.isnan(ds_reference), np.nan, 1)            # Replace values different than NA by 1
+        masked_convert = masked.astype(np.float32)                             # Redefine data type of float32 to store n.nan
         
-        masked = np.where(np.isnan(ds_reference), np.nan, 1)
-        masked_convert = masked.astype(np.float32)
-        
+        # Create generator that yields (geometry, value) pairs for each shape found in the masked_convert
         shp = rasterio.features.shapes(masked_convert, mask= ~np.isnan(masked_convert), transform= transform_poly)
         poly = []
         values = []
 
+        # Iterate over mask = 1, convert to shapely geometry and append 
         for shape, value in shp:
             if value == 1:
-                poly.append(shapely.geometry.shape(shape))
+                poly.append(shapely.geometry.shape(shape))                         # convert a GeoJSON-like dictionary object into a Shapely geometry object
                 values.append(value)
-
+        
+        # Create poly from mask
         poly = gpd.GeoDataFrame({'geometry': poly, 'value': values})
         poly.set_crs(crs_poly.to_string(), inplace=True)
-    
-    ### Define nodata
-    if nodata is None:
-        dataType = input_image.meta['dtype']
-        if dataType.lower() == 'int8':
-            nodata_value = 127
-        elif dataType.lower() == 'uint8':
-            nodata_value = 255
-        elif dataType.lower() == 'int16':
-            nodata_value = 32767
-        elif dataType.lower() == 'uint16':
-            nodata_value = 65535
-        elif dataType.lower() == 'int32':
-            nodata_value = 2147483647
-        elif dataType.lower() == 'uint32':
-            nodata_value == 4294967295
-        elif dataType.lower() == 'float16':
-            nodata_value = 65500
-        elif dataType.lower() == 'float32':
-            nodata_value == 999999
-        else:
-            nodata_value == 0
-    else:
-        nodata_value = nodata        
-    
-    ### Invert mask
-    if invert is True:
-        masked_img, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly.geometry.apply(mapping), crop=True, invert=True, nodata=nodata_value)
-    else:
-        masked_img, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly.geometry.apply(mapping), crop=True, nodata= nodata_value)
 
-    meta  = input_image.meta
-    meta.update({
-        'height': masked_img.shape[1],
-        'width': masked_img.shape[2],
-        'transform': geotranform,
-        'dtype': np.float32,
-        'nodata': nodata_value})
-    
-    # Write output
-    if output is not None:
-        writeRaster(masked_img, output, meta)
     else:
-        return masked_img, meta
+        raise ValueError('Reference data is not supported')
     
+    ##########################################
+    ### Define nodata
+    if nodata is True:
+        # Convert datatype of input to float32 to store NA value
+        arr = input.read().astype(np.float32)
+        meta = input.meta
+        meta.update({'dtype': np.float32})
+        input_image = array2raster(arr, meta)
+
+        ### Invert mask
+        if invert is True:
+            masked_img, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly.geometry.apply(mapping), crop=True, invert=True, nodata=np.nan)
+        else:
+            masked_img, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly.geometry.apply(mapping), crop=True, nodata= np.nan)
+
+        meta  = input_image.meta
+        meta.update({
+            'height': masked_img.shape[1],
+            'width': masked_img.shape[2],
+            'transform': geotranform,
+            'dtype': np.float32,
+            'nodata': np.nan})
+
+    else: 
+        input_image = input
+
+        ### Invert mask
+        if invert is True:
+            masked_img, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly.geometry.apply(mapping), crop=True, invert=True, nodata= 0)
+        else:
+            masked_img, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly.geometry.apply(mapping), crop=True, nodata= 0)
+
+        meta  = input_image.meta
+        meta.update({
+            'height': masked_img.shape[1],
+            'width': masked_img.shape[2],
+            'transform': geotranform,
+            'nodata': 0})
+
+    ### Convert array back to raster         
+    masked_raster = array2raster(masked_img, meta)
     
+    return masked_raster
+
+
 # =========================================================================================== #
 #              Preprojection raster image 
 # =========================================================================================== #
-def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='near', res: Optional[float]=None):
+def reproject(input, reference, method: Optional[AnyStr]='near', res: Optional[float]=None):
     """
     Reprojects and resamples a given raster image to a specified coordinate reference system (CRS) and resolution.
 
     Args:
-        input (rasterio.io.DatasetReader): The input raster image to be reprojected.
-        reference (Optional[AnyStr]): The reference CRS for reprojection. It can be a string (e.g., 'EPSG:4326') or a rasterio DatasetReader object. If None, the input CRS is used.
-        method (Optional[AnyStr]): The resampling method to use. Default is 'near'. Supported methods include 'nearest', 'average', 'max', 'min', 'median', 'mode', 'q1', 'q3', 'rms', 'sum', 'cubic', 'cubic_spline', 'bilinear', 'gauss', 'lanczos'.
-        res (Optional[float]): The output resolution. If None, the input resolution is used.
+        input (raster): The input raster image to be reprojected.
+        reference (raster | shapefile): The reference CRS for reprojection. It can be a string (e.g., 'EPSG:4326') or a rasterio DatasetReader object. If None, the input CRS is used.
+        method (AnyStr, optional): The resampling method to use. Default is 'near'. Supported methods include 'nearest', 'average', 'max', 'min', 'median', 'mode', 'q1', 'q3', 'rms', 'sum', 'cubic', 'cubic_spline', 'bilinear', 'gauss', 'lanczos'.
+        res (numeric, optional): The output resolution. If None, the input resolution is used.
 
     Returns:
-        rasterio.io.DatasetReader: The reprojected raster image
+        raster: The reprojected raster image
         
     """
+    import numpy as np
     import rasterio
     from rasterio import warp
-    import numpy as np
     from .common import array2raster
-
-    ### Define input image
+    
+    # *********************************************
+    # Define input image
     input_image = input.read()
     meta = input.meta
     left, bottom, right, top = input.bounds
     
-    # If reference is not given, it will take the CRS from input. The function now used for resampling
-    if reference is None:
-        dst_crs = meta['crs']
-        if res is None:
-            xsize, ysize = xsize, ysize = meta['transform'][0], meta['transform'][0]
-        else:
-            xsize, ysize = res, res
-        transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
-
-    # string of EPSG
-    elif isinstance(reference, str):
+    # *********************************************
+    # Determine parameters and new transform
+    # Reference string of EPSG
+    if isinstance(reference, str):
         dst_crs = reference
         if res is None:
             raise ValueError('Please provide output resolution')
         else:
             xsize, ysize = res, res
-        transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
-
+        # Transform to new transform
+        transform_new, width_new, height_new = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, \
+                                                                                                                                                height=meta['height'], width=meta['width'], \
+                                                                                                                                                resolution=(xsize, ysize), \
+                                                                                                                                                left=left, bottom=bottom, right=right, top=top)
     # Take all paras from reference image
     elif isinstance(reference, rasterio.DatasetReader):
         dst_crs = reference.crs
@@ -553,21 +533,128 @@ def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='
             xsize, ysize = reference.res
         else:
             xsize, ysize = res, res
-        transform, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, height=meta['height'], width=meta['width'], resolution=(xsize, ysize), left=left, bottom=bottom, right=right, top=top)
-    
+        # Transform to new transform
+        transform_new, width_new, height_new = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=dst_crs, \
+                                                                                                                                                height=meta['height'], width=meta['width'], \
+                                                                                                                                                resolution=(xsize, ysize), \
+                                                                                                                                                left=left, bottom=bottom, right=right, top=top)
     # Other cases
     else:
         raise ValueError('Please define correct reference, it is CRS string or an image reference')
-              
+
+    # *******************************************
     # Update metadata
     meta_update = meta.copy()
     meta_update.update({
         'crs': dst_crs,
-        'transform': transform,
-        'width': width,
-        'height': height,
+        'transform': transform_new,
+        'width': width_new,
+        'height': height_new,
     })
+    # *******************************************
+    # Resampling method
+    if method.lower() == 'near' or method.lower() == 'nearest':
+        resampleAlg = warp.Resampling.nearest
+    elif method.lower() == 'mean' or method.lower() == 'average':
+        resampleAlg = warp.Resampling.average
+    elif method.lower() == 'max':
+        resampleAlg = warp.Resampling.max
+    elif method.lower() == 'min':
+        resampleAlg = warp.Resampling.min
+    elif (method.lower() == 'median') or (method.lower() == 'med'):
+        resampleAlg = warp.Resampling.med
+    elif method.lower() == 'mode':
+        resampleAlg = warp.Resampling.mode
+    elif method.lower() == 'q1':
+        resampleAlg = warp.Resampling.q1
+    elif method.lower() == 'q3':
+        resampleAlg = warp.Resampling.q3
+    elif method.lower() == 'rsm':
+        resampleAlg = warp.Resampling.rms
+    elif method.lower() == 'sum':
+        resampleAlg = warp.Resampling.sum
+    elif method.lower() == 'cubic':
+        resampleAlg = warp.Resampling.cubic
+    elif method.lower() == 'spline':
+        resampleAlg = warp.Resampling.cubic_spline
+    elif method.lower() == 'bilinear':
+        resampleAlg = warp.Resampling.bilinear
+    elif method.lower() == 'gauss':
+        resampleAlg = warp.Resampling.gauss
+    elif method.lower() == 'lanczos':
+        resampleAlg = warp.Resampling.lanczos
+    else:
+        raise ValueError('The resampling method is not supported, available methods rasterio.warp.Resampling')
 
+    # ***************************************
+    # Running reproject 
+    projected_array = np.empty((input_image.shape[0], height_new, width_new), dtype= meta['dtype'])
+    for band in range(0, input_image.shape[0]):
+        ds = input_image[band, : , : ]
+        warp.reproject(source=ds, destination=projected_array[(band), :, :], \
+                       src_transform= meta['transform'], dst_transform=transform_new, \
+                        src_crs=meta['crs'], dst_crs=dst_crs, \
+                        resampling= resampleAlg)
+    
+    # *****************************************
+    # Convert array back to raster
+    reprojected = array2raster(projected_array, meta_update)
+    
+    return reprojected
+
+
+# =========================================================================================== #
+#              Resample raster image based on factor
+# =========================================================================================== #
+def resample(input, factor, mode='aggregate', method='near'):
+    """
+    Resample raster image based on factor
+
+    Args:
+        input (DatasetReader): Input rasterio image.
+        factor (numeric): Resampling factor compared to original image (e.g., 2, 4, 6).
+        mode (str, optional): Resample mode ["aggregate", "disaggregate"]. Defaults to 'aggregate'.
+        method (str, optional): Resampling method (e.g., 'nearest', 'cubic', 'bilinear', 'average'). Defaults to 'near'.
+
+    Returns:
+        raster: Resampled raster image.        
+
+    """
+    import rasterio
+    from rasterio import warp
+    import numpy as np
+    from .common import array2raster
+
+    # *****************************************
+    ### Define input image
+    # input is raster
+    if isinstance(input, rasterio.DatasetReader):
+        dataset = input.read()
+        meta = input.meta
+        left, bottom, right, top = input.bounds
+        nbands = input.count
+    # Other input
+    else:
+        raise ValueError('Input data is not supported')
+    
+    # *****************************************
+    #### Calculate new rows and columns
+    if (mode.lower() == 'aggregate') or (mode.lower() == 'agg') or (mode.lower() == 'a'):
+        new_height = meta['height'] // factor
+        new_width = meta['width'] // factor
+
+    elif (mode.lower() == 'disaggregate') or (mode.lower() == 'disagg') or (mode.lower() == 'd'):
+        new_height = meta['height'] * factor
+        new_width = meta['width'] * factor
+
+    else:
+        raise ValueError('Resample method is not supported ["aggregate", "disaggregate"]')
+
+    # *****************************************
+    # Calculate new transform
+    transform_new, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=meta['crs'], width=new_width, height=new_height, left=left, bottom=bottom, right=right, top=top)
+
+    # *****************************************
     # Resampling method
     if method.lower() == 'near' or method.lower() == 'nearest':
         resampleAlg = warp.Resampling.nearest
@@ -602,112 +689,8 @@ def reproject(input, reference:Optional[AnyStr]=None, method: Optional[AnyStr]='
     else:
         raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
 
-    # Running reproject 
-    projected_array = np.empty((input_image.shape[0], height, width), dtype= meta['dtype'])
-    for band in range(0, input_image.shape[0]):
-        ds = input_image[band, : , : ]
-        warp.reproject(source=ds, destination=projected_array[(band), :, :], src_transform= meta['transform'], dst_transform=transform, src_crs=meta['crs'], dst_crs=dst_crs, resampling= resampleAlg)
-    
-    # Convert array back to raster
-    reprojected = array2raster(projected_array, meta_update)
-    
-    return reprojected
-
-
-# =========================================================================================== #
-#              Matching two images to have the same boundary
-# =========================================================================================== #
-def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict]=None, output: Optional[AnyStr]=None):
-    """Resample raster image based on factor (not the target resolution)
-
-    Args:
-        input (DatasetReader | np.ndarray): Input rasterio image or data array
-        factor (numeric): Resampling factor compare to origin image (e.g., 2, 4, 6)
-        resample (AnyStr): Resample method ["aggregate", "disaggregate"]
-        method (str, optional): Resampling method (if changing resolution), optional, default method is 'nearest neighbor', other methods are at rasterio.Resampling. (e.g., nearest, cubic, bilinear, average). Defaults to 'near'.
-        meta (Dict, optional): Required metadata when input is data array. Defaults to None.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
-
-    Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image
-
-    """
-    import rasterio
-    from rasterio import warp
-    import numpy as np
-    from .common import get_extent_local
-
-    ### Define input image
-    # input is raster
-    if isinstance(input, rasterio.DatasetReader):
-        dataset = input.read()
-        meta = input.meta
-        left, bottom, right, top = input.bounds
-        nbands = input.count
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            dataset = input
-            meta = meta
-            left, bottom, right, top = get_extent_local(dataset, meta)[0]
-            if len(dataset.shape) > 2:
-                nbands = dataset.shape[0]
-            else:
-                nbands = 1
-    # Other input
-    else:
-        raise ValueError('Input data is not supported')
-    
-    #### Calculate new rows and columns
-    if (resample.lower() == 'aggregate') or (resample.lower() == 'agg') or (resample.lower() == 'a'):
-        new_height = meta['height'] // factor
-        new_width = meta['width'] // factor
-    elif (resample.lower() == 'disaggregate') or (resample.lower() == 'disagg') or (resample.lower() == 'd'):
-        new_height = meta['height'] * factor
-        new_width = meta['width'] * factor
-    else:
-        raise ValueError('Resample method is not supported ["aggregate", "disaggregate"]')
-
-    transform_new, width, height = warp.calculate_default_transform(src_crs=meta['crs'], dst_crs=meta['crs'], width=new_width, height=new_height, left=left, bottom=bottom, right=right, top=top)
-
-# Resampling method
-    if method.lower() == 'near' or method.lower() == 'nearest':
-        resampleAlg = warp.Resampling.nearest
-    elif method.lower() == 'mean' or method.lower() == 'average':
-        resampleAlg = warp.Resampling.average
-    elif method.lower() == 'max':
-        resampleAlg = warp.Resampling.max
-    elif method.lower() == 'min':
-        resampleAlg = warp.Resampling.min
-    elif (method.lower() == 'median') or (method.lower() == 'med'):
-        resampleAlg = warp.Resampling.med
-    elif method.lower() == 'mode':
-        resampleAlg = warp.Resampling.mode
-    elif method.lower() == 'q1':
-        resampleAlg = warp.Resampling.q1
-    elif method.lower() == 'q3':
-        resampleAlg = warp.Resampling.q3
-    elif method.lower() == 'rsm':
-        resampleAlg = warp.Resampling.rms
-    elif method.lower() == 'sum':
-        resampleAlg = warp.Resampling.sum
-    elif method.lower() == 'cubic':
-        resampleAlg = warp.Resampling.cubic
-    elif method.lower() == 'spline':
-        resampleAlg = warp.Resampling.cubic_spline
-    elif method.lower() == 'bilinear':
-        resampleAlg = warp.Resampling.bilinear
-    elif method.lower() == 'gauss':
-        resampleAlg = warp.Resampling.gauss
-    elif method.lower() == 'lanczos':
-        resampleAlg = warp.Resampling.lanczos
-    else:
-        raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
-
-    # Define the metadata for the destination raster
+    # *****************************************
+    # Define and Update the metadata for the destination raster
     metadata = meta.copy()
     metadata.update({
         'transform': transform_new,
@@ -716,38 +699,41 @@ def resample(input, factor, resample: AnyStr, method='near', meta: Optional[Dict
         'dtype': np.float32
     })
 
+    # *****************************************
+    # Run Resampling for each band
     resampled = np.empty((nbands, new_height, new_width), dtype=np.float32)
+
     for band in range(0, nbands):
         if nbands <= 1:
             ds = dataset
         else:
             ds = dataset[band, : , : ]
-        warp.reproject(source=ds, destination=resampled[band, :, :], src_transform= meta['transform'], dst_transform= transform_new, src_crs=meta['crs'], dst_crs=input.crs, resampling= resampleAlg)
 
-    # Write output
-    if output is not None:
-        writeRaster(resampled, output, metadata)
-    else:
-        return resampled, metadata
+        warp.reproject(source=ds, destination=resampled[band, :, :], \
+                       src_transform= meta['transform'], dst_transform= transform_new, \
+                        src_crs=meta['crs'], dst_crs=input.crs, resampling= resampleAlg)
+
+    # *****************************************
+    # Convert array to raster 
+    resampled_raster = array2raster(resampled, metadata)
+
+    return resampled_raster
   
 
 # =========================================================================================== #
 #              Matching two images to have the same boundary
 # =========================================================================================== #
-    
-def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=None, reference_meta: Optional[Dict]=None):
-    """Match input image to the reference image in terms of projection, resolution, and bound extent. It returns image within the bigger boundary.
+def match(input, reference, method='near'):
+    """
+    Match input image to the reference image in terms of projection, resolution, and bound extent. It returns image within the bigger boundary.
 
     Args:
-        input (DatasetReader | np.ndarray): Rasterio objective or data array needs to match 
-        reference (DatasetReader | np.ndarray): Rasterio object or data array taken as reference to match the input image
+        input (raster): Rasterio objective needs to match the reference.
+        reference (raster): Rasterio object taken as reference to match the input image.
         method (AnyStr, optional): String defines resampling method (if applicable) to resample if having different resolution (Method similar to resample). Defaults to 'near'.
-        input_meta (Dict, optional): Metadata of input required when input is data array. Defaults to None.
-        reference_meta (Dict, optional): Metadata of reference required when reference is data array. Defaults to None.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image
+        raster: Matched raster image with the same projection, resolution, and extent as the reference image.
 
     """
     import rasterio
@@ -755,209 +741,206 @@ def match(input, reference, method: AnyStr='near', input_meta: Optional[Dict]=No
     from rasterio.transform import from_bounds
     import numpy as np
     from .common import get_extent_local
+    from .raster import array2raster
     
+    # *****************************************
     ### Define input image
     # input is raster
     if isinstance(input, rasterio.DatasetReader):
         input_image = input.read()
         meta = input.meta
-    # input is array
-    elif isinstance(input, np.ndarray):
-        if input_meta is None:
-            raise ValueError('It requires metadata of input')
-        else:
-            input_image = input
-            meta = input_meta
     # Other input
     else:
         raise ValueError('Input data is not supported')
     
+    # *****************************************
     ### Define reference image
     if isinstance(reference, rasterio.DatasetReader):
         reference_image = reference.read()
         meta_reference = reference.meta
-    # input is array
-    elif isinstance(reference, np.ndarray):
-        if reference_meta is None:
-            raise ValueError('It requires metadata of reference')
-        else:
-            reference_image = reference
-            meta_reference = reference_meta
     # Other input
     else:
         raise ValueError('Input data is not supported')
     
-    ### Check some conditions
-    if meta["crs"] != meta_reference['crs']:
-        print('Input and reference images have different Projection')
-        print('Output projection will take the reference projection')
-    if meta['transform'][0] != meta_reference['transform'][0]:
-        print('Input and reference images have different resolution')
-        print('Ouput resolution will take the reference resolution')     
-    
-    # get general extent from two images
-    ext_input = get_extent_local(input_image)[0]
-    ext_reference = get_extent_local(reference_image)[0]
-    
-    ext = ext_input
-    ext = (
-        min(ext[0], ext_reference[0]),
-        min(ext[1], ext_reference[1]),
-        max(ext[2], ext_reference[2]),
-        max(ext[3], ext_reference[3])
-        )
-        
-    # calculate new height and width
-    resolution = meta_reference['transform'][0]    
-    width_new = int((ext[2]  - ext[0]) / resolution)
-    height_new = int((ext[3] - ext[1]) / resolution)
-    
-    # calculate new transform
-    transform_new = from_bounds(ext[0], ext[1], ext[2], ext[3], width_new, height_new)
-        
-    # Resampling method
-    if method.lower() == 'near' or method.lower() == 'nearest':
-        resampleAlg = warp.Resampling.nearest
-    elif method.lower() == 'mean' or method.lower() == 'average':
-        resampleAlg = warp.Resampling.average
-    elif method.lower() == 'max':
-        resampleAlg = warp.Resampling.max
-    elif method.lower() == 'min':
-        resampleAlg = warp.Resampling.min
-    elif (method.lower() == 'median') or (method.lower() == 'med'):
-        resampleAlg = warp.Resampling.med
-    elif method.lower() == 'mode':
-        resampleAlg = warp.Resampling.mode
-    elif method.lower() == 'q1':
-        resampleAlg = warp.Resampling.q1
-    elif method.lower() == 'q3':
-        resampleAlg = warp.Resampling.q3
-    elif method.lower() == 'rsm':
-        resampleAlg = warp.Resampling.rms
-    elif method.lower() == 'sum':
-        resampleAlg = warp.Resampling.sum
-    elif method.lower() == 'cubic':
-        resampleAlg = warp.Resampling.cubic
-    elif method.lower() == 'spline':
-        resampleAlg = warp.Resampling.cubic_spline
-    elif method.lower() == 'bilinear':
-        resampleAlg = warp.Resampling.bilinear
-    elif method.lower() == 'gauss':
-        resampleAlg = warp.Resampling.gauss
-    elif method.lower() == 'lanczos':
-        resampleAlg = warp.Resampling.lanczos
+    # *****************************************
+    ### Check CRS and Resolution
+    if (meta["crs"] != meta_reference['crs']) or (meta['transform'][0] != meta_reference['transform'][0]):
+        raise ValueError('Input and reference images have different Projection and Resolution')
+    # If having the same CRS and Resolution
     else:
-        raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
+        
+        # *****************************************
+        # Get general extent from two images
+        ext_input = get_extent_local(input)[0]
+        ext_reference = get_extent_local(reference)[0]
+        
+        ext = ext_input
+        ext = (
+            min(ext[0], ext_reference[0]),
+            min(ext[1], ext_reference[1]),
+            max(ext[2], ext_reference[2]),
+            max(ext[3], ext_reference[3])
+            )
+        
+        # *****************************************
+        # Calculate new height & width and new transform
+        resolution = meta_reference['transform'][0]    
+        width_new = int((ext[2]  - ext[0]) / resolution)
+        height_new = int((ext[3] - ext[1]) / resolution)
     
-    # Reproject to match
-    if len(input_image.shape) > 2:
-        nbands = input_image.shape[0]
-    else:
-        nbands = 1
-
-    matched = np.empty((nbands, height_new, width_new), dtype=np.float32)
-    for band in range(0, nbands):
-        if nbands <= 1:
-            ds = input_image
+        transform_new = from_bounds(ext[0], ext[1], ext[2], ext[3], width_new, height_new)
+        
+        # *****************************************
+        # Resampling method
+        if method.lower() == 'near' or method.lower() == 'nearest':
+            resampleAlg = warp.Resampling.nearest
+        elif method.lower() == 'mean' or method.lower() == 'average':
+            resampleAlg = warp.Resampling.average
+        elif method.lower() == 'max':
+            resampleAlg = warp.Resampling.max
+        elif method.lower() == 'min':
+            resampleAlg = warp.Resampling.min
+        elif (method.lower() == 'median') or (method.lower() == 'med'):
+            resampleAlg = warp.Resampling.med
+        elif method.lower() == 'mode':
+            resampleAlg = warp.Resampling.mode
+        elif method.lower() == 'q1':
+            resampleAlg = warp.Resampling.q1
+        elif method.lower() == 'q3':
+            resampleAlg = warp.Resampling.q3
+        elif method.lower() == 'rsm':
+            resampleAlg = warp.Resampling.rms
+        elif method.lower() == 'sum':
+            resampleAlg = warp.Resampling.sum
+        elif method.lower() == 'cubic':
+            resampleAlg = warp.Resampling.cubic
+        elif method.lower() == 'spline':
+            resampleAlg = warp.Resampling.cubic_spline
+        elif method.lower() == 'bilinear':
+            resampleAlg = warp.Resampling.bilinear
+        elif method.lower() == 'gauss':
+            resampleAlg = warp.Resampling.gauss
+        elif method.lower() == 'lanczos':
+            resampleAlg = warp.Resampling.lanczos
         else:
-            ds = input_image[band, : , : ]
-        warp.reproject(source=ds, destination=matched[band, :, :], src_transform= meta['transform'], dst_transform= transform_new, src_crs=meta['crs'], dst_crs=meta_reference['crs'], resampling= resampleAlg)
-    
-    # match out other values
-    match_masked = np.where(matched == 0, np.nan, matched)
-    match_masked = match_masked.astype(np.float32)
+            raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
 
-    # update metadata
-    meta_update = meta.copy()
-    meta_update.update({
-        'crs': meta_reference['crs'],
-        'transform': transform_new,
-        'width': width_new,
-        'height': height_new,
-        'dtype': np.float32
-    })
-    
-    return match_masked, meta_update
+        # *****************************************
+        # Reproject to match
+        if len(input_image.shape) > 2:
+            nbands = input_image.shape[0]
+        else:
+            nbands = 1
+        # Run over each band
+        matched = np.empty((nbands, height_new, width_new), dtype=np.float32)
+        for band in range(0, nbands):
+            if nbands <= 1:
+                ds = input_image
+            else:
+                ds = input_image[band, : , : ]
+            warp.reproject(source=ds, destination=matched[band, :, :], src_transform= meta['transform'], dst_transform= transform_new, src_crs=meta['crs'], dst_crs=meta_reference['crs'], resampling= resampleAlg)
+        
+        # *****************************************
+        # Mask out other values
+        match_masked = np.where(matched == 0, np.nan, matched)
+        match_masked = match_masked.astype(np.float32)
+
+        # *****************************************
+        # Update metadata and Convert to raster
+        meta_update = meta.copy()
+        meta_update.update({
+            'crs': meta_reference['crs'],
+            'transform': transform_new,
+            'width': width_new,
+            'height': height_new,
+            'dtype': np.float32
+        })
+        match_raster = array2raster(match_masked, meta_update)
+        
+        return match_raster
    
 
 # =========================================================================================== #
 #              Calculate normalized difference index 
 # =========================================================================================== #
-def normalizedDifference(input, band1, band2, meta: Optional[Dict]=None, output: Optional[AnyStr]=None):
-    """Calculate normalized difference index
+def normalizedDifference(input, band1, band2):
+    """
+    Calculate normalized difference index
 
     Args:
-        input (DatasetReader | np.ndarray): Rasterio object or data array, input with multiple bands.
+        input (Raster | Array): Rasterio object or data array, input with multiple bands.
         band1 (numeric): Order of the first band in the input.
         band2 (numeric): Order of the second band in the input.
-        meta (Dict, optional): Metadata in case input is data array. Defaults to None.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image
+        raster | dataArray: Normalized difference result in raster or data array depending on input, containing all image pixel values
 
     """
     import numpy as np
     import rasterio
+    from .common import array2raster
 
+    # *****************************************
+    # Define data input
     # input is raster
     if isinstance(input, rasterio.DatasetReader):
         dataset = input.read()
         meta = input.meta
     # input is array
     elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('It requires metadata')
-        else:
-            dataset = input
-            meta = meta
+        dataset = input
+        meta = None
     # Other input
     else:
         raise ValueError('Input data is not supported')
 
-    # Extract data
+    # *****************************************
+    # Extract band values
     ds_band1 = dataset[band1+1, : , : ]
     ds_band2 = dataset[band2+1, : , : ]
 
-    # calculate index
+    # *****************************************
+    # Calculate index and Remove outliers, also
     normalized_index  = (ds_band1.astype(float) - ds_band2.astype(float)) / (ds_band1 + ds_band2)
     normalized_index = normalized_index.astype(np.float32)
-    # remove outliers
+
     normalized_index[(normalized_index < -1) | (normalized_index > 1)] = np.nan
 
-    meta.update({'dtype': np.float32})
-
-    # Write output
-    if output is not None:
-        writeRaster(normalized_index, output, meta)
+    # *****************************************
+    # Define output 
+    if isinstance(input, rasterio.DatasetReader):
+        meta.update({'dtype': np.float32, 'count': 1})                                                  #  update datatype in metadata 
+        normalized_output = array2raster(normalized_index, meta)
+    elif isinstance(input, np.ndarray):
+        normalized_output = normalized_index
     else:
-        return normalized_index, meta
+        normalized_output = []
 
+    return normalized_output
 
 
 # =========================================================================================== #
 #              Reclassify image
 # =========================================================================================== #
-def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: Optional[AnyStr]=None):
-    """Reclassify image with discrete or continuous values
+def reclassify(input, breakpoints, classes):
+    """
+    Reclassify image with discrete or continuous values
 
     Args:
-        input (DatasetReader | np.ndarray): Raster or data array input
+        input (raster | array): Raster or data array input
         breakpoints (list): Number list, defines a breakpoint value for reclassifcation, e.g., [ -1, 0, 1]
         classes (list): Number list, define classes, number of classes equal number of breakpoints minus 1
-        meta (Dict, optional): Metadata in case input is data array. Defaults to None.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image
+        raster | dataArray: Reclassified result in raster or data array depending on input, containing all image pixel values
 
     """
     import rasterio
     import numpy as np
+    from common import array2raster
 
-    ### Check input data
+    # *****************************************
+    # Check input data
     # input is raster
     if isinstance(input, rasterio.DatasetReader):
         if len(input.shape) == 2:
@@ -971,24 +954,20 @@ def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: O
                 meta = input.meta
     # input is array
     elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('It requires metadata')
+        if (len(input.shape)) > 2 and (input.shape[0] > 1):
+            raise ValueError('Input data has more than one band')
         else:
-            if (len(input.shape)) > 2 and (input.shape[0] > 1):
-                raise ValueError('Input data has more than one band')
-            else:
-                dataset = input
-                meta = meta
+            dataset = input
     # Other input
     else:
         raise ValueError('Input data is not supported')
 
-    ####
+    # *****************************************
     # Create unique values and empty data array to store reclassified result 
     uniques = np.unique(dataset)
     reclassified = np.zeros_like(dataset)
         
-    ####
+    # *****************************************
     # If image has discrete values
     if len(uniques) == len(classes): 
         if len(breakpoints) == len(classes):
@@ -999,6 +978,7 @@ def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: O
                 reclassified[(dataset >= breakpoints[i]) & (dataset < breakpoints[i+1])] = classes[i]
         else:
             raise ValueError('Number of classes must be equal to number of breakpoints minus 1')
+        
     # If image has continuous values
     else:
         if len(breakpoints) == (len(classes)+1):
@@ -1007,22 +987,25 @@ def reclassify(input, breakpoints, classes, meta: Optional[Dict]=None, output: O
         else:
             raise ValueError('Number of classes must be equal to number of breakpoints minus 1')
     
-    # Write output
-    if output is not None:
-        writeRaster(reclassified, output, meta)
+    # *****************************************
+    # Define output
+    if isinstance(input, rasterio.DatasetReader):
+        reclassified_raster = array2raster(reclassified, meta)
     else:
-        return reclassified, meta
-    
+        reclassified_raster = reclassified
+
+    return reclassified_raster
+
 
 # =========================================================================================== #
 #              Extract raster values of all bands and create dataframe
 # =========================================================================================== #
-def values(input, meta: Optional[AnyStr]=None, na_rm: Optional[bool]=True, names: Optional[list]=None, prefix: Optional[AnyStr]=None):
-    """Extract all pixel values of image and create dataframe from them, each band is a column
+def values(input, na_rm: Optional[bool]=True, names: Optional[list]=None, prefix: Optional[AnyStr]=None):
+    """
+    Extract all pixel values of image and create dataframe from them, each band is a column
 
     Args:
-        input (DatasetReader | np.ndarray): Rasterio image or data array.
-        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
+        input (raster | array): Rasterio raster image or data array.
         na_rm (bool, optional): Remove or do not remove NA value from output dataframe. Defaults to True.
         names (list, optional): Given expected names for each column in the dataframe, if not, default name will be assigned. Defaults to None.
         prefix (AnyStr, optional): Given character before each band name. Defaults to None.
@@ -1035,26 +1018,25 @@ def values(input, meta: Optional[AnyStr]=None, na_rm: Optional[bool]=True, names
     import numpy as np
     import pandas as pd
 
-    ### Check input data
+    # *****************************************
+    # Check input data
     # input is raster
     if isinstance(input, rasterio.DatasetReader):
         dataset = input.read()
-        meta = input.meta
     # input is array
     elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('It requires metadata')
-        else:
-            dataset = input
-            meta = meta
+        dataset = input
     # Other input
     else:
         raise ValueError('Input data is not supported')
     
-    ########
+    # *****************************************
+    # Define parameters
     nbands = dataset.shape[0]
     bands_array = [dataset[band, : , : ].flatten() for band in range(0, nbands)]
     
+    # *****************************************
+    # Assign column names in case name is given 
     if names is not None:
         if len(names) != nbands:
             raise ValueError('Length of name should be equal to number of bands')
@@ -1064,13 +1046,14 @@ def values(input, meta: Optional[AnyStr]=None, na_rm: Optional[bool]=True, names
             else:
                 names_new = [f'{prefix}{name}' for name in names]
                 data = pd.DataFrame(np.array(bands_array).T, columns=names_new)
+    # If name is not given
     else:
         if prefix is None:
             data = pd.DataFrame(np.array(bands_array).T, columns=[f'B{i}' for i in range(1,nbands +1)])
         else:
             data = pd.DataFrame(np.array(bands_array).T, columns=[f'{prefix}{i}' for i in range(1, nbands +1)])
     
-    ####### 
+    # *****************************************
     # Remove NA values or not
     if na_rm is True: 
         data_out = data.dropna().reset_index(drop=True)
@@ -1083,24 +1066,21 @@ def values(input, meta: Optional[AnyStr]=None, na_rm: Optional[bool]=True, names
  # =========================================================================================== #
 #              Extract pixel values at GCP (points or polygon)
 # =========================================================================================== #       
-def extractValues(input: AnyStr, roi: AnyStr, field: Optional[AnyStr]=None, meta: Optional[AnyStr]=None, dataframe: Optional[bool]=True, names: Optional[list]=None, na_rm: bool=True, nodata=None, prefix: Optional[AnyStr]=None, tail=True):
-    """Extract pixel values in GCP for both point and polygon 
+def extractValues(input, roi, field, dataframe: Optional[bool]=True, names: Optional[list]=None, prefix: Optional[AnyStr]=None, tail=True):
+    """
+    Extract pixel values from a raster image based on regions of interest (ROI) defined in a shapefile.
 
     Args:
-        input (DatasetReader | np.ndarray): Rasterio image or data array
-        roi (AnyStr): Shapefile where GCP points located, read by geopandas 
-        field (AnyStr, optional): Sstring, but the value of this field must be number, the field name in shapefile GCP to extract label values, e.g., 'class'. Defaults to None.
-        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
-        dataframe (bool, optional): Whether to return dataframe or separate X, y arrays. Defaults to True.
-        names (list, optional): Given expected names for each column in dataframe. Defaults to None.
-        na_rm (bool, optional): Remove NA value from the output or not. Defaults to True.
-        nodata (AnyStr, optional): Fill in value for NA data. Defaults to None.
-        prefix (AnyStr, optional): Given character before each band name. Defaults to None.
-        tail (bool, optional): To place the class value at the end or front of the dataframe. Defaults to True.
+        input (raster): Rasterio image as input
+        roi (shapefile): Shapefile where GCP points are located, read by geopandas.
+        field (AnyStr): Field name in shapefile GCP to extract label values, e.g., 'class'. **But this field must store number instead of string**.
+        dataframe (bool, optional): Whether to return a dataframe or separate X, y arrays. Defaults to True.
+        names (list, optional): Expected names for each column in the dataframe. Defaults to None.
+        prefix (AnyStr, optional): Prefix for each band name. Defaults to None.
+        tail (bool, optional): Whether to place the class value at the end or front of the dataframe. Defaults to True.
 
     Returns:
-        dataframe: dataframe if dataframe = True
-        ndarray: X, y Data arrays for training model
+        DataFrame or Tuple: Dataframe if dataframe=True, otherwise X and y arrays for training a model.
 
     """
     import os
@@ -1110,207 +1090,131 @@ def extractValues(input: AnyStr, roi: AnyStr, field: Optional[AnyStr]=None, meta
     from shapely.geometry import mapping
     from rasterio import mask
     import pandas as pd
+    from .common import array2raster
 
-    if field is None:
-        raise ValueError('Please provide field name')
+    # *****************************************
+    # Define input image
+    # Other data type
+    if not isinstance(input, rasterio.DatasetReader):
+        raise ValueError('Input data is not supported')
+    # Input is raster
     else:
-        ### Define input image
-        # input is raster
-        if isinstance(input, rasterio.DatasetReader):
-            input_image = input
-        # input is array
-        elif isinstance(input, np.ndarray):
-            if meta is None:
-                raise ValueError('It requires metadata of input')
-            else:
-                if not os.path.exists('./tmp/'):
-                    os.makedirs('./tmp/')
-                writeRaster(input, './tmp/tmp.tif', meta)
-                input_image = rast('./tmp/tmp.tif')
-        # Other input
+        # Convert datatype of input to float32 to store NA value
+        arr = input.read().astype(np.float32)
+        meta = input.meta
+        meta.update({'dtype': np.float32})
+        input_image = array2raster(arr, meta)
+        
+    # *****************************************
+    # Convert shapefile to shapely geometry
+    geoms = roi.geometry.values
+    
+    # Extract some metadata information
+    nbands = input_image.count
+    dtype_X = np.float32()
+    dtype_y = np.float32()
+
+    # Create empty array to contain X and y arrays
+    X = np.array([], dtype= dtype_X).reshape(0, nbands)
+    y = np.array([], dtype= dtype_y)
+
+    # Run loop over each features in shapefile to extract pixel values
+    for index, geom in enumerate(geoms):
+        poly = [mapping(geom)]
+
+        # Crop image based on feature
+        cropped, transform = mask.mask(input_image, poly, crop=True, nodata=np.nan)
+
+        # Reshape dataset in form of (values, bands)
+        cropped_reshape = reshape_as_image(cropped)
+        reshapped = cropped_reshape.reshape(-1, nbands)
+
+        # Append 1D array y
+        y = np.append(y, [roi[field][index]] * reshapped.shape[0])
+        
+        # vertical stack 2D array X
+        X = np.vstack((X, reshapped))
+    
+    # Remove NA value from data
+    data = np.hstack((X, y.reshape(y.shape[0], 1))).astype(np.float32)
+    data_na = data[~np.isnan(data).any(axis=1)]
+    data_nodata = data_na[~(data_na == np.nan).any(axis=1)]
+
+    X_na = data_nodata[ :, 0:nbands]
+    y_na = data_nodata[ : , nbands]
+
+    # return dataframe
+    if dataframe is True:
+        y_na_reshape = y_na.reshape(-1,1)
+
+        # class tail
+        if tail is True:
+            arr = np.hstack([X_na, y_na_reshape])
         else:
-            raise ValueError('Input data is not supported')
+            arr = np.hstack([y_na_reshape, X_na])
         
-        ########
-
-        ### Define nodata
-        if nodata is None:
-            dataType = input_image.meta['dtype']
-            if dataType.lower() == 'int8':
-                nodata_value = 127
-            elif dataType.lower() == 'uint8':
-                nodata_value = 255
-            elif dataType.lower() == 'int16':
-                nodata_value = 32767
-            elif dataType.lower() == 'uint16':
-                nodata_value = 65535
-            elif dataType.lower() == 'int32':
-                nodata_value = 2147483647
-            elif dataType.lower() == 'uint32':
-                nodata_value = 4294967295
-            elif dataType.lower() == 'float16':
-                nodata_value = 65500
-            elif dataType.lower() == 'float32':
-                nodata_value = 999999
-            else:
-                nodata_value = 0
-        else:
-            nodata_value = nodata   
-
-        # Convert shapefile to shapely geometry
-        geoms = roi.geometry.values
-        
-        # Extract some metadata information
-        nbands = input_image.count
-        dtype_X = np.float32()
-        dtype_y = np.float32()
-
-        # Create empty array to contain X and y arrays
-        X = np.array([], dtype= dtype_X).reshape(0, nbands)
-        y = np.array([], dtype= dtype_y)
-
-        # Run loop over each features in shapefile to extract pixel values
-        for index, geom in enumerate(geoms):
-            poly = [mapping(geom)]
-
-            # Crop image based on feature
-            cropped, transform = mask.mask(input_image, poly, crop=True, nodata=nodata_value)
-
-            # Reshape dataset in form of (values, bands)
-            cropped_reshape = reshape_as_image(cropped)
-            reshapped = cropped_reshape.reshape(-1, nbands)
-
-            # Append 1D array y
-            y = np.append(y, [roi[field][index]] * reshapped.shape[0])
-            
-            # vertical stack 2D array X
-            X = np.vstack((X, reshapped))
-        
-        # Remove NAN value or not
-        if na_rm is True: 
-            data = np.hstack((X, y.reshape(y.shape[0], 1)))
-            data_na = data[~np.isnan(data).any(axis=1)]
-            data_nodata = data_na[~(data_na == nodata_value).any(axis=1)]
-
-            X_na = data_nodata[ :, 0:nbands]
-            y_na = data_nodata[ : , nbands]
-
-            # return dataframe
-            if dataframe is True:
-                y_na_reshape = y_na.reshape(-1,1)
-
-                # class tail
+        # Name is not given
+        if names is None:
+            if prefix is None:
+                names_band = [f'B{i}' for i in range(1, input_image.count +1)]
+                name_class = [str(field)]
                 if tail is True:
-                    arr = np.hstack([X_na, y_na_reshape])
+                    names_list = names_band + name_class
                 else:
-                    arr = np.hstack([y_na_reshape, X_na])
-                
-                # Name is not given
-                if names is None:
-                    if prefix is None:
-                        names_band = [f'B{i}' for i in range(1, input_image.count +1)]
-                        name_class = [str(field)]
-                        if tail is True:
-                            names_list = names_band + name_class
-                        else:
-                            names_list = name_class + names_band
-                    else:
-                        names_band = [f'{prefix}{i}' for i in range(1, input_image.count +1)]
-                        name_class = [str(field)]
-                        if tail is True:
-                            names_list = names_band + name_class
-                        else:
-                            names_list = name_class + names_band
-                    data = pd.DataFrame(arr, columns=names_list)            
-                    return data
-                
-                # Name is given
-                else:
-                    if len(names) != (nbands + 1):
-                        raise ValueError('Length of name should be equal to number of bands plus 1')
-                    else:
-                        if prefix is None:
-                            names_list = names
-                        else:
-                            names_list = [f'{prefix}{name_i}' for name_i in names]
-                    data = pd.DataFrame(arr, columns=names_list)            
-                    return data
-            
-            # Do not return dataframe
+                    names_list = name_class + names_band
             else:
-                return X_na, y_na
+                names_band = [f'{prefix}{i}' for i in range(1, input_image.count +1)]
+                name_class = [str(field)]
+                if tail is True:
+                    names_list = names_band + name_class
+                else:
+                    names_list = name_class + names_band
+            data = pd.DataFrame(arr, columns=names_list)            
+            return data
         
-        # Do not remove NAN values
-        else: 
-            # return dataframe
-            if dataframe is True:
-                y_reshape = y.reshape(-1,1)
-                arr = np.hstack([X, y_reshape])
-
-                # Name is not given
-                if names is None:
-                    if prefix is None:
-                        names_band = [f'B{i}' for i in range(1, input_image.count +1)]
-                        name_class = [str(field)]
-                        if tail is True:
-                            names_list = names_band + name_class
-                        else:
-                            names_list = name_class + names_band
-                    else:
-                        names_band = [f'{prefix}{i}' for i in range(1, input_image.count +1)]
-                        name_class = [str(field)]
-                        if tail is True:
-                            names_list = names_band + name_class
-                        else:
-                            names_list = name_class + names_band
-                    data = pd.DataFrame(arr, columns=names_list)            
-                    return data
-                # Name is given
-                else:
-                    if len(names) != (nbands + 1):
-                        raise ValueError('Length of name should be equal to number of bands plus 1')
-                    else:
-                        if prefix is None:
-                            names_list = names
-                        else:
-                            names_list = [f'{prefix}{name_i}' for name_i in names]
-                    data = pd.DataFrame(arr, columns=names_list)            
-                    return data
-
+        # Name is given
+        else:
+            if len(names) != (nbands + 1):
+                raise ValueError('Length of name should be equal to number of bands plus 1')
             else:
-                return X, y
+                if prefix is None:
+                    names_list = names
+                else:
+                    names_list = [f'{prefix}{name_i}' for name_i in names]
+            data = pd.DataFrame(arr, columns=names_list)            
+            return data
+    
+    # Do not return dataframe
+    else:
+        return X_na, y_na
     
 
 # =========================================================================================== #
 #              Normalize raster data
 # =========================================================================================== #      
-def normalized(input, meta: Optional[AnyStr]=None, output: Optional[AnyStr]=None):
-    """Normalize raster data to rearrange raster values from 0 to 1
+def normalized(input):
+    """
+    Normalize raster data to rearrange raster values from 0 to 1
 
     Args:
-        input (DatasetReader | np.ndarray): Rasterio image or data array
-        meta (AnyStr, optional): Metadata in case input is data array. Defaults to None.
-        output (AnyStr, optional): File path to write out geotif file to local directory. Defaults to None.
+        input (DatasetReader | np.ndarray): Rasterio image or data array.
 
     Returns:
-        np.darray: Data array contains all image pixel values
-        metadata: Metedata of the image
+        raster | data array: Data array or raster depends on the input files.
 
     """
     import rasterio
     import numpy as np
     import pandas as pd
+    from common import array2raster
 
     ### Check input data
     if isinstance(input, rasterio.DatasetReader):
         dataset = input.read()
         meta = input.meta
     elif isinstance(input, np.ndarray):
-        if meta is None:
-            raise ValueError('Please provide input metadata')
-        else:
-            dataset = input
-            meta = meta
+        dataset = input
+        meta = meta
     else:
         raise ValueError('Input data is not supported')
     
@@ -1321,20 +1225,19 @@ def normalized(input, meta: Optional[AnyStr]=None, output: Optional[AnyStr]=None
     ### Create empty data array to store output
     normalized = np.zeros_like(dataset, dtype=np.float32)
 
-    ### Run normalization
+    ### Run normalization for each 
     for i in range(0, dataset.shape[0]):
         band = dataset[i, : , : ]
         band_norm = (band.astype(float)  - minValue) / (maxValue  - minValue)
         normalized[i, : , : ] = band_norm
-        band_norm = None
+        band_norm = None        # set to None after the iteration
 
-    ### update meta
-    meta.update({'dtype': np.float32})
-
-    ### return result 
-    # Write output
-    if output is not None:
-        writeRaster(normalized, output, meta)
+    ### Define output
+    if isinstance(input, rasterio.DatasetReader):
+        meta.update({'dtype': np.float32})
+        normalized_raster = array2raster(normalized, meta)
     else:
-        return normalized, meta
+        normalized_raster = normalized
+    
+    return normalized_raster
     

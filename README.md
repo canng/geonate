@@ -11,6 +11,7 @@
 
 <!-- #region -->
 
+<br>
 
 **Python package synthesizes conventional tools and codes for image processing**
 
@@ -18,22 +19,29 @@
 -   Free software: MIT License
 -   Documentation: https://canng.github.io/geonate
 
+<br>
+
 **Install from Pypi**
 
 ```
 pip install geonate
 ```
 
+<br>
+
 **Install from github source**
 ```
 pip install git+https://github.com/canng/geonate
 ```
+
+<br>
 
 **Install from local source**
 ```
 pip install -e .
 ```
 
+<br>
 
 **Usage**
 

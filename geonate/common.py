@@ -171,11 +171,11 @@ def check_datatype_consistency(input):
         if all(isinstance(item, first_element) for item in input):
             datatype = first_element
             consistency = True
-            print(f"Input have data types of {datatype}")
+            print(f"Checking datatype consistency\nInput have data types of {datatype}")
         else:
             datatype = None
             consistency = False
-            print(f"Input have different data types")
+            print(f"Checking datatype consistency\nInput have different data types")
         
         return consistency, str(datatype)
 
@@ -566,7 +566,7 @@ def get_extent_external(input):
         
         # Other cases
         else:
-            raise ValueError('Input have different data extensions')
+            raise ValueError('Checking file extension consistency\nInput have different data extensions')
         
 
 # =========================================================================================== #
@@ -684,6 +684,53 @@ def mimax(input, digit=3):
     print(f"[Min: {min_round}  | Max: {max_round}]")
 
     return minValue, maxValue
+
+# =========================================================================================== #
+#              Calculate unique pixel values from a raster image or numpy array
+# =========================================================================================== #
+def unique_value(input, frequency=True, sort: Optional[AnyStr]='frequency'):
+    """
+    Calculate unique pixel values from a raster image or numpy array, optionally with their frequencies, and sort them.
+
+    Args:
+        input (raster| array): Input raster image or numpy array.
+        frequency (bool, optional): If True, return the frequency of each unique value. Defaults to True.
+        sort (str, optional): Sorting method for the unique values. Options are 'frequency' or 'value'. Defaults to 'frequency'.
+
+    Returns:
+        array or dataframe: Array with unique value if frequency is False, otherwise it returns DataFrame with unique values and frequencies.
+    
+    """
+    import numpy as np
+    import pandas as pd
+    import rasterio
+    from .raster import values
+
+    # Check input data
+    if isinstance(input, rasterio.DatasetReader):
+        dataset = input.read()
+    elif isinstance(input, np.ndarray):
+        dataset = input
+    else:
+        raise ValueError('Input data is not supported')
+    
+    # Extract all values from raster or array
+    pixel_values = values(dataset, na_rm=True)
+
+    # Generate frequency and return
+    if frequency is False:
+        unique_values = np.sort(np.unique(pixel_values.values.flatten()))
+    else:
+        unique_values = pd.Series(pixel_values.values.ravel()).value_counts().reset_index()
+        unique_values.columns = ['Value', 'Frequency']
+        if sort.lower() == "frequency" or sort.lower() == "f":
+            unique_values = unique_values.sort_values(by='Frequency')
+        elif sort.lower() == "values" or sort.lower() == "value" or sort.lower() == "v":
+            unique_values = unique_values.sort_values(by='Value')
+        else:
+            raise ValueError('Sort method is not supported ["frequency", "value]')
+        
+    return unique_values
 
 
 # =========================================================================================== #
