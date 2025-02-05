@@ -1009,7 +1009,7 @@
 
 
 <h2 id="geonate.common.array2raster" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">array2raster</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">array2raster</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span></code>
 
 
 <a href="#geonate.common.array2raster" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1036,7 +1036,7 @@
         <td><em>required</em></td>
       </tr>
       <tr>
-        <td><code>meta</code></td>
+        <td><code>metadata</code></td>
         <td><code>Dict</code></td>
         <td><p>The metadata dictionary.</p></td>
         <td><em>required</em></td>
@@ -1060,19 +1060,19 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/common.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">array2raster</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">array2raster</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a numpy array and metadata to a rasterio object stored in memory.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        array (array): The input data array.</span>
-<span class="sd">        meta (Dict): The metadata dictionary.</span>
+<span class="sd">        metadata (Dict): The metadata dictionary.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Local raster file (raster): The rasterio object stored in memory.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">MemoryFile</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
 
      <span class="c1"># Determine number of bands</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
@@ -1081,17 +1081,26 @@
         <span class="n">nbands</span> <span class="o">=</span> <span class="mi">1</span>
 
     <span class="c1"># Update metadata with the correct dtype and count</span>
-    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
         <span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span>
         <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">nbands</span>
     <span class="p">})</span>
 
     <span class="c1"># Write image in memory file and read it back</span>
-    <span class="k">with</span> <span class="n">MemoryFile</span><span class="p">()</span> <span class="k">as</span> <span class="n">memfile</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">memfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dataset</span><span class="p">:</span>
-            <span class="n">dataset</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">memory_file</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">MemoryFile</span><span class="p">()</span>
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">memory_file</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="o">**</span><span class="n">metadata</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">memfile</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">],</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">dst</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># Read the dataset from memory</span>
+    <span class="n">dataset_reader</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">dst</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset_reader</span>
 </code></pre></div>
         </details>
     </div>

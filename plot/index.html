@@ -887,7 +887,7 @@ Each colormap is displayed as a horizontal gradient bar.</p>
 
 
 <h2 id="geonate.plot.plotRGB" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">plotRGB</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">plotRGB</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">str_clip</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#geonate.plot.plotRGB" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -922,8 +922,20 @@ Each colormap is displayed as a horizontal gradient bar.</p>
       <tr>
         <td><code>stretch</code></td>
         <td><code>bool</code></td>
-        <td><p>Apply contrast stretching. Defaults to True.</p></td>
+        <td><p>Apply contrast stretching. Defaults to True.    </p></td>
         <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>str_clip</code></td>
+        <td><code>int</code></td>
+        <td><p>The percentage of clip to apply to the stretch. Default = 2 (2 and 98).  </p></td>
+        <td><code>2</code></td>
+      </tr>
+      <tr>
+        <td><code>figsize</code></td>
+        <td><code>numeric tuple</code></td>
+        <td><p>Width and Height. Defaults to (10, 10) inches.</p></td>
+        <td><code>(10, 10)</code></td>
       </tr>
       <tr>
         <td><code>**kwargs</code></td>
@@ -935,14 +947,16 @@ Each colormap is displayed as a horizontal gradient bar.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/plot.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plotRGB</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plotRGB</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">stretch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">str_clip</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plot a 3-band RGB image using earthpy.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input (rasterio.DatasetReader | np.ndarray): Rasterio image or data array.</span>
 <span class="sd">        rgb (tuple, optional): Indices of the RGB bands. Defaults to (0, 1, 2).</span>
-<span class="sd">        stretch (bool, optional): Apply contrast stretching. Defaults to True.</span>
+<span class="sd">        stretch (bool, optional): Apply contrast stretching. Defaults to True.    </span>
+<span class="sd">        str_clip (int): The percentage of clip to apply to the stretch. Default = 2 (2 and 98).  </span>
+<span class="sd">        figsize (numeric tuple): Width and Height. Defaults to (10, 10) inches.</span>
 <span class="sd">        **kwargs: Additional optional parameters for earthpy.plot.plot_rgb(), such as stretch=True for contrast stretching.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>    
@@ -963,9 +977,7 @@ Each colormap is displayed as a horizontal gradient bar.</p>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Image has only one band, please provide at least 3-band image&#39;</span><span class="p">)</span>
 
     <span class="c1"># Visualize the input dataset</span>
-    <span class="n">ep</span><span class="o">.</span><span class="n">plot_rgb</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="n">stretch</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+    <span class="n">ep</span><span class="o">.</span><span class="n">plot_rgb</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span> <span class="n">rgb</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="n">stretch</span><span class="p">,</span> <span class="n">str_clip</span><span class="o">=</span><span class="n">str_clip</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
@@ -979,7 +991,7 @@ Each colormap is displayed as a horizontal gradient bar.</p>
 
 
 <h2 id="geonate.plot.plot_bands" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">plot_bands</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys_r&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">plot_bands</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys_r&#39;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#geonate.plot.plot_bands" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -1012,6 +1024,24 @@ Each colormap is displayed as a horizontal gradient bar.</p>
         <td><code>&#39;Greys_r&#39;</code></td>
       </tr>
       <tr>
+        <td><code>cols</code></td>
+        <td><code>int</code></td>
+        <td><p>Numbers of column on the plot. Defaults to cols = 3.</p></td>
+        <td><code>3</code></td>
+      </tr>
+      <tr>
+        <td><code>figsize</code></td>
+        <td><code>numeric tuple</code></td>
+        <td><p>Width and Height. Defaults to (10, 10) inches.</p></td>
+        <td><code>(10, 10)</code></td>
+      </tr>
+      <tr>
+        <td><code>cbar</code></td>
+        <td><code>bool</code></td>
+        <td><p>Show color cbar. Defaults to True.  </p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
         <td><code>**kwargs</code></td>
         <td><code>AnyStr</code></td>
         <td><p>All optional parameters taken from earthpy.plot.plot_bands(), such as cmap='Spectral' for color shade</p></td>
@@ -1021,12 +1051,15 @@ Each colormap is displayed as a horizontal gradient bar.</p>
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/plot.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_bands</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys_r&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plot_bands</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Greys_r&#39;</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a raster image or data array using earthpy.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input (DatasetReader | np.ndarray): Rasterio image or data array</span>
 <span class="sd">        cmap (str, optional): Colormap for the plot. Defaults to &#39;Greys_r&#39;.</span>
+<span class="sd">        cols (int): Numbers of column on the plot. Defaults to cols = 3.</span>
+<span class="sd">        figsize (numeric tuple): Width and Height. Defaults to (10, 10) inches.</span>
+<span class="sd">        cbar (bool): Show color cbar. Defaults to True.  </span>
 <span class="sd">        **kwargs (AnyStr, optional): All optional parameters taken from earthpy.plot.plot_bands(), such as cmap=&#39;Spectral&#39; for color shade</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1043,7 +1076,7 @@ Each colormap is displayed as a horizontal gradient bar.</p>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
 
     <span class="c1"># Visualize the input dataset</span>
-    <span class="n">ep</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">ep</span><span class="o">.</span><span class="n">plot_bands</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">cols</span><span class="o">=</span><span class="n">cols</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="n">cbar</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </code></pre></div>
         </details>
     </div>
