@@ -52,12 +52,15 @@ def colormaps():
 # =========================================================================================== #
 #               Simple plot band           
 # =========================================================================================== #
-def plot_bands(input, cmap='Greys_r', **kwargs):
+def plot_bands(input, cmap='Greys_r', cols=3, figsize=(10,10), cbar=True, **kwargs):
     """Plot a raster image or data array using earthpy.
 
     Args:
         input (DatasetReader | np.ndarray): Rasterio image or data array
         cmap (str, optional): Colormap for the plot. Defaults to 'Greys_r'.
+        cols (int): Numbers of column on the plot. Defaults to cols = 3.
+        figsize (numeric tuple): Width and Height. Defaults to (10, 10) inches.
+        cbar (bool): Show color cbar. Defaults to True.  
         **kwargs (AnyStr, optional): All optional parameters taken from earthpy.plot.plot_bands(), such as cmap='Spectral' for color shade
 
     """
@@ -74,20 +77,22 @@ def plot_bands(input, cmap='Greys_r', **kwargs):
         raise ValueError('Input data is not supported')
     
     # Visualize the input dataset
-    ep.plot_bands(dataset, cmap=cmap, **kwargs)
+    ep.plot_bands(dataset, cmap=cmap, cols=cols, figsize=figsize, cbar=cbar,**kwargs)
 
 
 # =========================================================================================== #
 #               RGB composite plot
 # =========================================================================================== #
-def plotRGB(input, rgb=(0, 1, 2), stretch=True, **kwargs):
+def plotRGB(input, rgb=(0, 1, 2), stretch=True, str_clip: int = 2, figsize=(10,10), **kwargs):
     """
     Plot a 3-band RGB image using earthpy.
 
     Args:
         input (rasterio.DatasetReader | np.ndarray): Rasterio image or data array.
         rgb (tuple, optional): Indices of the RGB bands. Defaults to (0, 1, 2).
-        stretch (bool, optional): Apply contrast stretching. Defaults to True.
+        stretch (bool, optional): Apply contrast stretching. Defaults to True.    
+        str_clip (int): The percentage of clip to apply to the stretch. Default = 2 (2 and 98).  
+        figsize (numeric tuple): Width and Height. Defaults to (10, 10) inches.
         **kwargs: Additional optional parameters for earthpy.plot.plot_rgb(), such as stretch=True for contrast stretching.
 
     """    
@@ -108,9 +113,7 @@ def plotRGB(input, rgb=(0, 1, 2), stretch=True, **kwargs):
         raise ValueError('Image has only one band, please provide at least 3-band image')
     
     # Visualize the input dataset
-    ep.plot_rgb(dataset, rgb= rgb, stretch=stretch, **kwargs)
-
-    from typing import AnyStr, Dict, Optional
+    ep.plot_rgb(dataset, rgb= rgb, stretch=stretch, str_clip=str_clip, figsize=figsize, **kwargs)
 
 
 # =========================================================================================== #

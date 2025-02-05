@@ -307,7 +307,6 @@ def crop(input, reference, invert=False, nodata=True):
     import rasterio
     import geopandas as gpd
     import numpy as np
-    from rasterio import mask
     from rasterio.transform import Affine
     from shapely.geometry import mapping
     from shapely.geometry import box
@@ -346,9 +345,9 @@ def crop(input, reference, invert=False, nodata=True):
     #### Condition for nodata
     if nodata is True:
         if invert is True:
-            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= np.nan)
+            clipped, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= np.nan)
         else:
-            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= np.nan)
+            clipped, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= np.nan)
         
         # Update metadata
         meta  = input.meta
@@ -362,9 +361,9 @@ def crop(input, reference, invert=False, nodata=True):
     #
     else:
         if invert is True:
-            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= 0)
+            clipped, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), invert=True, nodata= 0)
         else:
-            clipped, geotranform = mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= 0)
+            clipped, geotranform = rasterio.mask.mask(dataset=input_image, shapes= poly_bound.geometry.apply(mapping), crop=True, invert=False, nodata= 0)
         
         # Update metadata
         meta  = input.meta
@@ -1088,7 +1087,6 @@ def extractValues(input, roi, field, dataframe: Optional[bool]=True, names: Opti
     from rasterio.plot import reshape_as_image
     import numpy as np
     from shapely.geometry import mapping
-    from rasterio import mask
     import pandas as pd
     from .common import array2raster
 
@@ -1123,7 +1121,7 @@ def extractValues(input, roi, field, dataframe: Optional[bool]=True, names: Opti
         poly = [mapping(geom)]
 
         # Crop image based on feature
-        cropped, transform = mask.mask(input_image, poly, crop=True, nodata=np.nan)
+        cropped, transform = rasterio.mask.mask(input_image, poly, crop=True, nodata=np.nan)
 
         # Reshape dataset in form of (values, bands)
         cropped_reshape = reshape_as_image(cropped)

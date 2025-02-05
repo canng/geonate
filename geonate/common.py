@@ -736,19 +736,19 @@ def unique_value(input, frequency=True, sort: Optional[AnyStr]='frequency'):
 # =========================================================================================== #
 #              Convert a numpy array and metadata to a rasterio object stored in local variable
 # =========================================================================================== #
-def array2raster(array, meta: Dict):
+def array2raster(array, metadata: Dict):
     """
     Convert a numpy array and metadata to a rasterio object stored in memory.
 
     Args:
         array (array): The input data array.
-        meta (Dict): The metadata dictionary.
+        metadata (Dict): The metadata dictionary.
 
     Returns:
         Local raster file (raster): The rasterio object stored in memory.
 
     """
-    from rasterio.io import MemoryFile
+    import rasterio
 
      # Determine number of bands
     if len(array.shape) == 3:
@@ -757,17 +757,26 @@ def array2raster(array, meta: Dict):
         nbands = 1
 
     # Update metadata with the correct dtype and count
-    meta.update({
+    metadata.update({
         'dtype': array.dtype,
         'count': nbands
     })
 
     # Write image in memory file and read it back
-    with MemoryFile() as memfile:
-        with memfile.open(**meta) as dataset:
-            dataset.write(array, 1 if array.ndim == 2 else None)
-        
-        return memfile.open()
+    memory_file = rasterio.MemoryFile()
+    dst = memory_file.open(**metadata)
+
+    if array.ndim == 2:
+        dst.write(array, 1)
+    elif array.ndim == 3:
+        for i in range(array.shape[0]):
+            dst.write(array[i, :, : ], i + 1)
+    dst.close()
+
+    # Read the dataset from memory
+    dataset_reader = rasterio.open(dst.name, mode="r")
+
+    return dataset_reader
     
 
 # =========================================================================================== #
