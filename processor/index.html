@@ -12,7 +12,7 @@
         <meta name="author" content="canng">
       
       
-        <link rel="canonical" href="https://canng.github.io/geonate/raster/">
+        <link rel="canonical" href="https://canng.github.io/geonate/processor/">
       
       
         <link rel="prev" href="../plot/">
@@ -22,11 +22,11 @@
       
       
       <link rel="icon" href="../assets/logo_geonate.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.2">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
     
     
       
-        <title>raster module - geonate</title>
+        <title>processor module - geonate</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#raster-module" class="md-skip">
+        <a href="#processor-module" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              raster module
+              processor module
             
           </span>
         </div>
@@ -593,7 +593,7 @@
           
   
   <span class="md-ellipsis">
-    raster module
+    processor module
     
   </span>
   
@@ -605,7 +605,7 @@
         
   
   <span class="md-ellipsis">
-    raster module
+    processor module
     
   </span>
   
@@ -628,16 +628,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster" class="md-nav__link">
+  <a href="#geonate.processor" class="md-nav__link">
     <span class="md-ellipsis">
-      geonate.raster
+      geonate.processor
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.crop" class="md-nav__link">
+  <a href="#geonate.processor.crop" class="md-nav__link">
     <span class="md-ellipsis">
       crop()
     </span>
@@ -646,7 +646,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.extractValues" class="md-nav__link">
+  <a href="#geonate.processor.extractValues" class="md-nav__link">
     <span class="md-ellipsis">
       extractValues()
     </span>
@@ -655,7 +655,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.layestack" class="md-nav__link">
+  <a href="#geonate.processor.layestack" class="md-nav__link">
     <span class="md-ellipsis">
       layestack()
     </span>
@@ -664,7 +664,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.mask" class="md-nav__link">
+  <a href="#geonate.processor.mask" class="md-nav__link">
     <span class="md-ellipsis">
       mask()
     </span>
@@ -673,7 +673,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.match" class="md-nav__link">
+  <a href="#geonate.processor.match" class="md-nav__link">
     <span class="md-ellipsis">
       match()
     </span>
@@ -682,7 +682,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.merge" class="md-nav__link">
+  <a href="#geonate.processor.merge" class="md-nav__link">
     <span class="md-ellipsis">
       merge()
     </span>
@@ -691,7 +691,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.mergeVRT" class="md-nav__link">
+  <a href="#geonate.processor.mergeVRT" class="md-nav__link">
     <span class="md-ellipsis">
       mergeVRT()
     </span>
@@ -700,7 +700,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.normalized" class="md-nav__link">
+  <a href="#geonate.processor.normalized" class="md-nav__link">
     <span class="md-ellipsis">
       normalized()
     </span>
@@ -709,7 +709,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.normalizedDifference" class="md-nav__link">
+  <a href="#geonate.processor.normalizedDifference" class="md-nav__link">
     <span class="md-ellipsis">
       normalizedDifference()
     </span>
@@ -718,16 +718,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.rast" class="md-nav__link">
-    <span class="md-ellipsis">
-      rast()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.raster.reclassify" class="md-nav__link">
+  <a href="#geonate.processor.reclassify" class="md-nav__link">
     <span class="md-ellipsis">
       reclassify()
     </span>
@@ -736,7 +727,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.reproject" class="md-nav__link">
+  <a href="#geonate.processor.reproject" class="md-nav__link">
     <span class="md-ellipsis">
       reproject()
     </span>
@@ -745,7 +736,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.resample" class="md-nav__link">
+  <a href="#geonate.processor.resample" class="md-nav__link">
     <span class="md-ellipsis">
       resample()
     </span>
@@ -754,27 +745,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.values" class="md-nav__link">
+  <a href="#geonate.processor.values" class="md-nav__link">
     <span class="md-ellipsis">
       values()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.raster.vect" class="md-nav__link">
-    <span class="md-ellipsis">
-      vect()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.raster.writeRaster" class="md-nav__link">
-    <span class="md-ellipsis">
-      writeRaster()
     </span>
   </a>
   
@@ -845,16 +818,16 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster" class="md-nav__link">
+  <a href="#geonate.processor" class="md-nav__link">
     <span class="md-ellipsis">
-      geonate.raster
+      geonate.processor
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.crop" class="md-nav__link">
+  <a href="#geonate.processor.crop" class="md-nav__link">
     <span class="md-ellipsis">
       crop()
     </span>
@@ -863,7 +836,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.extractValues" class="md-nav__link">
+  <a href="#geonate.processor.extractValues" class="md-nav__link">
     <span class="md-ellipsis">
       extractValues()
     </span>
@@ -872,7 +845,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.layestack" class="md-nav__link">
+  <a href="#geonate.processor.layestack" class="md-nav__link">
     <span class="md-ellipsis">
       layestack()
     </span>
@@ -881,7 +854,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.mask" class="md-nav__link">
+  <a href="#geonate.processor.mask" class="md-nav__link">
     <span class="md-ellipsis">
       mask()
     </span>
@@ -890,7 +863,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.match" class="md-nav__link">
+  <a href="#geonate.processor.match" class="md-nav__link">
     <span class="md-ellipsis">
       match()
     </span>
@@ -899,7 +872,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.merge" class="md-nav__link">
+  <a href="#geonate.processor.merge" class="md-nav__link">
     <span class="md-ellipsis">
       merge()
     </span>
@@ -908,7 +881,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.mergeVRT" class="md-nav__link">
+  <a href="#geonate.processor.mergeVRT" class="md-nav__link">
     <span class="md-ellipsis">
       mergeVRT()
     </span>
@@ -917,7 +890,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.normalized" class="md-nav__link">
+  <a href="#geonate.processor.normalized" class="md-nav__link">
     <span class="md-ellipsis">
       normalized()
     </span>
@@ -926,7 +899,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.normalizedDifference" class="md-nav__link">
+  <a href="#geonate.processor.normalizedDifference" class="md-nav__link">
     <span class="md-ellipsis">
       normalizedDifference()
     </span>
@@ -935,16 +908,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.rast" class="md-nav__link">
-    <span class="md-ellipsis">
-      rast()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.raster.reclassify" class="md-nav__link">
+  <a href="#geonate.processor.reclassify" class="md-nav__link">
     <span class="md-ellipsis">
       reclassify()
     </span>
@@ -953,7 +917,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.reproject" class="md-nav__link">
+  <a href="#geonate.processor.reproject" class="md-nav__link">
     <span class="md-ellipsis">
       reproject()
     </span>
@@ -962,7 +926,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.resample" class="md-nav__link">
+  <a href="#geonate.processor.resample" class="md-nav__link">
     <span class="md-ellipsis">
       resample()
     </span>
@@ -971,27 +935,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#geonate.raster.values" class="md-nav__link">
+  <a href="#geonate.processor.values" class="md-nav__link">
     <span class="md-ellipsis">
       values()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.raster.vect" class="md-nav__link">
-    <span class="md-ellipsis">
-      vect()
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geonate.raster.writeRaster" class="md-nav__link">
-    <span class="md-ellipsis">
-      writeRaster()
     </span>
   </a>
   
@@ -1019,15 +965,15 @@
   
 
 
-<h1 id="raster-module">raster module<a class="headerlink" href="#raster-module" title="Permanent link">&para;</a></h1>
+<h1 id="processor-module">processor module<a class="headerlink" href="#processor-module" title="Permanent link">&para;</a></h1>
 
 
   <div class="doc doc-object doc-module">
 
-<a id="geonate.raster"></a>
+<a id="geonate.processor"></a>
     <div class="doc doc-contents first">
 
-      <p>The raster module</p>
+      <p>The processor module</p>
 
 
 
@@ -1044,11 +990,11 @@
 
 
 
-<h2 id="geonate.raster.crop" class="doc doc-heading">
+<h2 id="geonate.processor.crop" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">crop</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.crop" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.crop" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -1107,7 +1053,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">crop</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Crops a raster file based on a reference shapefile or raster file. Optionally inverts the crop.</span>
@@ -1208,11 +1154,11 @@
 
 
 
-<h2 id="geonate.raster.extractValues" class="doc doc-heading">
+<h2 id="geonate.processor.extractValues" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">extractValues</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">roi</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tail</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.extractValues" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.extractValues" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -1289,7 +1235,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">extractValues</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">roi</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">tail</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract pixel values from a raster image based on regions of interest (ROI) defined in a shapefile.</span>
@@ -1422,11 +1368,11 @@
 
 
 
-<h2 id="geonate.raster.layestack" class="doc doc-heading">
+<h2 id="geonate.processor.layestack" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">layestack</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.layestack" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.layestack" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -1467,7 +1413,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">layestack</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Stacks multiple raster files or rasterio DatasetReader objects into a single multi-band raster.</span>
@@ -1480,7 +1426,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">rast</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.geonate</span><span class="w"> </span><span class="kn">import</span> <span class="n">rast</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span><span class="p">,</span> <span class="n">check_datatype_consistency</span><span class="p">,</span> <span class="n">check_extension_consistency</span>
 
     <span class="c1"># Initialize some parameters and variables</span>
@@ -1536,11 +1482,11 @@
 
 
 
-<h2 id="geonate.raster.mask" class="doc doc-heading">
+<h2 id="geonate.processor.mask" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">mask</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.mask" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.mask" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -1599,7 +1545,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mask</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">invert</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Masks a raster file based on a reference shapefile or raster file. Optionally inverts the mask.</span>
@@ -1711,11 +1657,11 @@
 
 
 
-<h2 id="geonate.raster.match" class="doc doc-heading">
+<h2 id="geonate.processor.match" class="doc doc-heading">
 <code class="highlight language-python"><span class="k">match</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.match" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.match" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -1768,7 +1714,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Match input image to the reference image in terms of projection, resolution, and bound extent. It returns image within the bigger boundary.</span>
@@ -1786,8 +1732,7 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio</span><span class="w"> </span><span class="kn">import</span> <span class="n">warp</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">rasterio.transform</span><span class="w"> </span><span class="kn">import</span> <span class="n">from_bounds</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_extent_local</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">.raster</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_extent_local</span><span class="p">,</span> <span class="n">array2raster</span>
 
     <span class="c1"># *****************************************</span>
     <span class="c1">### Define input image</span>
@@ -1916,11 +1861,11 @@
 
 
 
-<h2 id="geonate.raster.merge" class="doc doc-heading">
+<h2 id="geonate.processor.merge" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.merge" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.merge" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -1961,7 +1906,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">merge</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Merges multiple raster files into a single raster file by computing the average values at overlapped areas.</span>
@@ -2009,11 +1954,11 @@
 
 
 
-<h2 id="geonate.raster.mergeVRT" class="doc doc-heading">
+<h2 id="geonate.processor.mergeVRT" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">mergeVRT</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.mergeVRT" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.mergeVRT" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -2072,7 +2017,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">mergeVRT</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Merge multiple geotif files using gdal VRT for better performance speed</span>
 
@@ -2117,11 +2062,11 @@
 
 
 
-<h2 id="geonate.raster.normalized" class="doc doc-heading">
+<h2 id="geonate.processor.normalized" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">normalized</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.normalized" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.normalized" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -2162,7 +2107,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalized</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Normalize raster data to rearrange raster values from 0 to 1</span>
@@ -2177,7 +2122,7 @@
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
 
     <span class="c1">### Check input data</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
@@ -2223,11 +2168,11 @@
 
 
 
-<h2 id="geonate.raster.normalizedDifference" class="doc doc-heading">
+<h2 id="geonate.processor.normalizedDifference" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">normalizedDifference</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">band1</span><span class="p">,</span> <span class="n">band2</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.normalizedDifference" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.normalizedDifference" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -2280,7 +2225,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalizedDifference</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">band1</span><span class="p">,</span> <span class="n">band2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculate normalized difference index</span>
@@ -2347,105 +2292,11 @@
 
 
 
-<h2 id="geonate.raster.rast" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">show_meta</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-
-<a href="#geonate.raster.rast" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents ">
-
-      <p>Open a single geotif raster file using Rasterio</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>input</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>The file path indicates location of geotif file</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>show_meta</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to show the image metadata. Defaults to False.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>**kwargs</code></td>
-        <td><code>optional</code></td>
-        <td><p>All parameters in rasterio.open()</p></td>
-        <td><code>{}</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Raster object (raster)</code></td>
-      <td><p>Rasterio RasterReader object</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">show_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Open a single geotif raster file using Rasterio</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        input (AnyStr): The file path indicates location of geotif file</span>
-<span class="sd">        show_meta (bool, optional): Whether to show the image metadata. Defaults to False.</span>
-<span class="sd">        **kwargs (optional): All parameters in rasterio.open()</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Raster object (raster): Rasterio RasterReader object</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>    
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
-    <span class="n">img</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-
-    <span class="c1"># show meta </span>
-    <span class="k">if</span> <span class="n">show_meta</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">meta</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">meta</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Opening: </span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">meta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">img</span>    
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h2 id="geonate.raster.reclassify" class="doc doc-heading">
+<h2 id="geonate.processor.reclassify" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">reclassify</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">breakpoints</span><span class="p">,</span> <span class="n">classes</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.reclassify" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.reclassify" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -2498,7 +2349,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reclassify</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">breakpoints</span><span class="p">,</span> <span class="n">classes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reclassify image with discrete or continuous values</span>
@@ -2514,7 +2365,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
 
     <span class="c1"># *****************************************</span>
     <span class="c1"># Check input data</span>
@@ -2584,11 +2435,11 @@
 
 
 
-<h2 id="geonate.raster.reproject" class="doc doc-heading">
+<h2 id="geonate.processor.reproject" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">reproject</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">,</span> <span class="n">res</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.reproject" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.reproject" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -2647,7 +2498,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reproject</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">,</span> <span class="n">res</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reprojects and resamples a given raster image to a specified coordinate reference system (CRS) and resolution.</span>
@@ -2774,11 +2625,11 @@
 
 
 
-<h2 id="geonate.raster.resample" class="doc doc-heading">
+<h2 id="geonate.processor.resample" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">resample</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;aggregate&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.resample" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.resample" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -2837,7 +2688,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">factor</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;aggregate&#39;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;near&#39;</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Resample raster image based on factor</span>
@@ -2962,11 +2813,11 @@
 
 
 
-<h2 id="geonate.raster.values" class="doc doc-heading">
+<h2 id="geonate.processor.values" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">values</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">na_rm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
 
-<a href="#geonate.raster.values" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#geonate.processor.values" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents ">
 
@@ -3025,7 +2876,7 @@
   </tbody>
 </table>
         <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
+          <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">values</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">na_rm</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extract all pixel values of image and create dataframe from them, each band is a column</span>
@@ -3095,256 +2946,6 @@
 
 
 
-  <div class="doc doc-object doc-function">
-
-
-
-<h2 id="geonate.raster.vect" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">vect</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">show_meta</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-
-<a href="#geonate.raster.vect" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents ">
-
-      <p>Read shapefile vector file using Geopandas </p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>input</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>The file path indicates location of shapefile </p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>show_meta</code></td>
-        <td><code>bool</code></td>
-        <td><p>Whether to show the image metadata. Defaults to False.</p></td>
-        <td><code>False</code></td>
-      </tr>
-      <tr>
-        <td><code>**kwargs</code></td>
-        <td><code>optional</code></td>
-        <td><p>All parameters in gpd.read_file()</p></td>
-        <td><code>{}</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>Shapefile (geodataframe)</code></td>
-      <td><p>Geodataframe of shapefile with attributes from geopandas object</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">vect</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">show_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read shapefile vector file using Geopandas </span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        input (AnyStr): The file path indicates location of shapefile </span>
-<span class="sd">        show_meta (bool, optional): Whether to show the image metadata. Defaults to False.</span>
-<span class="sd">        **kwargs (optional): All parameters in gpd.read_file()</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Shapefile (geodataframe): Geodataframe of shapefile with attributes from geopandas object</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
-    <span class="n">vect</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="c1"># show meta </span>
-    <span class="k">if</span> <span class="n">show_meta</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-        <span class="n">crs</span> <span class="o">=</span> <span class="n">vect</span><span class="o">.</span><span class="n">crs</span>
-        <span class="n">datashape</span> <span class="o">=</span> <span class="n">vect</span><span class="o">.</span><span class="n">shape</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Opening: </span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="se">\n</span><span class="s2"> Projection (crs): </span><span class="si">{</span><span class="n">crs</span><span class="si">}</span><span class="se">\n</span><span class="s2"> Data shape: </span><span class="si">{</span><span class="n">datashape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">vect</span>
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
-  <div class="doc doc-object doc-function">
-
-
-
-<h2 id="geonate.raster.writeRaster" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">writeRaster</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compress</span><span class="o">=</span><span class="s1">&#39;lzw&#39;</span><span class="p">)</span></code>
-
-
-<a href="#geonate.raster.writeRaster" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents ">
-
-      <p>Write raster Geotif from Raster or Data Array using Rasterio</p>
-
-<p><strong>Parameters:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Description</th>
-      <th>Default</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><code>input</code></td>
-        <td><code>raster | array</code></td>
-        <td><p>Raster or Data array in form of [band, height, width]</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>output</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Output file path</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>meta</code></td>
-        <td><code>Dict</code></td>
-        <td><p>Rasterio profile settings needed when input is dataArray. Defaults to None.</p></td>
-        <td><code>None</code></td>
-      </tr>
-      <tr>
-        <td><code>compress</code></td>
-        <td><code>AnyStr</code></td>
-        <td><p>Compression algorithm ['lzw', 'deflate']. Defaults to 'lzw'.</p></td>
-        <td><code>&#39;lzw&#39;</code></td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>Returns:</strong></p>
-<table>
-  <thead>
-    <tr>
-      <th>Type</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>None</code></td>
-      <td><p>The function does not return any local variable. It writes raster file to local drive (.tif).</p></td>
-    </tr>
-  </tbody>
-</table>
-        <details class="quote">
-          <summary>Source code in <code>geonate/raster.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">writeRaster</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lzw&#39;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write raster Geotif from Raster or Data Array using Rasterio</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        input (raster | array): Raster or Data array in form of [band, height, width]</span>
-<span class="sd">        output (AnyStr): Output file path</span>
-<span class="sd">        meta (Dict, optional): Rasterio profile settings needed when input is dataArray. Defaults to None.</span>
-<span class="sd">        compress (AnyStr, optional): Compression algorithm [&#39;lzw&#39;, &#39;deflate&#39;]. Defaults to &#39;lzw&#39;.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        None: The function does not return any local variable. It writes raster file to local drive (.tif).</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>   
-    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-    <span class="c1"># Input is rasterio image</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
-        <span class="n">meta_out</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
-        <span class="n">data_array</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-        <span class="c1"># compress data or not</span>
-        <span class="k">if</span> <span class="n">compress</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">meta_out</span> <span class="o">=</span> <span class="n">meta_out</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">compress</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;deflate&#39;</span><span class="p">:</span>
-                <span class="n">meta_out</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;compress&#39;</span><span class="p">:</span> <span class="s1">&#39;deflate&#39;</span><span class="p">})</span>
-            <span class="k">elif</span> <span class="n">compress</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lzw&#39;</span><span class="p">:</span>
-                <span class="n">meta_out</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;compress&#39;</span><span class="p">:</span> <span class="s1">&#39;lzw&#39;</span><span class="p">})</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Compress method is not supported&#39;</span><span class="p">)</span>
-
-        <span class="c1"># output has single band</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="n">meta_out</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta_out</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">data_array</span>
-                    <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">band</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="c1"># output has multi bands</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">meta_out</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-            <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta_out</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">data_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-                    <span class="n">data</span> <span class="o">=</span> <span class="n">data_array</span><span class="p">[</span><span class="n">band</span><span class="p">,</span> <span class="p">:</span> <span class="p">,</span> <span class="p">:</span> <span class="p">]</span>
-                    <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">band</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
-    <span class="c1"># input is data array</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input is dataArray, please give metadata profile&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>        
-        <span class="c1"># compress data or not</span>
-            <span class="k">if</span> <span class="n">compress</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">compress</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;deflate&#39;</span><span class="p">:</span>
-                    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;compress&#39;</span><span class="p">:</span> <span class="s1">&#39;deflate&#39;</span><span class="p">})</span>
-                <span class="k">elif</span> <span class="n">compress</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;lzw&#39;</span><span class="p">:</span>
-                    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;compress&#39;</span><span class="p">:</span> <span class="s1">&#39;lzw&#39;</span><span class="p">})</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Compress method is not supported&#39;</span><span class="p">)</span>
-
-            <span class="c1"># output has single band</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-                <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
-                        <span class="n">data</span> <span class="o">=</span> <span class="nb">input</span>
-                        <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">band</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="c1"># output has multi bands</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="k">with</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span> <span class="k">as</span> <span class="n">dst</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">band</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-                        <span class="n">data</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="n">band</span><span class="p">,</span> <span class="p">:</span> <span class="p">,</span> <span class="p">:</span> <span class="p">]</span>
-                        <span class="n">dst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">band</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>    
-</code></pre></div>
-        </details>
-    </div>
-
-  </div>
-
-
-
 
 
 
@@ -3375,7 +2976,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-01-29T23:13:15+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-01-29</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-02-10T12:29:51+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-02-10</span>
   </span>
 
     
@@ -3385,7 +2986,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-01-29T23:13:15+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-01-29</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-timeago"><span class="timeago" datetime="2025-02-10T12:29:51+00:00" locale="en"></span></span><span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date">2025-02-10</span>
   </span>
 
     
@@ -3445,7 +3046,7 @@
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.top", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.f13b1293.min.js"></script>
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
       
         <script src="../js/timeago.min.js"></script>
       
