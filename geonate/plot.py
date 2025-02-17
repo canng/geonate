@@ -48,6 +48,128 @@ def colormaps():
 
     plt.show()
 
+# =========================================================================================== #
+#               Generates a discrete colormap
+# =========================================================================================== #
+def DiscreteColors(colors=None, ncolors=3, seed=None):
+    """
+    Generates a discrete colormap with a specified number of colors.
+
+    Args:
+        ncolors (int): Number of colors to include in the colormap. Default is 3.
+        seed (int, optional): Seed for the random number generator to ensure reproducibility. Default is None.
+
+    Returns:
+        ListedColormap: A matplotlib ListedColormap object with the specified number of colors.
+        
+    """
+    import random
+    from matplotlib.colors import ListedColormap
+
+    # initial vector colors, currently 32 colors
+    if colors is None:
+        colors = [
+                        "#000000",  # Black
+                        "#FFFFFF",  # White
+                        "#FF0000",  # Red
+                        "#00FF00",  # Green
+                        "#0000FF",  # Blue
+                        "#FFFF00",  # Yellow
+                        "#00FFFF",  # Cyan
+                        "#FF00FF",  # Magenta
+                        "#808080",  # Gray
+                        "#C0C0C0",  # Silver
+                        "#800000",  # Maroon
+                        "#808000",  # Olive
+                        "#800080",  # Purple
+                        "#008080",  # Teal
+                        "#000080",  # Navy
+                        "#FFA500",  # Orange
+                        "#FFC0CB",  # Pink
+                        "#A52A2A",  # Brown
+                        "#00FF00",  # Lime
+                        "#4B0082",  # Indigo
+                        "#EE82EE",  # Violet
+                        "#F5F5DC",  # Beige
+                        "#FF7F50",  # Coral
+                        "#40E0D0",  # Turquoise
+                        "#E6E6FA",  # Lavender
+                        "#FFDAB9",  # Peach
+                        "#98FF98",  # Mint
+                        "#F5DEB3",  # Wheat
+                        "#F0E68C",  # Khaki
+                        "#DDA0DD",  # Plum
+                        "#D3D3D3",  # Light Grey
+                        "#A9A9A9"   # Dark Grey
+                    ]
+        ncolors = ncolors
+        
+        # Initialize the custom colors
+        custom_colors = None
+    
+        # Randomly pick out colors by numbers of colors
+        if custom_colors is None:
+            random.seed(seed)
+            custom_colors = random.sample(colors, ncolors)
+
+    elif colors is not None:
+        ncolors = len(colors)
+        custom_colors = colors    
+    
+    # Create colormap from custom colors picked
+    cmap_custom = ListedColormap(custom_colors[ : ncolors])
+
+    return cmap_custom
+
+
+# =========================================================================================== #
+#               Plots an image with discrete values  
+# =========================================================================================== #
+def plotMap(image, cmap=None, figsize=(6,6), axis_off=False, colorbar=True, cbar_shrink=0.5, colorbar_name='Cluster', mapTitle=None, fontFamily='Arial', imgPath=None, resolution=300):
+    """
+    Plots an image with discrete values
+
+    Args:
+        image (np.ndarray): The data array in image  format (Height x Width x Bands).
+        cmap (str or Colormap, optional): Colormap to use for the image. Default is None.
+        figsize (tuple, optional): Size of the figure in inches. Default is (6, 6).
+        axis_off (bool, optional): Remove axis number (stick). Default is False.
+        colorbar (bool, optional): Whether to display a colorbar. Default is True.
+        cbar_shrink (float, optional): Fraction by which to multiply the size of the colorbar. Default is 0.5.
+        colorbar_name (str, optional): Label for the colorbar. Default is 'Cluster'.
+        mapTitle (str, optional): Title of the map. Default is None.
+        fontFamily (str, optional): Font family for the plot. Default is 'Arial'.
+        imgPath (str, optional): Path to save the figure with extension (eg., *.jpg). Default is None.
+        resolution (int, optional): Resolution of the saved figure in DPI. Default is 300.
+
+    """
+    import numpy as np
+    import matplotlib.pyplot as plt
+    plt.rcParams["font.family"] = fontFamily
+
+    # Check input data
+    if not isinstance(image, np.ndarray):
+        raise ValueError('Input image must data array in image format (Height x Width x Bands)')
+    else:
+        plt.figure(figsize= figsize)
+        plt.imshow(image, cmap= cmap)
+
+        # Add color bar
+        if colorbar is True:
+            plt.colorbar(label= colorbar_name, shrink= cbar_shrink)
+        # Add map title
+        if mapTitle is not None:
+            plt.title(mapTitle)
+        # Remove axis number
+        if axis_off is True:
+            plt.axis('off')
+        # Save plot
+        if imgPath is not None:
+            plt.savefig(imgPath, dpi= resolution)
+        
+        plt.tight_layout()
+        plt.show()
+
 
 # =========================================================================================== #
 #               Simple plot band           

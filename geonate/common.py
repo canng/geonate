@@ -797,7 +797,7 @@ def  reshape_raster(inputArray, mode:str="image"):
     import numpy as np
 
     # Check whether input are 3-dim data array
-    if len(inputArray) == 3:
+    if len(inputArray.shape) == 3:
         # Convert to image
         if mode.lower() == 'image' or mode.lower() == 'img':
             output = np.transpose(inputArray, (1,2,0))

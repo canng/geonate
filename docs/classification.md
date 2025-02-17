@@ -1,4 +1,0 @@
- 
-# classification module
-
-::: geonate.classification

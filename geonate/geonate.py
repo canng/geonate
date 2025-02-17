@@ -10,11 +10,12 @@ from typing import AnyStr, Dict, Optional
 # =========================================================================================== #
 #               Open raster geotif file
 # =========================================================================================== #
-def rast(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
+def rast(input: AnyStr, mode='r', show_meta: Optional[bool]=False, **kwargs):
     """Open a single geotif raster file using Rasterio
 
     Args:
         input (AnyStr): The file path indicates location of geotif file
+        mode (AnyStr): Data read mode, ‘r’ (read, the default), ‘r+’ (read/write), ‘w’ (write), or ‘w+’ (write/read). Default to mode = 'r'.
         show_meta (bool, optional): Whether to show the image metadata. Defaults to False.
         **kwargs (optional): All parameters in rasterio.open()
 
@@ -25,7 +26,7 @@ def rast(input: AnyStr, show_meta: Optional[bool]=False, **kwargs):
     import rasterio
     import os
 
-    img = rasterio.open(input, **kwargs)
+    img = rasterio.open(input, mode= mode, **kwargs)
     basename = os.path.basename(input)
     
     # show meta 

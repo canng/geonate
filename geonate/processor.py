@@ -1096,3 +1096,68 @@ def normalized(input):
     
     return normalized_raster
     
+
+# =========================================================================================== #
+#              Principal Component Analysis (PCA) on multispectral data for data Dimension Reduction.
+# =========================================================================================== #      
+
+def pca(input, n_component: int=3, **kwargs):
+    """
+    Perform Principal Component Analysis (PCA) on multispectral data for data Dimension Reduction.
+
+    Args:
+        input (rasterio.DatasetReader or np.ndarray): Multispectral input data. Can be a raster image or a numpy array.
+        n_component (int): Number of principal components to compute. Default is 3.
+        **kwargs (optional): All parameters in sklearn.decomposition.PCA()
+
+    Returns:
+        np.ndarray or rasterio.DatasetReader: PCA-transformed data in the same format as the input.
+
+    """
+    import numpy as np
+    import rasterio
+    from sklearn.decomposition import PCA
+    from .common import array2raster, reshape_raster
+
+    # Identify datatype and define input data
+    # Raster image
+    if isinstance(input, rasterio.DatasetReader):
+        arr = input.read()
+        height, width = input.shape
+        nbands =  input.count
+        meta = input.meta
+    # Data Array
+    elif isinstance(input, np.ndarray):
+        if len(input.shape) < 3:
+            raise ValueError('Input must be multispectral data (multi-band)')
+        else:
+            arr = input
+            nbands, height, width = input.shape
+
+    else: 
+        raise ValueError('Input is not supported')
+    
+    # Reshape from raster to image format, and from 3D to 2D
+    ds = reshape_raster(arr, mode='image')
+    ds_reshaped = ds.reshape((-1, nbands)) # -1 means this dim will be determined by other dims
+
+    # Define PCA model and fit the PCA model
+    pca_model = PCA(n_components= n_component, **kwargs)
+    pca_fit = pca_model.fit_transform(ds_reshaped, **kwargs)
+
+    # Reshape the result to the new shape
+    pca_img = pca_fit.reshape((height, width, n_component))
+    
+    # Reshape from image to raster format 
+    pca_raster = reshape_raster(pca_img, mode='raster')
+
+    # Return output based on input similar to input
+    if isinstance(input, np.ndarray):
+        return pca_raster
+    
+    # Convert to rasterio object
+    elif isinstance(input, rasterio.DatasetReader):
+        meta.update({'count': n_component})
+        pca_rast = array2raster(pca_raster, meta)
+        return pca_rast
+
