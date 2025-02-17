@@ -46,7 +46,8 @@ pip install -e .
 **Usage**
 
 ```python
-from geonate import raster
+from geonate import *
+from geonate import common, processor, classify, plot
 
 ```
     
