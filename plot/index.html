@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../assets/logo_geonate.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -615,9 +615,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.plot.DiscreteColors" class="md-nav__link">
+    <span class="md-ellipsis">
+      DiscreteColors()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.plot.colormaps" class="md-nav__link">
     <span class="md-ellipsis">
       colormaps()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.plot.plotMap" class="md-nav__link">
+    <span class="md-ellipsis">
+      plotMap()
     </span>
   </a>
   
@@ -688,11 +706,33 @@
   
   
     <li class="md-nav__item">
-      <a href="../classification/" class="md-nav__link">
+      <a href="../classify/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    classification module
+    classify module
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../post_classify/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    post_classify module
     
   </span>
   
@@ -746,9 +786,27 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.plot.DiscreteColors" class="md-nav__link">
+    <span class="md-ellipsis">
+      DiscreteColors()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.plot.colormaps" class="md-nav__link">
     <span class="md-ellipsis">
       colormaps()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.plot.plotMap" class="md-nav__link">
+    <span class="md-ellipsis">
+      plotMap()
     </span>
   </a>
   
@@ -828,6 +886,139 @@
 
 
 
+<h2 id="geonate.plot.DiscreteColors" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">DiscreteColors</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#geonate.plot.DiscreteColors" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Generates a discrete colormap with a specified number of colors.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>ncolors</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of colors to include in the colormap. Default is 3.</p></td>
+        <td><code>3</code></td>
+      </tr>
+      <tr>
+        <td><code>seed</code></td>
+        <td><code>int</code></td>
+        <td><p>Seed for the random number generator to ensure reproducibility. Default is None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>ListedColormap</code></td>
+      <td><p>A matplotlib ListedColormap object with the specified number of colors.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/plot.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">DiscreteColors</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a discrete colormap with a specified number of colors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ncolors (int): Number of colors to include in the colormap. Default is 3.</span>
+<span class="sd">        seed (int, optional): Seed for the random number generator to ensure reproducibility. Default is None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ListedColormap: A matplotlib ListedColormap object with the specified number of colors.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+
+    <span class="c1"># initial vector colors, currently 32 colors</span>
+    <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="s2">&quot;#000000&quot;</span><span class="p">,</span>  <span class="c1"># Black</span>
+                        <span class="s2">&quot;#FFFFFF&quot;</span><span class="p">,</span>  <span class="c1"># White</span>
+                        <span class="s2">&quot;#FF0000&quot;</span><span class="p">,</span>  <span class="c1"># Red</span>
+                        <span class="s2">&quot;#00FF00&quot;</span><span class="p">,</span>  <span class="c1"># Green</span>
+                        <span class="s2">&quot;#0000FF&quot;</span><span class="p">,</span>  <span class="c1"># Blue</span>
+                        <span class="s2">&quot;#FFFF00&quot;</span><span class="p">,</span>  <span class="c1"># Yellow</span>
+                        <span class="s2">&quot;#00FFFF&quot;</span><span class="p">,</span>  <span class="c1"># Cyan</span>
+                        <span class="s2">&quot;#FF00FF&quot;</span><span class="p">,</span>  <span class="c1"># Magenta</span>
+                        <span class="s2">&quot;#808080&quot;</span><span class="p">,</span>  <span class="c1"># Gray</span>
+                        <span class="s2">&quot;#C0C0C0&quot;</span><span class="p">,</span>  <span class="c1"># Silver</span>
+                        <span class="s2">&quot;#800000&quot;</span><span class="p">,</span>  <span class="c1"># Maroon</span>
+                        <span class="s2">&quot;#808000&quot;</span><span class="p">,</span>  <span class="c1"># Olive</span>
+                        <span class="s2">&quot;#800080&quot;</span><span class="p">,</span>  <span class="c1"># Purple</span>
+                        <span class="s2">&quot;#008080&quot;</span><span class="p">,</span>  <span class="c1"># Teal</span>
+                        <span class="s2">&quot;#000080&quot;</span><span class="p">,</span>  <span class="c1"># Navy</span>
+                        <span class="s2">&quot;#FFA500&quot;</span><span class="p">,</span>  <span class="c1"># Orange</span>
+                        <span class="s2">&quot;#FFC0CB&quot;</span><span class="p">,</span>  <span class="c1"># Pink</span>
+                        <span class="s2">&quot;#A52A2A&quot;</span><span class="p">,</span>  <span class="c1"># Brown</span>
+                        <span class="s2">&quot;#00FF00&quot;</span><span class="p">,</span>  <span class="c1"># Lime</span>
+                        <span class="s2">&quot;#4B0082&quot;</span><span class="p">,</span>  <span class="c1"># Indigo</span>
+                        <span class="s2">&quot;#EE82EE&quot;</span><span class="p">,</span>  <span class="c1"># Violet</span>
+                        <span class="s2">&quot;#F5F5DC&quot;</span><span class="p">,</span>  <span class="c1"># Beige</span>
+                        <span class="s2">&quot;#FF7F50&quot;</span><span class="p">,</span>  <span class="c1"># Coral</span>
+                        <span class="s2">&quot;#40E0D0&quot;</span><span class="p">,</span>  <span class="c1"># Turquoise</span>
+                        <span class="s2">&quot;#E6E6FA&quot;</span><span class="p">,</span>  <span class="c1"># Lavender</span>
+                        <span class="s2">&quot;#FFDAB9&quot;</span><span class="p">,</span>  <span class="c1"># Peach</span>
+                        <span class="s2">&quot;#98FF98&quot;</span><span class="p">,</span>  <span class="c1"># Mint</span>
+                        <span class="s2">&quot;#F5DEB3&quot;</span><span class="p">,</span>  <span class="c1"># Wheat</span>
+                        <span class="s2">&quot;#F0E68C&quot;</span><span class="p">,</span>  <span class="c1"># Khaki</span>
+                        <span class="s2">&quot;#DDA0DD&quot;</span><span class="p">,</span>  <span class="c1"># Plum</span>
+                        <span class="s2">&quot;#D3D3D3&quot;</span><span class="p">,</span>  <span class="c1"># Light Grey</span>
+                        <span class="s2">&quot;#A9A9A9&quot;</span>   <span class="c1"># Dark Grey</span>
+                    <span class="p">]</span>
+        <span class="n">ncolors</span> <span class="o">=</span> <span class="n">ncolors</span>
+
+        <span class="c1"># Initialize the custom colors</span>
+        <span class="n">custom_colors</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Randomly pick out colors by numbers of colors</span>
+        <span class="k">if</span> <span class="n">custom_colors</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+            <span class="n">custom_colors</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">ncolors</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ncolors</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+        <span class="n">custom_colors</span> <span class="o">=</span> <span class="n">colors</span>    
+
+    <span class="c1"># Create colormap from custom colors picked</span>
+    <span class="n">cmap_custom</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">(</span><span class="n">custom_colors</span><span class="p">[</span> <span class="p">:</span> <span class="n">ncolors</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">cmap_custom</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
 <h2 id="geonate.plot.colormaps" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">colormaps</span><span class="p">()</span></code>
 
@@ -874,6 +1065,153 @@ Each colormap is displayed as a horizontal gradient bar.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">colormaps</span><span class="p">))</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.plot.plotMap" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">plotMap</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">axis_off</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cbar_shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">colorbar_name</span><span class="o">=</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="n">mapTitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontFamily</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">imgPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span></code>
+
+
+<a href="#geonate.plot.plotMap" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Plots an image with discrete values</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>image</code></td>
+        <td><code>np.ndarray</code></td>
+        <td><p>The data array in image  format (Height x Width x Bands).</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>cmap</code></td>
+        <td><code>str or Colormap</code></td>
+        <td><p>Colormap to use for the image. Default is None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>figsize</code></td>
+        <td><code>tuple</code></td>
+        <td><p>Size of the figure in inches. Default is (6, 6).</p></td>
+        <td><code>(6, 6)</code></td>
+      </tr>
+      <tr>
+        <td><code>axis_off</code></td>
+        <td><code>bool</code></td>
+        <td><p>Remove axis number (stick). Default is False.</p></td>
+        <td><code>False</code></td>
+      </tr>
+      <tr>
+        <td><code>colorbar</code></td>
+        <td><code>bool</code></td>
+        <td><p>Whether to display a colorbar. Default is True.</p></td>
+        <td><code>True</code></td>
+      </tr>
+      <tr>
+        <td><code>cbar_shrink</code></td>
+        <td><code>float</code></td>
+        <td><p>Fraction by which to multiply the size of the colorbar. Default is 0.5.</p></td>
+        <td><code>0.5</code></td>
+      </tr>
+      <tr>
+        <td><code>colorbar_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Label for the colorbar. Default is 'Cluster'.</p></td>
+        <td><code>&#39;Cluster&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>mapTitle</code></td>
+        <td><code>str</code></td>
+        <td><p>Title of the map. Default is None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>fontFamily</code></td>
+        <td><code>str</code></td>
+        <td><p>Font family for the plot. Default is 'Arial'.</p></td>
+        <td><code>&#39;Arial&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>imgPath</code></td>
+        <td><code>str</code></td>
+        <td><p>Path to save the figure with extension (eg., *.jpg). Default is None.</p></td>
+        <td><code>None</code></td>
+      </tr>
+      <tr>
+        <td><code>resolution</code></td>
+        <td><code>int</code></td>
+        <td><p>Resolution of the saved figure in DPI. Default is 300.</p></td>
+        <td><code>300</code></td>
+      </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/plot.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plotMap</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">axis_off</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cbar_shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">colorbar_name</span><span class="o">=</span><span class="s1">&#39;Cluster&#39;</span><span class="p">,</span> <span class="n">mapTitle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fontFamily</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="n">imgPath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">300</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plots an image with discrete values</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        image (np.ndarray): The data array in image  format (Height x Width x Bands).</span>
+<span class="sd">        cmap (str or Colormap, optional): Colormap to use for the image. Default is None.</span>
+<span class="sd">        figsize (tuple, optional): Size of the figure in inches. Default is (6, 6).</span>
+<span class="sd">        axis_off (bool, optional): Remove axis number (stick). Default is False.</span>
+<span class="sd">        colorbar (bool, optional): Whether to display a colorbar. Default is True.</span>
+<span class="sd">        cbar_shrink (float, optional): Fraction by which to multiply the size of the colorbar. Default is 0.5.</span>
+<span class="sd">        colorbar_name (str, optional): Label for the colorbar. Default is &#39;Cluster&#39;.</span>
+<span class="sd">        mapTitle (str, optional): Title of the map. Default is None.</span>
+<span class="sd">        fontFamily (str, optional): Font family for the plot. Default is &#39;Arial&#39;.</span>
+<span class="sd">        imgPath (str, optional): Path to save the figure with extension (eg., *.jpg). Default is None.</span>
+<span class="sd">        resolution (int, optional): Resolution of the saved figure in DPI. Default is 300.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.family&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fontFamily</span>
+
+    <span class="c1"># Check input data</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input image must data array in image format (Height x Width x Bands)&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span> <span class="n">figsize</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span> <span class="n">cmap</span><span class="p">)</span>
+
+        <span class="c1"># Add color bar</span>
+        <span class="k">if</span> <span class="n">colorbar</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span> <span class="n">colorbar_name</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span> <span class="n">cbar_shrink</span><span class="p">)</span>
+        <span class="c1"># Add map title</span>
+        <span class="k">if</span> <span class="n">mapTitle</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">mapTitle</span><span class="p">)</span>
+        <span class="c1"># Remove axis number</span>
+        <span class="k">if</span> <span class="n">axis_off</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        <span class="c1"># Save plot</span>
+        <span class="k">if</span> <span class="n">imgPath</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">imgPath</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span> <span class="n">resolution</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
         </details>
     </div>

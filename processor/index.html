@@ -18,11 +18,11 @@
         <link rel="prev" href="../plot/">
       
       
-        <link rel="next" href="../classification/">
+        <link rel="next" href="../classify/">
       
       
       <link rel="icon" href="../assets/logo_geonate.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -718,6 +718,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.processor.pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      pca()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.processor.reclassify" class="md-nav__link">
     <span class="md-ellipsis">
       reclassify()
@@ -769,11 +778,33 @@
   
   
     <li class="md-nav__item">
-      <a href="../classification/" class="md-nav__link">
+      <a href="../classify/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    classification module
+    classify module
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../post_classify/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    post_classify module
     
   </span>
   
@@ -902,6 +933,15 @@
   <a href="#geonate.processor.normalizedDifference" class="md-nav__link">
     <span class="md-ellipsis">
       normalizedDifference()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geonate.processor.pca" class="md-nav__link">
+    <span class="md-ellipsis">
+      pca()
     </span>
   </a>
   
@@ -2280,6 +2320,135 @@
         <span class="n">normalized_output</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">return</span> <span class="n">normalized_output</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.processor.pca" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">pca</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">n_component</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+<a href="#geonate.processor.pca" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Perform Principal Component Analysis (PCA) on multispectral data for data Dimension Reduction.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td><code>rasterio.DatasetReader or np.ndarray</code></td>
+        <td><p>Multispectral input data. Can be a raster image or a numpy array.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>n_component</code></td>
+        <td><code>int</code></td>
+        <td><p>Number of principal components to compute. Default is 3.</p></td>
+        <td><code>3</code></td>
+      </tr>
+      <tr>
+        <td><code>**kwargs</code></td>
+        <td><code>optional</code></td>
+        <td><p>All parameters in sklearn.decomposition.PCA()</p></td>
+        <td><code>{}</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>np.ndarray or rasterio.DatasetReader</code></td>
+      <td><p>PCA-transformed data in the same format as the input.</p></td>
+    </tr>
+  </tbody>
+</table>
+        <details class="quote">
+          <summary>Source code in <code>geonate/processor.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">pca</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">n_component</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform Principal Component Analysis (PCA) on multispectral data for data Dimension Reduction.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        input (rasterio.DatasetReader or np.ndarray): Multispectral input data. Can be a raster image or a numpy array.</span>
+<span class="sd">        n_component (int): Number of principal components to compute. Default is 3.</span>
+<span class="sd">        **kwargs (optional): All parameters in sklearn.decomposition.PCA()</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray or rasterio.DatasetReader: PCA-transformed data in the same format as the input.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span><span class="p">,</span> <span class="n">reshape_raster</span>
+
+    <span class="c1"># Identify datatype and define input data</span>
+    <span class="c1"># Raster image</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">nbands</span> <span class="o">=</span>  <span class="nb">input</span><span class="o">.</span><span class="n">count</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+    <span class="c1"># Data Array</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input must be multispectral data (multi-band)&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">arr</span> <span class="o">=</span> <span class="nb">input</span>
+            <span class="n">nbands</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input is not supported&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Reshape from raster to image format, and from 3D to 2D</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">reshape_raster</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
+    <span class="n">ds_reshaped</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">nbands</span><span class="p">))</span> <span class="c1"># -1 means this dim will be determined by other dims</span>
+
+    <span class="c1"># Define PCA model and fit the PCA model</span>
+    <span class="n">pca_model</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span> <span class="n">n_component</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">pca_fit</span> <span class="o">=</span> <span class="n">pca_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">ds_reshaped</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Reshape the result to the new shape</span>
+    <span class="n">pca_img</span> <span class="o">=</span> <span class="n">pca_fit</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">n_component</span><span class="p">))</span>
+
+    <span class="c1"># Reshape from image to raster format </span>
+    <span class="n">pca_raster</span> <span class="o">=</span> <span class="n">reshape_raster</span><span class="p">(</span><span class="n">pca_img</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;raster&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Return output based on input similar to input</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pca_raster</span>
+
+    <span class="c1"># Convert to rasterio object</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">n_component</span><span class="p">})</span>
+        <span class="n">pca_rast</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">pca_raster</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pca_rast</span>
 </code></pre></div>
         </details>
     </div>

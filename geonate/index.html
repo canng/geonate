@@ -22,7 +22,7 @@
       
       
       <link rel="icon" href="../assets/logo_geonate.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
     
     
       
@@ -30,7 +30,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
@@ -679,11 +679,33 @@
   
   
     <li class="md-nav__item">
-      <a href="../classification/" class="md-nav__link">
+      <a href="../classify/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    classification module
+    classify module
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../post_classify/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    post_classify module
     
   </span>
   
@@ -811,7 +833,7 @@
 
 
 <h2 id="geonate.geonate.rast" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">show_meta</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">show_meta</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 <a href="#geonate.geonate.rast" class="headerlink" title="Permanent link">&para;</a></h2>
@@ -836,6 +858,12 @@
         <td><code>AnyStr</code></td>
         <td><p>The file path indicates location of geotif file</p></td>
         <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>mode</code></td>
+        <td><code>AnyStr</code></td>
+        <td><p>Data read mode, ‘r’ (read, the default), ‘r+’ (read/write), ‘w’ (write), or ‘w+’ (write/read). Default to mode = 'r'.</p></td>
+        <td><code>&#39;r&#39;</code></td>
       </tr>
       <tr>
         <td><code>show_meta</code></td>
@@ -868,11 +896,12 @@
 </table>
         <details class="quote">
           <summary>Source code in <code>geonate/geonate.py</code></summary>
-          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">show_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rast</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="n">AnyStr</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">show_meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Open a single geotif raster file using Rasterio</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        input (AnyStr): The file path indicates location of geotif file</span>
+<span class="sd">        mode (AnyStr): Data read mode, ‘r’ (read, the default), ‘r+’ (read/write), ‘w’ (write), or ‘w+’ (write/read). Default to mode = &#39;r&#39;.</span>
 <span class="sd">        show_meta (bool, optional): Whether to show the image metadata. Defaults to False.</span>
 <span class="sd">        **kwargs (optional): All parameters in rasterio.open()</span>
 
@@ -883,7 +912,7 @@
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
-    <span class="n">img</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span> <span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
 
     <span class="c1"># show meta </span>
