@@ -345,7 +345,7 @@ def mask(input, reference, invert=False, nodata=True):
 # =========================================================================================== #
 #              Preprojection raster image 
 # =========================================================================================== #
-def reproject(input, reference, method: Optional[AnyStr]='near', res: Optional[float]=None):
+def reproject(input, reference, method: Optional[AnyStr]='near', res: Optional[float]=None, **kwargs):
     """
     Reprojects and resamples a given raster image to a specified coordinate reference system (CRS) and resolution.
 
@@ -354,6 +354,7 @@ def reproject(input, reference, method: Optional[AnyStr]='near', res: Optional[f
         reference (raster | shapefile): The reference CRS for reprojection. It can be a string (e.g., 'EPSG:4326') or a rasterio DatasetReader object. If None, the input CRS is used.
         method (AnyStr, optional): The resampling method to use. Default is 'near'. Supported methods include 'nearest', 'average', 'max', 'min', 'median', 'mode', 'q1', 'q3', 'rms', 'sum', 'cubic', 'cubic_spline', 'bilinear', 'gauss', 'lanczos'.
         res (numeric, optional): The output resolution. If None, the input resolution is used.
+        **kwargs (optional): All parameters that can be passed to rasterio.warp.reproject function.
 
     Returns:
         raster: The reprojected raster image
@@ -452,7 +453,8 @@ def reproject(input, reference, method: Optional[AnyStr]='near', res: Optional[f
         warp.reproject(source=ds, destination=projected_array[(band), :, :], \
                        src_transform= meta['transform'], dst_transform=transform_new, \
                         src_crs=meta['crs'], dst_crs=dst_crs, \
-                        resampling= resampleAlg)
+                        resampling= resampleAlg,
+                        **kwargs)
     
     # *****************************************
     # Convert array back to raster
@@ -464,7 +466,7 @@ def reproject(input, reference, method: Optional[AnyStr]='near', res: Optional[f
 # =========================================================================================== #
 #              Resample raster image based on factor
 # =========================================================================================== #
-def resample(input, factor, mode='aggregate', method='near'):
+def resample(input, factor, mode='aggregate', method='near', **kwargs):
     """
     Resample raster image based on factor
 
@@ -473,6 +475,7 @@ def resample(input, factor, mode='aggregate', method='near'):
         factor (numeric): Resampling factor compared to original image (e.g., 2, 4, 6).
         mode (str, optional): Resample mode ["aggregate", "disaggregate"]. Defaults to 'aggregate'.
         method (str, optional): Resampling method (e.g., 'nearest', 'cubic', 'bilinear', 'average'). Defaults to 'near'.
+        **kwargs (optional): All parameters that can be passed to rasterio.warp.reproject function.
 
     Returns:
         raster: Resampled raster image.        
@@ -569,7 +572,7 @@ def resample(input, factor, mode='aggregate', method='near'):
 
         warp.reproject(source=ds, destination=resampled[band, :, :], \
                        src_transform= meta['transform'], dst_transform= transform_new, \
-                        src_crs=meta['crs'], dst_crs=input.crs, resampling= resampleAlg)
+                        src_crs=meta['crs'], dst_crs=input.crs, resampling= resampleAlg, **kwargs)
 
     # *****************************************
     # Convert array to raster 
@@ -580,7 +583,7 @@ def resample(input, factor, mode='aggregate', method='near'):
 # =========================================================================================== #
 #              Matching two images to have the same boundary
 # =========================================================================================== #
-def match(input, reference, method='near'):
+def match(input, reference, method='near', **kwargs):
     """
     Match input image to the reference image in terms of projection, resolution, and bound extent. It returns image within the bigger boundary.
 
@@ -588,6 +591,7 @@ def match(input, reference, method='near'):
         input (raster): Rasterio objective needs to match the reference.
         reference (raster): Rasterio object taken as reference to match the input image.
         method (AnyStr, optional): String defines resampling method (if applicable) to resample if having different resolution (Method similar to resample). Defaults to 'near'.
+        **kwargs (optional): All parameters that can be passed to rasterio.warp.reproject function.
 
     Returns:
         raster: Matched raster image with the same projection, resolution, and extent as the reference image.
@@ -694,7 +698,7 @@ def match(input, reference, method='near'):
                 ds = input_image
             else:
                 ds = input_image[band, : , : ]
-            warp.reproject(source=ds, destination=matched[band, :, :], src_transform= meta['transform'], dst_transform= transform_new, src_crs=meta['crs'], dst_crs=meta_reference['crs'], resampling= resampleAlg)
+            warp.reproject(source=ds, destination=matched[band, :, :], src_transform= meta['transform'], dst_transform= transform_new, src_crs=meta['crs'], dst_crs=meta_reference['crs'], resampling= resampleAlg, **kwargs)
         
         # *****************************************
         # Mask out other values
