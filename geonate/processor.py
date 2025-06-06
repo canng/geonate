@@ -1181,6 +1181,9 @@ def cellSize(input, unit: AnyStr='km', meta: Optional[AnyStr]=None):
     Example:
        img = raster.rast('./Sample_data/temperature.tif')
        cellArea = processor.cellSize(img, unit='km')    
+    
+    Returns:
+        raster: a raster of area in selected unit.
 
     '''
     import rasterio
