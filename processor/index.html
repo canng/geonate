@@ -657,6 +657,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.processor.cellSize" class="md-nav__link">
+    <span class="md-ellipsis">
+      cellSize()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.processor.crop" class="md-nav__link">
     <span class="md-ellipsis">
       crop()
@@ -880,6 +889,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#geonate.processor.cellSize" class="md-nav__link">
+    <span class="md-ellipsis">
+      cellSize()
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#geonate.processor.crop" class="md-nav__link">
     <span class="md-ellipsis">
       crop()
@@ -1045,6 +1063,162 @@
 
 
 
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h2 id="geonate.processor.cellSize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+<a href="#geonate.processor.cellSize" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents ">
+
+      <p>Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>input</code></td>
+        <td></td>
+        <td><p>rasterio image or data array</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>unit</code></td>
+        <td><code>~AnyStr</code></td>
+        <td><p>string, default is "km", the unit to calculate area</p></td>
+        <td><code>&#39;km&#39;</code></td>
+      </tr>
+      <tr>
+        <td><code>meta</code></td>
+        <td><code>Optional[~AnyStr]</code></td>
+        <td><p>optional dict, metadata in case input is data array</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Examples:</strong></p>
+    <p>img = raster.rast('./Sample_data/temperature.tif')
+cellArea = processor.cellSize(img, unit='km')    </p>
+
+        <details class="quote">
+          <summary>Source code in <code>geonate/processor.py</code></summary>
+          <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">AnyStr</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculate pixel size (area), the input has to be in the projection of &#39;EPSG:4326&#39;. If not, it can be reprojected by &quot;project&quot; function</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        input: rasterio image or data array</span>
+<span class="sd">        unit: string, default is &quot;km&quot;, the unit to calculate area</span>
+<span class="sd">        meta: optional dict, metadata in case input is data array</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">       img = raster.rast(&#39;./Sample_data/temperature.tif&#39;)</span>
+<span class="sd">       cellArea = processor.cellSize(img, unit=&#39;km&#39;)    </span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">array2raster</span>
+
+    <span class="c1">### Check input data</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">rasterio</span><span class="o">.</span><span class="n">DatasetReader</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">meta</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">meta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Please provide input metadata&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span> <span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dataset</span> <span class="o">=</span> <span class="nb">input</span>
+            <span class="n">meta</span> <span class="o">=</span> <span class="n">meta</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Input data is not supported&#39;</span><span class="p">)</span>
+
+    <span class="c1">### Read metadata</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span>
+    <span class="n">pix_width</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">upper_X</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">upper_Y</span> <span class="o">=</span> <span class="n">transform</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">meta</span><span class="p">[</span><span class="s1">&#39;width&#39;</span><span class="p">]</span>
+    <span class="n">lower_X</span> <span class="o">=</span> <span class="n">upper_X</span> <span class="o">+</span> <span class="n">transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cols</span>
+    <span class="n">lower_Y</span> <span class="o">=</span> <span class="n">upper_Y</span> <span class="o">+</span> <span class="n">transform</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="n">rows</span>
+
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">upper_Y</span><span class="p">,</span> <span class="n">lower_Y</span><span class="p">,</span> <span class="n">rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">6378137.0</span>  <span class="c1"># Equatorial radius</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mf">6356752.3142</span>  <span class="c1"># Polar radius</span>
+
+    <span class="c1"># Degrees to radians</span>
+    <span class="n">lats</span> <span class="o">=</span> <span class="n">lats</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span>
+
+    <span class="c1"># Intermediate vars</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="p">(</span><span class="n">b</span><span class="o">/</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">sinlats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+    <span class="n">zm</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">e</span> <span class="o">*</span> <span class="n">sinlats</span>
+    <span class="n">zp</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">sinlats</span>
+
+    <span class="c1"># Distance between meridians</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">pix_width</span><span class="o">/</span><span class="mi">360</span>
+
+    <span class="c1"># Compute areas for each latitude in square km</span>
+    <span class="n">areas_to_equator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">arctanh</span><span class="p">(</span><span class="n">e</span><span class="o">*</span><span class="n">sinlats</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">e</span><span class="p">)</span> <span class="o">+</span> <span class="n">sinlats</span> <span class="o">/</span> <span class="p">(</span><span class="n">zp</span><span class="o">*</span><span class="n">zm</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">10</span><span class="o">**</span><span class="mi">6</span>
+    <span class="n">areas_between_lats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">areas_to_equator</span><span class="p">)</span>
+    <span class="n">areas_cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">areas_between_lats</span><span class="p">)</span> <span class="o">*</span> <span class="n">q</span>
+
+    <span class="c1"># Create empty array to store output</span>
+    <span class="n">cellArea</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="c1"># Assign estimated cell area to every pixel</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">cellArea</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas_cells</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cellArea</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+            <span class="n">cellArea</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">areas_cells</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c1">### Update metadata</span>
+    <span class="n">meta</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;dtype&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
+
+    <span class="c1">### Convert unit (if applicable)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;km&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;kilometer&#39;</span><span class="p">):</span>
+        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;m&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;meter&#39;</span><span class="p">):</span>
+        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span> <span class="o">*</span> <span class="mi">1_000_000</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ha&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;hectare&#39;</span><span class="p">):</span>
+        <span class="n">outArea</span> <span class="o">=</span> <span class="n">cellArea</span> <span class="o">*</span> <span class="mi">10_000</span>
+
+    <span class="c1"># Output</span>
+
+    <span class="n">outArea</span> <span class="o">=</span> <span class="n">array2raster</span><span class="p">(</span><span class="n">cellArea</span><span class="p">,</span> <span class="n">meta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">outArea</span><span class="p">,</span> <span class="n">meta</span>
+</code></pre></div>
+        </details>
+    </div>
+
+  </div>
 
 
 
