@@ -1165,3 +1165,104 @@ def pca(input, n_component: int=3, **kwargs):
         pca_rast = array2raster(pca_raster, meta)
         return pca_rast
 
+
+# =========================================================================================== #
+#              Estimate raster cell area 
+# =========================================================================================== #
+def cellSize(input, unit: AnyStr='km', meta: Optional[AnyStr]=None):
+    '''
+    Calculate pixel size (area), the input has to be in the projection of 'EPSG:4326'. If not, it can be reprojected by "project" function
+
+    Parameters:
+        input: rasterio image or data array
+        unit: string, default is "km", the unit to calculate area
+        meta: optional dict, metadata in case input is data array
+    
+    Example:
+       img = raster.rast('./Sample_data/temperature.tif')
+       cellArea = processor.cellSize(img, unit='km')    
+
+    '''
+    import rasterio
+    import numpy as np
+    from .common import array2raster
+
+    ### Check input data
+    if isinstance(input, rasterio.DatasetReader):
+        if len(input.shape) == 2:
+            dataset = input.read()
+            meta = input.meta
+        else:
+            dataset = input.read(1)
+            meta = input.meta
+    elif isinstance(input, np.ndarray):
+        if meta is None:
+            raise ValueError('Please provide input metadata')
+        else:
+            if len(input) > 2:
+                dataset = input[0, :, : ]
+            else:
+                dataset = input
+            meta = meta
+    else:
+        raise ValueError('Input data is not supported')
+    
+    ### Read metadata
+    transform = meta['transform']
+    pix_width = transform[0]
+    upper_X = transform[2]
+    upper_Y = transform[5]
+    rows = meta['height']
+    cols = meta['width']
+    lower_X = upper_X + transform[0] * cols
+    lower_Y = upper_Y + transform[4] * rows
+
+    lats = np.linspace(upper_Y, lower_Y, rows + 1)
+
+    a = 6378137.0  # Equatorial radius
+    b = 6356752.3142  # Polar radius
+
+    # Degrees to radians
+    lats = lats * np.pi/180
+
+    # Intermediate vars
+    e = np.sqrt(1-(b/a)**2)
+    sinlats = np.sin(lats)
+    zm = 1 - e * sinlats
+    zp = 1 + e * sinlats
+
+    # Distance between meridians
+    q = pix_width/360
+
+    # Compute areas for each latitude in square km
+    areas_to_equator = np.pi * b**2 * ((2*np.arctanh(e*sinlats) / (2*e) + sinlats / (zp*zm))) / 10**6
+    areas_between_lats = np.diff(areas_to_equator)
+    areas_cells = np.abs(areas_between_lats) * q
+
+    # Create empty array to store output
+    cellArea = np.zeros_like(dataset, dtype=np.float32)
+    
+    # Assign estimated cell area to every pixel
+    if len(cellArea.shape) == 2:
+        for i in range(0, cellArea.shape[1]):
+            cellArea[:, i] = areas_cells.flatten()
+    else:
+        for i in range(0, cellArea.shape[2]):
+            cellArea[:, :, i] = areas_cells.flatten()
+
+    ### Update metadata
+    meta.update({'dtype': np.float32, 'count': 1})
+
+    ### Convert unit (if applicable)
+    if (unit.lower() == 'km') or (unit.lower() == 'kilometer'):
+        outArea = cellArea
+    elif (unit.lower() == 'm') or (unit.lower() == 'meter'):
+        outArea = cellArea * 1_000_000
+    elif (unit.lower() == 'ha') or (unit.lower() == 'hectare'):
+        outArea = cellArea * 10_000
+    
+    # Output
+        
+    outArea = array2raster(cellArea, meta)
+
+    return outArea, meta
