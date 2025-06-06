@@ -1115,6 +1115,21 @@
     <p>img = raster.rast('./Sample_data/temperature.tif')
 cellArea = processor.cellSize(img, unit='km')    </p>
 
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>raster</code></td>
+      <td><p>a raster of area in selected unit.</p></td>
+    </tr>
+  </tbody>
+</table>
         <details class="quote">
           <summary>Source code in <code>geonate/processor.py</code></summary>
           <div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">cellSize</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">unit</span><span class="p">:</span> <span class="n">AnyStr</span><span class="o">=</span><span class="s1">&#39;km&#39;</span><span class="p">,</span> <span class="n">meta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AnyStr</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -1129,6 +1144,9 @@ cellArea = processor.cellSize(img, unit='km')    </p>
 <span class="sd">    Example:</span>
 <span class="sd">       img = raster.rast(&#39;./Sample_data/temperature.tif&#39;)</span>
 <span class="sd">       cellArea = processor.cellSize(img, unit=&#39;km&#39;)    </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        raster: a raster of area in selected unit.</span>
 
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">rasterio</span>
