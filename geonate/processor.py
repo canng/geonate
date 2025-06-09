@@ -824,7 +824,7 @@ def match(input, reference, method='near', nodata=None, **kwargs):
     # *****************************************
     # Reproject each band
     for i in range(src_count):
-        reproject(
+        warp.reproject(
             source= input_image[i],
             destination= dst_data[i],
             src_transform= src_transform,
