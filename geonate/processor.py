@@ -583,9 +583,9 @@ def resample(input, factor, mode='aggregate', method='near', **kwargs):
 # =========================================================================================== #
 #              Matching two images to have the same boundary
 # =========================================================================================== #
-def match(input, reference, method='near', **kwargs):
+def match_boundary(input, reference, method='near', **kwargs):
     """
-    Match input image to the reference image in terms of projection, resolution, and bound extent. It returns image within the bigger boundary.
+    Match input image to the reference image to return an image within the bigger boundary.
 
     Args:
         input (raster): Rasterio objective needs to match the reference.
@@ -716,6 +716,145 @@ def match(input, reference, method='near', **kwargs):
             'dtype': np.float32
         })
         match_raster = array2raster(match_masked, meta_update)
+        
+        return match_raster
+    
+
+# =========================================================================================== #
+#              Matching two images to have the same boundary
+# =========================================================================================== #
+def match(input, reference, method='near', nodata=None, **kwargs):
+    """
+    Match input image to the reference image in terms of projection, resolution, and bound extent.
+
+    Args:
+        input (raster): Rasterio objective needs to match the reference.
+        reference (raster): Rasterio object taken as reference to match the input image.
+        method (AnyStr, optional): String defines resampling method (if applicable) to resample if having different resolution (Method similar to resample). Defaults to 'near'.
+        **kwargs (optional): All parameters that can be passed to rasterio.warp.reproject function.
+
+    Returns:
+        raster: Matched raster image with the same projection, resolution, and extent as the reference image.
+
+    """
+    import rasterio
+    from rasterio import warp
+    from rasterio.transform import from_bounds
+    import numpy as np
+    from .common import get_extent_local, array2raster
+    
+    # *****************************************
+    ### Define input image
+    # input is raster
+    if isinstance(input, rasterio.DatasetReader):
+        input_image = input.read()
+        src_meta = input.meta
+        src_crs = input.crs
+        src_count = input.count
+        src_transform = input.transform
+        src_dtype = input.dtypes[0]
+    # Other input
+    else:
+        raise ValueError('Input data is not supported')
+    
+    # *****************************************
+    ### Define reference image
+    if isinstance(reference, rasterio.DatasetReader):
+        reference_image = reference.read()
+        reference_meta = reference.meta
+        reference_transform = reference.transform
+        reference_width = reference.width
+        reference_height = reference.height
+        reference_crs = reference.crs
+        reference_profile = reference.profile.copy()
+    # Other input
+    else:
+        raise ValueError('Input data is not supported')
+    
+    # *****************************************
+    # Update profile for output
+    output_meta = src_meta.copy()
+    output_meta.update({
+        'crs': reference_crs,
+        'transform': reference_transform,
+        'width': reference_width,
+        'height': reference_height, 
+        'compress': 'lzw',
+        'dtype': src_dtype
+        })
+    
+    # Allocate destination array
+    dst_data = np.empty(shape=(src_count, reference_height, reference_width), dtype= input.dtypes[0])
+
+    # *****************************************
+    # Resampling method
+    if method.lower() == 'near' or method.lower() == 'nearest':
+        resampleAlg = warp.Resampling.nearest
+    elif method.lower() == 'mean' or method.lower() == 'average':
+        resampleAlg = warp.Resampling.average
+    elif method.lower() == 'max':
+        resampleAlg = warp.Resampling.max
+    elif method.lower() == 'min':
+        resampleAlg = warp.Resampling.min
+    elif (method.lower() == 'median') or (method.lower() == 'med'):
+        resampleAlg = warp.Resampling.med
+    elif method.lower() == 'mode':
+        resampleAlg = warp.Resampling.mode
+    elif method.lower() == 'q1':
+        resampleAlg = warp.Resampling.q1
+    elif method.lower() == 'q3':
+        resampleAlg = warp.Resampling.q3
+    elif method.lower() == 'rsm':
+        resampleAlg = warp.Resampling.rms
+    elif method.lower() == 'sum':
+        resampleAlg = warp.Resampling.sum
+    elif method.lower() == 'cubic':
+        resampleAlg = warp.Resampling.cubic
+    elif method.lower() == 'spline':
+        resampleAlg = warp.Resampling.cubic_spline
+    elif method.lower() == 'bilinear':
+        resampleAlg = warp.Resampling.bilinear
+    elif method.lower() == 'gauss':
+        resampleAlg = warp.Resampling.gauss
+    elif method.lower() == 'lanczos':
+        resampleAlg = warp.Resampling.lanczos
+    else:
+        raise ValueError('The resampling method is not supported, available methods raster.Resampling.')
+
+    # *****************************************
+    # Reproject each band
+    for i in range(src_count):
+        reproject(
+            source= input_image[i],
+            destination= dst_data[i],
+            src_transform= src_transform,
+            src_crs= src_crs,
+            dst_transform= reference_transform,
+            dst_crs= reference_crs,
+            resampling= resampleAlg, **kwargs
+        )
+
+        # *****************************************
+        # Mask out other values
+        if (nodata is None):
+            dst_data = dst_data
+            output_meta.update({
+                'dtype': input.dtypes[0]
+                })
+        elif (isinstance(nodata, (int, float))):
+            dst_data = np.where(dst_data == nodata, np.nan, dst_data)
+            dst_data = dst_data.astype(np.float32)
+
+            output_meta.update({
+                'dtype': np.float32,
+                'nodata': np.nan
+                })            
+        else: 
+            raise ValueError('NoData is not supported (int or float)')        
+
+        # *****************************************
+        # Convert to raster        
+        match_raster = array2raster(dst_data, output_meta)
         
         return match_raster
    
